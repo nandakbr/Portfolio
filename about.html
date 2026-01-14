@@ -96,7 +96,7 @@
                 <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="about.html">About</a>
                 <button
                     class="p-2 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
-                    onclick="document.documentElement.classList.toggle('dark')">
+                    onclick="toggleDarkMode()">
                     <span class="sr-only">Toggle Dark Mode</span>
                     <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
                         <path
@@ -262,6 +262,22 @@
             section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
             observer.observe(section);
         });
+
+        // Dark mode persistence
+        function initDarkMode() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        initDarkMode();
     </script>
 
 </body>

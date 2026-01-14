@@ -1,0 +1,20 @@
+{
+  "name": "nanda-portfolio",
+  "version": "1.0.0",
+  "description": "Nanda Akbar Portfolio - Node.js/Express with EJS",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": ["portfolio", "express", "ejs"],
+  "author": "Nanda Akbar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

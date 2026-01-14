@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#000000",
+                        "background-light": "#F2F2E6",
+                        "background-dark": "#121212",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        '4xl': '2rem',
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, .nav-link {
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-primary dark:text-gray-100 transition-colors duration-300">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+        <nav class="max-w-6xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
+            <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
+            <div class="flex gap-10 items-center">
+                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/work">Work</a>
+                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/about">About</a>
+                <button
+                    class="p-2 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
+                    onclick="toggleDarkMode()">
+                    <span class="sr-only">Toggle Dark Mode</span>
+                    <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z">
+                        </path>
+                    </svg>
+                    <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <main class="max-w-6xl mx-auto px-8 md:px-12 pt-48 flex flex-col items-center justify-center min-h-screen">
+        <h1 class="text-9xl font-bold mb-8 tracking-tight">404</h1>
+        <h2 class="text-4xl md:text-5xl font-light mb-6 tracking-tight">Page Not Found</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-12 max-w-md text-center">
+            Oops! The page you're looking for doesn't exist. Let's get you back on track.
+        </p>
+        <a class="inline-block bg-primary text-white dark:bg-white dark:text-black px-10 py-4 rounded-full font-medium hover:scale-105 transition-transform"
+            href="/">
+            Go Home
+        </a>
+    </main>
+    <footer class="mt-24 pb-12" id="about">
+        <div class="max-w-6xl mx-auto px-8 md:px-12">
+            <div
+                class="py-12 text-sm opacity-40 text-center md:text-left border-t border-gray-200 dark:border-white/10 font-medium">
+                © 2026 Nanda Akbar. Built with passion and precision.
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Dark mode persistence
+        function initDarkMode() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        initDarkMode();
+    </script>
+
+</body>
+
+</html>
