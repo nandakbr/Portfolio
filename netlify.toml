@@ -6,6 +6,7 @@
 [functions]
   # This tells Netlify to include your views folder in the serverless bundle
   included_files = ["views/**"]
+  external_node_modules = ["ejs"]
   node_bundler = "esbuild"
 
 [[redirects]]
