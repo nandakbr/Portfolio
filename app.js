@@ -1,17 +1,19 @@
 const express = require('express');
 const path = require('path');
+const serverless = require('serverless-http');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Set view engine to EJS
+// Use path.resolve to make sure it finds the folder in the Netlify environment
+const viewsPath = path.resolve(__dirname, 'views');
+
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', viewsPath);
 
-// Serve static files from public folder
+// Serve static files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
+// Your Routes
 app.get('/', (req, res) => {
     res.render('index', { title: 'Nanda Akbar | Portfolio' });
 });
@@ -20,32 +22,18 @@ app.get('/work', (req, res) => {
     res.render('work', { title: 'Work Gallery' });
 });
 
-app.get('/work.html', (req, res) => {
-    res.render('work', { title: 'Work Gallery' });
-});
-
 app.get('/about', (req, res) => {
     res.render('about', { title: 'About Me' });
 });
 
-app.get('/about.html', (req, res) => {
-    res.render('about', { title: 'About Me' });
-});
+app.get('/ptosm', (req, res) => res.render('ptosm'));
+app.get('/ptos-sso', (req, res) => res.render('ptos-sso'));
 
-app.get('/ptosm', (req, res) => {
-    res.render('ptosm');
-});
-
-app.get('/ptos-sso', (req, res) => {
-    res.render('ptos-sso');
-});
-
-// Handle 404
+// 404 handler
 app.use((req, res) => {
     res.status(404).render('404', { title: 'Page Not Found' });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// EXPORT is key for Netlify
+module.exports = app;
+module.exports.handler = serverless(app);
