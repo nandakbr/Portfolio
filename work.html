@@ -20,9 +20,16 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#000000",
-                        "background-light": "#F2F2E6",
-                        "background-dark": "#121212",
+                        primary: "#0B130F",
+                        "primary-secondary": "#68706C",
+                        "background-light": "#F3F5F3",
+                        "background-dark": "#0D1110",
+                        "background-elevated": "#FFFFFF",
+                        "cta-default": "#3E7A5E",
+                        "cta-hover": "#34654E",
+                        "btn-default": "#DDE2DE",
+                        "btn-hover": "#CBD2CE",
+                        "border-color": "#D7DCD8",
                     },
                     fontFamily: {
                         display: ["Outfit", "sans-serif"],
@@ -44,7 +51,7 @@
             font-family: 'Outfit', sans-serif;
         }
         .footer-cta-bg {
-            background: linear-gradient(135deg, #020d08 0%, #051a11 50%, #000000 100%);
+            background: linear-gradient(135deg, #0D1110 0%, #121A14 50%, #0D1110 100%);
             position: relative;
             overflow: hidden;
         }
@@ -77,8 +84,7 @@
     </style>
 </head>
 
-<body
-    class="bg-background-light dark:bg-background-dark text-primary dark:text-gray-100 transition-colors duration-300">
+<body class="bg-background-light dark:bg-background-dark text-primary dark:text-primary transition-colors duration-300">
     <header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
         <nav class="max-w-6xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
             <a class="text-xl font-bold tracking-tight" href="index.html">Nanda Akbar</a>
@@ -202,12 +208,13 @@
                     </h2>
                 </div>
                 <div class="flex flex-col md:flex-row justify-between items-end md:items-center relative z-10">
-                    <a class="bg-[#F5F5DC] text-black px-10 py-4 rounded-full font-semibold text-lg hover:scale-105 transition-transform shadow-lg"
-                        href="mailto:nandaakbar70@gmail.com">
+                    <a class="bg-[#3E7A5E] text-white px-10 py-4 rounded-full font-semibold text-lg hover:bg-[#34654E] dark:bg-[#3C6F57] dark:hover:bg-[#315D49] transition-colors shadow-lg"
+                        href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">
                         Let’s Chat
                     </a>
                     <div class="flex gap-8 mt-12 md:mt-0">
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.linkedin.com/in/nandakbr">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.linkedin.com/in/nandakbr">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <path
@@ -216,7 +223,8 @@
                                 <circle cx="4" cy="4" r="2"></circle>
                             </svg>
                         </a>
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.instagram.com/nandakbr_/">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.instagram.com/nandakbr_/">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
@@ -227,7 +235,7 @@
                     </div>
                 </div>
                 <div
-                    class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-gray-200 dark:border-white/10 font-medium">
+                    class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-[#D7DCD8] dark:border-[#1A221D] font-medium">
                     © 2026 Nanda Akbar. Built with passion and precision.
                 </div>
             </div>

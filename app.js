@@ -32,6 +32,14 @@ app.get('/about.html', (req, res) => {
     res.render('about', { title: 'About Me' });
 });
 
+app.get('/ptosm', (req, res) => {
+    res.render('ptosm');
+});
+
+app.get('/ptos-sso', (req, res) => {
+    res.render('ptos-sso');
+});
+
 // Handle 404
 app.use((req, res) => {
     res.status(404).render('404', { title: 'Page Not Found' });

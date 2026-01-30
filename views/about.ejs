@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -20,9 +22,16 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#000000",
-                        "background-light": "#F2F2E6",
-                        "background-dark": "#121212",
+                        primary: "#FFFFFF",
+                        "primary-secondary": "#A3A9B7",
+                        "background-light": "#FBF9F1",
+                        "background-dark": "#0F1115",
+                        "background-elevated": "#171A20",
+                        "cta-default": "#3C6F57",
+                        "cta-hover": "#315D49",
+                        "btn-default": "#1C2620",
+                        "btn-hover": "#25312A",
+                        "border-color": "#1A221D",
                     },
                     fontFamily: {
                         display: ["Outfit", "sans-serif"],
@@ -44,7 +53,7 @@
             font-family: 'Outfit', sans-serif;
         }
         .footer-cta-bg {
-            background: linear-gradient(135deg, #020d08 0%, #051a11 50%, #000000 100%);
+            background: linear-gradient(135deg, #0D1110 0%, #121A14 50%, #0D1110 100%);
             position: relative;
             overflow: hidden;
         }
@@ -75,19 +84,19 @@
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         .pill {
-            @apply bg-black text-white px-6 py-2 rounded-full text-sm font-medium transition-transform hover:scale-105;
+            @apply bg-[#3E7A5E] text-white px-6 py-2 rounded-full text-sm font-medium transition-transform hover:scale-105;
         }
         .work-row {
-            @apply flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b border-black/5 dark:border-white/5;
+            @apply flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b border-[#D7DCD8] dark:border-[#1A221D];
         }
         .work-row-active {
-            @apply bg-black text-white px-8 rounded-2xl shadow-xl;
+            @apply bg-[#3E7A5E] text-white px-8 rounded-2xl shadow-xl;
         }
     </style>
 </head>
 
 <body
-    class="bg-background-light dark:bg-background-dark text-primary dark:text-gray-100 transition-colors duration-300">
+    class="bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] transition-colors duration-300">
     <header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
         <nav class="max-w-6xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
             <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
@@ -114,8 +123,7 @@
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center mb-40">
             <div class="lg:col-span-5">
                 <div class="aspect-square rounded-[4rem] overflow-hidden bg-sky-200">
-                    <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover"
-                        src="/assets/Profile.png" />
+                    <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover" src="/assets/Profile.png" />
                 </div>
             </div>
             <div class="lg:col-span-7 flex flex-col gap-8">
@@ -123,13 +131,13 @@
                     Crafting digital experiences that look <span class="font-bold italic">dope</span> and actually <span
                         class="font-bold">make sense.</span>
                 </h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
+                <p class="text-lg text-[#68706C] dark:text-[#A8B0AA] leading-relaxed max-w-2xl">
                     Over the years, I've worked on projects ranging from branding and digital campaigns to UI/UX
                     prototypes and responsive websites. I also have experience collaborating closely with developers,
                     ensuring that every design translates into a smooth, user-friendly digital experience.
                 </p>
                 <div class="flex flex-wrap gap-3">
-                    <span class="pill">Social Media</span>
+                    <span class="pill ">Social Media</span>
                     <span class="pill">UI/UX</span>
                     <span class="pill">Packaging</span>
                 </div>
@@ -147,14 +155,15 @@
                 </div>
                 <div class="work-row">
                     <div class="flex flex-col flex-1">
-                        <span class="font-medium text-gray-700 dark:text-gray-300">Web Developer Intern</span>
+                        <span class="font-medium text-[#68706C] dark:text-[#A8B0AA]">Web Developer Intern</span>
                         <span class="font-semibold">Gara Sinar Kristalindo</span>
                     </div>
                     <span class="text-gray-500">Feb 2021 – May 2021</span>
                 </div>
                 <div class="work-row">
                     <div class="flex flex-col flex-1">
-                        <span class="font-medium text-gray-700 dark:text-gray-300">Graphic Designer &amp; UI/UX Designer</span>
+                        <span class="font-medium text-[#68706C] dark:text-[#A8B0AA]">Graphic Designer &amp; UI/UX
+                            Designer</span>
                         <span class="font-semibold">Freelance</span>
                     </div>
                     <span class="text-gray-500">2018–Present</span>
@@ -164,40 +173,38 @@
         <section class="mb-48">
             <h2 class="text-4xl font-bold mb-12 tracking-tight">Used Tools</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-black text-white p-8 rounded-[2.5rem] flex flex-col gap-6 shadow-2xl">
+                <div
+                    class="bg-[#3E7A5E] dark:bg-[#3C6F57] text-white p-8 rounded-[2.5rem] flex flex-col gap-6 shadow-2xl">
                     <div class="w-12 h-12 flex items-center justify-center">
-                        <img alt="Figma" class="w-8 h-8"
-                            src="/assets/figma.png" />
+                        <img alt="Figma" class="w-8 h-8" src="/assets/figma.png" />
                     </div>
                     <div>
                         <h4 class="font-bold text-lg mb-2">Figma</h4>
-                        <p class="text-gray-400 text-sm leading-relaxed">
+                        <p class="text-white text-sm leading-relaxed">
                             for creating interfaces, prototypes, and collaborative design systems.
                         </p>
                     </div>
                 </div>
                 <div
-                    class="border-2 border-black/10 dark:border-white/10 p-8 rounded-[2.5rem] flex flex-col gap-6 hover:bg-black/5 transition-colors">
+                    class="border-2 border-[#D7DCD8] dark:border-[#1A221D] p-8 rounded-[2.5rem] flex flex-col gap-6 hover:bg-black/5 transition-colors">
                     <div class="w-12 h-12 flex items-center justify-center">
-                        <img alt="Illustrator" class="w-8 h-8"
-                            src="/assets/ai.png" />
+                        <img alt="Illustrator" class="w-8 h-8" src="/assets/ai.png" />
                     </div>
                     <div>
                         <h4 class="font-bold text-lg mb-2">Illustrator</h4>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        <p class="text-[#68706C] dark:text-[#A8B0AA] text-sm leading-relaxed">
                             for creating scalable artwork and brand identities.
                         </p>
                     </div>
                 </div>
                 <div
-                    class="border-2 border-black/10 dark:border-white/10 p-8 rounded-[2.5rem] flex flex-col gap-6 hover:bg-black/5 transition-colors">
+                    class="border-2 border-[#D7DCD8] dark:border-[#1A221D] p-8 rounded-[2.5rem] flex flex-col gap-6 hover:bg-black/5 transition-colors">
                     <div class="w-12 h-12 flex items-center justify-center">
-                        <img alt="Photoshop" class="w-8 h-8"
-                            src="/assets/ps.png" />
+                        <img alt="Photoshop" class="w-8 h-8" src="/assets/ps.png" />
                     </div>
                     <div>
                         <h4 class="font-bold text-lg mb-2">Photoshop</h4>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        <p class="text-[#68706C] dark:text-[#A8B0AA] text-sm leading-relaxed">
                             Essential for creating stunning visuals and mockups.
                         </p>
                     </div>
@@ -215,12 +222,13 @@
                     </h2>
                 </div>
                 <div class="flex flex-col md:flex-row justify-between items-end md:items-center relative z-10">
-                    <a class="bg-white text-black px-12 py-5 rounded-full font-semibold text-lg hover:scale-105 transition-transform shadow-lg"
-                        href="mailto:nandaakbar70@gmail.com">
+                    <a class="bg-[#3E7A5E] text-white px-12 py-5 rounded-full font-semibold text-lg hover:bg-[#34654E] dark:bg-[#3C6F57] dark:hover:bg-[#315D49] transition-colors shadow-lg"
+                        href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">
                         Let's Chat
                     </a>
                     <div class="flex gap-8 mt-12 md:mt-0">
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.linkedin.com/in/nandakbr">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.linkedin.com/in/nandakbr">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <path
@@ -229,7 +237,8 @@
                                 <circle cx="4" cy="4" r="2"></circle>
                             </svg>
                         </a>
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.instagram.com/nandakbr_/">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.instagram.com/nandakbr_/">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
@@ -241,7 +250,7 @@
                 </div>
             </div>
             <div
-                class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-gray-200 dark:border-white/10 font-medium">
+                class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-[#D7DCD8] dark:border-[#1A221D] font-medium">
                 © 2026 Nanda Akbar. Built with passion and precision.
             </div>
         </div>

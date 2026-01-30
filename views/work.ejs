@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -20,9 +22,16 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#000000",
-                        "background-light": "#F2F2E6",
-                        "background-dark": "#121212",
+                        primary: "#FFFFFF",
+                        "primary-secondary": "#A3A9B7",
+                        "background-light": "#FBF9F1",
+                        "background-dark": "#0F1115",
+                        "background-elevated": "#171A20",
+                        "cta-default": "#3C6F57",
+                        "cta-hover": "#315D49",
+                        "btn-default": "#1C2620",
+                        "btn-hover": "#25312A",
+                        "border-color": "#1A221D",
                     },
                     fontFamily: {
                         display: ["Outfit", "sans-serif"],
@@ -44,7 +53,7 @@
             font-family: 'Outfit', sans-serif;
         }
         .footer-cta-bg {
-            background: linear-gradient(135deg, #020d08 0%, #051a11 50%, #000000 100%);
+            background: linear-gradient(135deg, #0D1110 0%, #121A14 50%, #0D1110 100%);
             position: relative;
             overflow: hidden;
         }
@@ -78,7 +87,7 @@
 </head>
 
 <body
-    class="bg-background-light dark:bg-background-dark text-primary dark:text-gray-100 transition-colors duration-300">
+    class="bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] transition-colors duration-300">
     <header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
         <nav class="max-w-6xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
             <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
@@ -128,7 +137,7 @@
                         class="aspect-[4/3] bg-gray-200 dark:bg-gray-800 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl">
                         <img alt="Packaging Design Project 1"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            src="/assets/package1.png" />
+                            src="/assets/package3.png" />
                     </div>
                 </div>
                 <div class="group cursor-pointer">
@@ -137,6 +146,22 @@
                         <img alt="Packaging Design Project 2"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             src="/assets/package2.png" />
+                    </div>
+                </div>
+                <div class="group cursor-pointer">
+                    <div
+                        class="aspect-[4/3] bg-gray-300 dark:bg-gray-700 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl">
+                        <img alt="Packaging Design Project 3"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="/assets/package1.png" />
+                    </div>
+                </div>
+                <div class="group cursor-pointer">
+                    <div
+                        class="aspect-[4/3] bg-gray-300 dark:bg-gray-700 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl">
+                        <img alt="Packaging Design Project 4"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="/assets/package4.png" />
                     </div>
                 </div>
             </div>
@@ -193,21 +218,22 @@
         </section>
     </main>
     <footer class="mt-24 pb-12" id="about">
-        <div class="max-w-5xl mx-auto px-12 md:px-16">
-            <div class="footer-cta-bg rounded-[4rem] p-12 md:p-24 flex flex-col gap-12">
+        <div class="max-w-6xl mx-auto px-8 md:px-12">
+            <div class="footer-cta-bg rounded-[4rem] p-16 md:p-28 flex flex-col gap-16">
                 <div class="relative z-10">
-                    <h2 class="text-white text-4xl md:text-6xl lg:text-7xl font-display leading-tight tracking-tight">
+                    <h2 class="text-white text-5xl md:text-7xl lg:text-8xl font-display leading-tight tracking-tight">
                         <span class="font-bold">drop a message,</span><br />
                         <span class="font-normal opacity-90">and I'll take care of the rest.</span>
                     </h2>
                 </div>
                 <div class="flex flex-col md:flex-row justify-between items-end md:items-center relative z-10">
-                    <a class="bg-[#F5F5DC] text-black px-10 py-4 rounded-full font-semibold text-lg hover:scale-105 transition-transform shadow-lg"
-                        href="mailto:nandaakbar70@gmail.com">
+                    <a class="bg-[#3E7A5E] text-white px-12 py-5 rounded-full font-semibold text-lg hover:bg-[#34654E] dark:bg-[#3C6F57] dark:hover:bg-[#315D49] transition-colors shadow-lg"
+                        href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">
                         Let's Chat
                     </a>
                     <div class="flex gap-8 mt-12 md:mt-0">
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.linkedin.com/in/nandakbr">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.linkedin.com/in/nandakbr">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <path
@@ -216,7 +242,8 @@
                                 <circle cx="4" cy="4" r="2"></circle>
                             </svg>
                         </a>
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.instagram.com/nandakbr_/">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.instagram.com/nandakbr_/">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
@@ -226,12 +253,51 @@
                         </a>
                     </div>
                 </div>
-                <div
-                    class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-gray-200 dark:border-white/10 font-medium">
-                    © 2026 Nanda Akbar. Built with passion and precision.
-                </div>
             </div>
+            <div
+                class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-[#D7DCD8] dark:border-[#1A221D] font-medium">
+                © 2026 Nanda Akbar. Built with passion and precision.
+            </div>
+        </div>
     </footer>
+    <!-- Image Modal -->
+    <div id="image-modal"
+        class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 flex flex-col items-center justify-center p-4 cursor-zoom-out">
+        <button id="modal-close"
+            class="absolute top-6 right-6 text-white/70 hover:text-white z-10 transition-colors p-2 bg-black/20 rounded-full backdrop-blur-md">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <div class="relative w-full max-w-7xl flex-1 flex items-center justify-center min-h-0">
+            <img id="modal-image" src="" alt="Expanded Work"
+                class="max-w-full max-h-[85vh] object-contain scale-95 transition-transform duration-300 rounded-lg shadow-2xl cursor-default select-none"
+                onclick="event.stopPropagation()" />
+        </div>
+
+        <!-- Thumbnail Gallery Strip -->
+        <div id="gallery-strip"
+            class="w-fit max-w-4xl h-20 mt-4 hidden items-center justify-start gap-4 overflow-x-auto px-4 pb-2 scrollbar-hide z-10"
+            onclick="event.stopPropagation()">
+            <!-- Thumbnails injected via JS -->
+        </div>
+    </div>
+
+    <!-- PTOSM Iframe Lightbox -->
+    <div id="ptosm-modal"
+        class="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 cursor-zoom-out">
+        <button id="ptosm-modal-close"
+            class="absolute top-6 right-6 text-white/70 hover:text-white z-10 transition-colors p-2 bg-black/20 rounded-full backdrop-blur-md">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <div class="relative w-full max-w-[85vw] h-[90vh] bg-background-light dark:bg-background-dark rounded-2xl overflow-hidden shadow-2xl"
+            onclick="event.stopPropagation()">
+            <iframe id="ptosm-iframe" src="" class="w-full h-full border-0"></iframe>
+        </div>
+    </div>
+
     <script>
         const observerOptions = {
             threshold: 0.1
@@ -264,6 +330,165 @@
         }
 
         initDarkMode();
+
+        // Image Expansion Logic
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-image');
+        const closeBtn = document.getElementById('modal-close');
+        const galleryStrip = document.getElementById('gallery-strip');
+
+        // Add click listeners to work gallery images
+        document.querySelectorAll('#work-gallery .group img').forEach(img => {
+            img.style.cursor = 'zoom-in';
+            const container = img.closest('.group');
+
+            // UI Design Project 1 (ui1.png) - Open PTOSM Lightbox
+            if (img.getAttribute('alt') === 'UI Design Project 1') {
+                img.style.cursor = 'pointer';
+                container.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openIframeModal('/ptosm');
+                });
+                return; // Skip gallery setup for this item
+            }
+
+            // UI Design Project 2 (ui2.png) - Open PTOS-SSO Lightbox
+            if (img.getAttribute('alt') === 'UI Design Project 2') {
+                img.style.cursor = 'pointer';
+                container.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openIframeModal('/ptos-sso');
+                });
+                return; // Skip gallery setup for this item
+            }
+
+            container.addEventListener('click', (e) => {
+                e.preventDefault();
+                const galleryData = container.dataset.gallery ? JSON.parse(container.dataset.gallery) : null;
+                openModal(img.src, galleryData);
+            });
+        });
+
+        function openModal(src, galleryData) {
+            modalImg.src = src;
+
+            // Handle Gallery Strip
+            galleryStrip.innerHTML = '';
+            if (galleryData && galleryData.length > 1) {
+                galleryStrip.classList.remove('hidden');
+                galleryStrip.classList.add('flex');
+
+                galleryData.forEach(itemSrc => {
+                    const thumbBtn = document.createElement('button');
+                    thumbBtn.className = `w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${itemSrc === src ? 'border-white opacity-100 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`;
+
+                    const thumbImg = document.createElement('img');
+                    thumbImg.src = itemSrc;
+                    thumbImg.className = 'w-full h-full object-cover';
+
+                    thumbBtn.appendChild(thumbImg);
+                    thumbBtn.onclick = () => {
+                        // Update Main Image
+                        modalImg.classList.add('opacity-50');
+                        setTimeout(() => {
+                            modalImg.src = itemSrc;
+                            modalImg.classList.remove('opacity-50');
+                        }, 150);
+
+                        // Update Active State
+                        Array.from(galleryStrip.children).forEach(child => {
+                            child.className = 'w-16 h-16 rounded-lg overflow-hidden border-2 border-transparent opacity-60 hover:opacity-100 transition-all';
+                        });
+                        thumbBtn.className = 'w-16 h-16 rounded-lg overflow-hidden border-2 border-white opacity-100 scale-105 transition-all';
+                    };
+
+                    galleryStrip.appendChild(thumbBtn);
+                });
+            } else {
+                galleryStrip.classList.add('hidden');
+                galleryStrip.classList.remove('flex');
+            }
+
+            modal.classList.remove('hidden');
+            // Force reflow
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            modalImg.classList.remove('scale-95');
+            modalImg.classList.add('scale-100');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalImg.classList.remove('scale-100');
+            modalImg.classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalImg.src = '';
+                galleryStrip.innerHTML = ''; // Clean up
+                document.body.classList.remove('overflow-hidden');
+            }, 300);
+        }
+
+        // Close on button click
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeModal();
+        });
+
+        // Close on background click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.closest('#gallery-strip') === null && e.target !== modalImg) {
+                closeModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+            if (e.key === 'Escape' && !iframeModal.classList.contains('hidden')) {
+                closeIframeModal();
+            }
+        });
+
+        // Iframe Modal Logic (for PTOSM and SSO)
+        const iframeModal = document.getElementById('ptosm-modal');
+        const iframeElement = document.getElementById('ptosm-iframe');
+        const iframeCloseBtn = document.getElementById('ptosm-modal-close');
+
+        function openIframeModal(url) {
+            iframeElement.src = url;
+            iframeModal.classList.remove('hidden');
+            // Force reflow
+            void iframeModal.offsetWidth;
+            iframeModal.classList.remove('opacity-0');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeIframeModal() {
+            iframeModal.classList.add('opacity-0');
+            setTimeout(() => {
+                iframeModal.classList.add('hidden');
+                iframeElement.src = ''; // Clean up
+                document.body.classList.remove('overflow-hidden');
+            }, 300);
+        }
+
+        // Close on button click
+        iframeCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeIframeModal();
+        });
+
+        // Close on background click
+        iframeModal.addEventListener('click', (e) => {
+            if (e.target === iframeModal) {
+                closeIframeModal();
+            }
+        });
     </script>
 
 </body>

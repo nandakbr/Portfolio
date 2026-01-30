@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -20,9 +22,16 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#000000",
-                        "background-light": "#F2F2E6",
-                        "background-dark": "#121212",
+                        primary: "#FFFFFF",
+                        "primary-secondary": "#A3A9B7",
+                        "background-light": "#FBF9F1",
+                        "background-dark": "#0F1115",
+                        "background-elevated": "#171A20",
+                        "cta-default": "#3C6F57",
+                        "cta-hover": "#315D49",
+                        "btn-default": "#1C2620",
+                        "btn-hover": "#25312A",
+                        "border-color": "#1A221D",
                     },
                     fontFamily: {
                         display: ["Outfit", "sans-serif"],
@@ -48,7 +57,7 @@
             overflow: hidden;
         }
         .footer-cta-bg {
-            background: linear-gradient(135deg, #020d08 0%, #051a11 50%, #000000 100%);
+            background: linear-gradient(135deg, #0D1110 0%, #121A14 50%, #0D1110 100%);
             position: relative;
             overflow: hidden;
         }
@@ -82,7 +91,7 @@
 </head>
 
 <body
-    class="bg-background-light dark:bg-background-dark text-primary dark:text-gray-100 transition-colors duration-300">
+    class="bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] transition-colors duration-300">
     <header class="fixed top-0 left-0 right-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
         <nav class="max-w-6xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
             <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
@@ -113,19 +122,18 @@
                         class="font-bold">click.</span>
                 </h1>
                 <div class="max-w-md flex flex-col items-start gap-8">
-                    <p class="text-xl text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                    <p class="text-xl text-[#68706C] dark:text-[#A8B0AA] font-light leading-relaxed">
                         creating visuals that seamlessly blend aesthetic appeal with functionality.
                     </p>
-                    <a class="inline-block bg-primary text-white dark:bg-white dark:text-black px-10 py-4 rounded-full font-medium hover:scale-105 transition-transform"
-                        href="https://wa.me/6282246308605">
+                    <a class="inline-block bg-[#3E7A5E] text-white dark:bg-[#3C6F57] dark:text-white dark:hover:bg-[#315D49] hover:bg-[#34654E] px-10 py-4 rounded-full font-medium transition-transform"
+                        href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">
                         Let's Chat
                     </a>
                 </div>
             </div>
             <div class="lg:col-span-5 relative">
                 <div class="hero-img-container aspect-[4/5] bg-[#3B82F6] relative group shadow-2xl">
-                    <img alt="Portrait of Nanda Akbar"
-                        class="w-full h-full object-cover object-center"
+                    <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover object-center"
                         src="/assets/Main.png" />
                     <div
                         class="absolute inset-0 bg-gradient-to-t from-background-light via-transparent to-transparent dark:from-background-dark pointer-events-none">
@@ -148,7 +156,7 @@
                 <div class="group cursor-pointer">
                     <div
                         class="aspect-[4/3] bg-[#E5E5E5] dark:bg-gray-800 rounded-3xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl">
-                        <img alt="Laptop mockup showing UI design"
+                        <img alt="UI Design Project 1"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             src="/assets/ui1.png" />
                     </div>
@@ -156,7 +164,7 @@
                 <div class="group cursor-pointer">
                     <div
                         class="aspect-[4/3] bg-[#CACACA] dark:bg-gray-700 rounded-3xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl">
-                        <img alt="Tablet mockup with interface details"
+                        <img alt="UI Design Project 2"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             src="/assets/ui2.png" />
                     </div>
@@ -164,16 +172,14 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative overflow-hidden h-[500px]">
                 <div class="aspect-[4/3] bg-gray-200 dark:bg-gray-800 rounded-3xl overflow-hidden blur-sm opacity-50">
-                    <img alt="Package design project" class="w-full h-full object-cover"
-                        src="/assets/package2.png" />
+                    <img alt="Package design project" class="w-full h-full object-cover" src="/assets/package2.png" />
                 </div>
                 <div class="aspect-[4/3] bg-gray-300 dark:bg-gray-700 rounded-3xl overflow-hidden blur-sm opacity-50">
-                    <img alt="Package design project" class="w-full h-full object-cover"
-                        src="/assets/package3.png" />
+                    <img alt="Package design project" class="w-full h-full object-cover" src="/assets/package3.png" />
                 </div>
                 <div
                     class="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-background-light via-transparent to-transparent dark:from-background-dark pointer-events-none">
-                    <a class="pointer-events-auto bg-primary text-white dark:bg-white dark:text-black px-10 py-4 rounded-full font-medium hover:scale-105 transition-transform mt-24"
+                    <a class="pointer-events-auto bg-[#3E7A5E] text-white dark:bg-[#3C6F57] dark:text-white dark:hover:bg-[#315D49] hover:bg-[#34654E] px-10 py-4 rounded-full font-medium transition-transform mt-24"
                         href="/work">
                         More Works...
                     </a>
@@ -191,12 +197,13 @@
                     </h2>
                 </div>
                 <div class="flex flex-col md:flex-row justify-between items-end md:items-center relative z-10">
-                    <a class="bg-[#F5F5DC] text-black px-12 py-5 rounded-full font-semibold text-lg hover:scale-105 transition-transform shadow-lg"
-                        href="mailto:nandaakbar70@gmail.com">
+                    <a class="bg-[#3E7A5E] text-white px-12 py-5 rounded-full font-semibold text-lg hover:bg-[#34654E] dark:bg-[#3C6F57] dark:hover:bg-[#315D49] transition-colors shadow-lg"
+                        href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">
                         Let's Chat
                     </a>
                     <div class="flex gap-8 mt-12 md:mt-0">
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.linkedin.com/in/nandakbr">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.linkedin.com/in/nandakbr">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <path
@@ -205,7 +212,8 @@
                                 <circle cx="4" cy="4" r="2"></circle>
                             </svg>
                         </a>
-                        <a class="text-white hover:opacity-70 transition-opacity p-1" href="https://www.instagram.com/nandakbr_/">
+                        <a class="text-white hover:opacity-70 transition-opacity p-1"
+                            href="https://www.instagram.com/nandakbr_/">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
                                 <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
@@ -217,11 +225,26 @@
                 </div>
             </div>
             <div
-                class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-gray-200 dark:border-white/10 font-medium">
+                class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-[#D7DCD8] dark:border-[#1A221D] font-medium">
                 © 2026 Nanda Akbar. Built with passion and precision.
             </div>
         </div>
     </footer>
+
+    <!-- Iframe Lightbox Modal -->
+    <div id="iframe-modal"
+        class="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 cursor-zoom-out">
+        <button id="iframe-modal-close"
+            class="absolute top-6 right-6 text-white/70 hover:text-white z-10 transition-colors p-2 bg-black/50 rounded-full backdrop-blur-md">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <div class="relative w-full max-w-[85vw] h-[90vh] bg-background-light dark:bg-background-dark rounded-2xl overflow-hidden shadow-2xl"
+            onclick="event.stopPropagation()">
+            <iframe id="modal-iframe" src="" class="w-full h-full border-0"></iframe>
+        </div>
+    </div>
     <script>
         const observerOptions = {
             threshold: 0.1
@@ -254,6 +277,49 @@
         }
 
         initDarkMode();
+
+        // Iframe Modal Logic
+        const iframeModal = document.getElementById('iframe-modal');
+        const modalIframe = document.getElementById('modal-iframe');
+        const closeModalBtn = document.getElementById('iframe-modal-close');
+
+        function openIframeModal(url) {
+            modalIframe.src = url;
+            iframeModal.classList.remove('hidden');
+            void iframeModal.offsetWidth;
+            iframeModal.classList.remove('opacity-0');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeIframeModal() {
+            iframeModal.classList.add('opacity-0');
+            setTimeout(() => {
+                iframeModal.classList.add('hidden');
+                modalIframe.src = '';
+                document.body.classList.remove('overflow-hidden');
+            }, 300);
+        }
+
+        closeModalBtn.addEventListener('click', closeIframeModal);
+        iframeModal.addEventListener('click', (e) => {
+            if (e.target === iframeModal) closeIframeModal();
+        });
+
+        // Add click listeners to project images
+        document.querySelectorAll('#work .group').forEach(group => {
+            const img = group.querySelector('img');
+            if (img.getAttribute('alt') === 'UI Design Project 1') {
+                group.addEventListener('click', () => openIframeModal('/ptosm'));
+            } else if (img.getAttribute('alt') === 'UI Design Project 2') {
+                group.addEventListener('click', () => openIframeModal('/ptos-sso'));
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !iframeModal.classList.contains('hidden')) {
+                closeIframeModal();
+            }
+        });
     </script>
 
 </body>

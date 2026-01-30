@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Nanda Akbar | PTOS-SSO</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FFFFFF",
+                        "primary-secondary": "#A3A9B7",
+                        "background-light": "#FBF9F1",
+                        "background-dark": "#0F1115",
+                        "background-elevated": "#171A20",
+                        "cta-default": "#3C6F57",
+                        "cta-hover": "#315D49",
+                        "btn-default": "#1C2620",
+                        "btn-hover": "#25312A",
+                        "border-color": "#1A221D",
+                        "card-light": "#F0EDE4",
+                        "card-dark": "#171A1E",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        'xl': '1.5rem',
+                        '2xl': '2rem',
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-body bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] min-h-screen transition-colors duration-300;
+            }
+            h1, h2, h3, h4, h5, h6, .display-font, nav a {
+                @apply font-display;
+            }
+        }
+        .carousel-thumb-btn.active {
+            @apply ring-2 ring-[#0B130F] dark:ring-white scale-95;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="max-w-7xl mx-auto px-8 py-10 flex justify-between items-center">
+        <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
+        <nav class="flex gap-8 items-center">
+            <!-- <a class="text-lg hover:opacity-70 transition-opacity" href="/work">Work</a>
+            <a class="text-lg hover:opacity-70 transition-opacity" href="/about">About</a> -->
+            <button
+                class="p-2 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
+                id="theme-toggle">
+                <span class="material-symbols-outlined block dark:hidden">dark_mode</span>
+                <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+            </button>
+        </nav>
+    </header>
+    <main class="max-w-7xl mx-auto px-8 pb-32">
+        <div class="mb-12">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
+                PTOS-SSO
+            </h1>
+            <p class="text-xl text-[#68706C] dark:text-[#A8B0AA] max-w-2xl leading-relaxed">
+                A unified Single Sign-On interface for the Terminal Operating System, enhancing security and user
+                efficiency across all modules.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div class="lg:col-span-8 flex flex-col gap-8">
+                <div class="bg-card-light dark:bg-card-dark p-8 md:p-12 rounded-2xl shadow-sm aspect-[16/10] flex items-center justify-center overflow-hidden cursor-pointer group"
+                    onclick="openLightbox(currentIndex)">
+                    <div class="w-full h-full transition-all duration-300 opacity-100 relative" id="main-content-area">
+                        <img alt="Main Portfolio Showcase" class="w-full h-full object-cover rounded-xl shadow-2xl"
+                            id="main-carousel-image"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Djd9ErefSidRgZ6Gq1oroHbZCk8mJSFme8X_lDuu6lK96F_96Fyqq_8escOIf6K-NOQ-pNH5u3EzdybYOdCEBVWfaR7FQKEAc-PfHZz_1C35DKoHpvAp4rtRAF_kmgmxpks2c4orNVgTuPKsgtFLrVLJMxny_pREvnhBxMnN_TrBPzSqTGKUiL141ncEYoTbo2Cy7fwluN19nEnISMLBs1vmUzQBxQUC8pW4UcUd8lTK-t16FvSii6opsYHG7M2fiwlcn-Eqr2Q" />
+                        <div
+                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 pointer-events-none">
+                            <div
+                                class="bg-white/90 dark:bg-black/90 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-lg backdrop-blur-sm">
+                                <span class="text-xs font-bold uppercase tracking-widest">View</span>
+                                <span class="material-symbols-outlined text-sm">zoom_in</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
+                    <button
+                        class="carousel-thumb-btn active bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
+                        onclick="updateCarousel(0)">
+                        <img alt="Thumbnail 1" class="w-full h-24 object-cover" src="/assets/login sso.png" />
+                    </button>
+                    <button
+                        class="carousel-thumb-btn bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
+                        onclick="updateCarousel(1)">
+                        <img alt="Thumbnail 2" class="w-full h-24 object-cover" src="/assets/main sso.png" />
+                    </button>
+                    <button
+                        class="carousel-thumb-btn bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
+                        onclick="updateCarousel(2)">
+                        <img alt="Thumbnail 3" class="w-full h-24 object-cover" src="/assets/main expanded sso.png" />
+                    </button>
+                </div>
+            </div>
+            <aside
+                class="lg:col-span-4 flex flex-col border-l border-[#0B130F]/10 dark:border-white/10 pl-0 lg:pl-12 pt-4">
+                <div class="flex-grow flex flex-col">
+                    <div class="mb-16" id="text-content">
+                        <span class="text-[11px] font-bold tracking-[0.3em] text-[#68706C] uppercase mb-5 block">Key
+                            Highlight</span>
+                        <h2 class="text-4xl font-bold mb-8 tracking-tight leading-tight" id="feature-title">Secure
+                            Single Sign-On</h2>
+                        <p class="text-lg text-[#68706C] dark:text-[#A8B0AA] leading-relaxed" id="feature-description">
+                            A unified login portal providing secure access across the entire Terminal Operating System
+                            ecosystem with a single set of credentials.
+                        </p>
+                    </div>
+                    <div class="mt-auto space-y-10 border-t border-[#0B130F]/10 dark:border-white/10 pt-12">
+                        <div class="grid grid-cols-2 gap-y-10">
+                            <div>
+                                <span
+                                    class="text-[10px] font-black tracking-[0.25em] text-[#68706C] uppercase block mb-3">Role</span>
+                                <p class="text-sm font-bold uppercase tracking-tight">UI/UX Designer</p>
+                            </div>
+                            <div>
+                                <span
+                                    class="text-[10px] font-black tracking-[0.25em] text-[#68706C] uppercase block mb-3">Timeline</span>
+                                <p class="text-sm font-bold uppercase tracking-tight">1 Month</p>
+                            </div>
+                            <div class="col-span-2">
+                                <span
+                                    class="text-[10px] font-black tracking-[0.25em] text-[#68706C] uppercase block mb-3">Tools</span>
+                                <p class="text-sm font-bold uppercase tracking-tight">Figma, Adobe Suite, Visual Studio
+                                    IDE</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    <script>
+        const projectData = [
+            {
+                title: "Secure Single Sign-On",
+                description: "A unified login portal providing secure access across the entire Terminal Operating System ecosystem with a single set of credentials.",
+                image: "/assets/login sso.png"
+            },
+            {
+                title: "All-in-One Operational Hub",
+                description: "Your centralized starting point for every task. Secure, intuitive, and ready to move when you are.",
+                image: "/assets/main sso.png"
+            },
+            {
+                title: "Switch Modules Seamlessly",
+                description: "Explore the PTOS ecosystem. Launch specialized apps for different terminal needs with just a single click.",
+                image: "/assets/main expanded sso.png"
+            }
+        ];
+        let currentIndex = 0;
+        function updateCarousel(index) {
+            currentIndex = index;
+            const content = projectData[index];
+            const mainImg = document.getElementById('main-carousel-image');
+            const mainArea = document.getElementById('main-content-area');
+            const title = document.getElementById('feature-title');
+            const desc = document.getElementById('feature-description');
+            mainArea.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = content.image;
+                title.textContent = content.title;
+                desc.textContent = content.description;
+                mainArea.style.opacity = '1';
+                document.querySelectorAll('.carousel-thumb-btn').forEach((btn, i) => {
+                    if (i === index) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }, 150);
+        }
+        function nextSlide() {
+            let nextIndex = (currentIndex + 1) % projectData.length;
+            updateCarousel(nextIndex);
+        }
+        // Dark mode persistence
+        function initDarkMode() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+        });
+
+        initDarkMode();
+        updateCarousel(0);
+    </script>
+
+    <!-- Image Lightbox Modal -->
+    <div id="image-lightbox"
+        class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 flex flex-col items-center justify-center p-4 cursor-zoom-out">
+        <!-- Navigation Arrows -->
+        <button id="lightbox-prev"
+            class="absolute left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 transition-colors p-3 bg-black/20 rounded-full backdrop-blur-md">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button id="lightbox-next"
+            class="absolute right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 transition-colors p-3 bg-black/20 rounded-full backdrop-blur-md">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+        <div class="relative w-full max-w-7xl flex-1 flex items-center justify-center min-h-0">
+            <div class="relative inline-block">
+                <img id="lightbox-image" src="" alt="Expanded Work"
+                    class="max-w-full max-h-[85vh] object-contain scale-95 transition-transform duration-300 rounded-lg shadow-2xl cursor-default select-none"
+                    onclick="event.stopPropagation()" />
+                <button id="lightbox-close"
+                    class="absolute top-4 right-4 text-white/80 hover:text-white z-20 transition-colors p-2 bg-black/50 rounded-full backdrop-blur-md"
+                    onclick="event.stopPropagation()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Thumbnail Gallery Strip -->
+        <div id="lightbox-gallery-strip"
+            class="w-fit max-w-4xl h-20 mt-4 flex items-center justify-start gap-4 overflow-x-auto px-4 pb-2 z-10"
+            onclick="event.stopPropagation()">
+        </div>
+    </div>
+
+    <script>
+        // Lightbox Logic
+        const lightbox = document.getElementById('image-lightbox');
+        const lightboxImg = document.getElementById('lightbox-image');
+        const lightboxCloseBtn = document.getElementById('lightbox-close');
+        const lightboxPrevBtn = document.getElementById('lightbox-prev');
+        const lightboxNextBtn = document.getElementById('lightbox-next');
+        const lightboxGalleryStrip = document.getElementById('lightbox-gallery-strip');
+        let lightboxIndex = 0;
+
+        function openLightbox(index) {
+            lightboxIndex = index;
+            updateLightboxImage();
+            lightbox.classList.remove('hidden');
+            void lightbox.offsetWidth;
+            lightbox.classList.remove('opacity-0');
+            lightboxImg.classList.remove('scale-95');
+            lightboxImg.classList.add('scale-100');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('opacity-0');
+            lightboxImg.classList.remove('scale-100');
+            lightboxImg.classList.add('scale-95');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }, 300);
+        }
+
+        function updateLightboxImage() {
+            const content = projectData[lightboxIndex];
+            lightboxImg.src = content.image;
+
+            // Update gallery strip
+            lightboxGalleryStrip.innerHTML = '';
+            projectData.forEach((item, i) => {
+                const thumbBtn = document.createElement('button');
+                thumbBtn.className = `w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${i === lightboxIndex ? 'border-white opacity-100 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`;
+                const thumbImg = document.createElement('img');
+                thumbImg.src = item.image;
+                thumbImg.className = 'w-full h-full object-cover';
+                thumbBtn.appendChild(thumbImg);
+                thumbBtn.onclick = () => {
+                    lightboxIndex = i;
+                    lightboxImg.classList.add('opacity-50');
+                    setTimeout(() => {
+                        updateLightboxImage();
+                        lightboxImg.classList.remove('opacity-50');
+                    }, 150);
+                };
+                lightboxGalleryStrip.appendChild(thumbBtn);
+            });
+        }
+
+        function lightboxPrev() {
+            lightboxIndex = (lightboxIndex - 1 + projectData.length) % projectData.length;
+            lightboxImg.classList.add('opacity-50');
+            setTimeout(() => {
+                updateLightboxImage();
+                lightboxImg.classList.remove('opacity-50');
+            }, 150);
+        }
+
+        function lightboxNext() {
+            lightboxIndex = (lightboxIndex + 1) % projectData.length;
+            lightboxImg.classList.add('opacity-50');
+            setTimeout(() => {
+                updateLightboxImage();
+                lightboxImg.classList.remove('opacity-50');
+            }, 150);
+        }
+
+        lightboxCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+
+        lightboxPrevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightboxPrev();
+        });
+
+        lightboxNextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightboxNext();
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') lightboxPrev();
+                if (e.key === 'ArrowRight') lightboxNext();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
