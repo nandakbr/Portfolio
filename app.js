@@ -6,10 +6,13 @@ const serverless = require('serverless-http');
 const app = express();
 
 // Use path.resolve to make sure it finds the folder in the Netlify environment
-const viewsPath = path.resolve(__dirname, 'views');
-
+// Express can accept an array of paths for views to handle different environments
+app.set('views', [
+    path.join(__dirname, 'views'),
+    path.join(process.cwd(), 'views'),
+    path.resolve(__dirname, 'views')
+]);
 app.set('view engine', 'ejs');
-app.set('views', viewsPath);
 
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, 'public')));
