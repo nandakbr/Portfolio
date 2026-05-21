@@ -32,12 +32,18 @@ app.get('/about', (req, res) => {
 
 app.get('/ptosm', (req, res) => res.render('ptosm'));
 app.get('/ptos-sso', (req, res) => res.render('ptos-sso'));
+app.get('/unreleased-tos', (req, res) => res.render('unreleased-tos'));
 
 // 404 handler
 app.use((req, res) => {
     res.status(404).render('404', { title: 'Page Not Found' });
 });
-
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Gaspol bre! Server nyala di http://localhost:${PORT}`);
+    });
+}
 // EXPORT is key for Netlify
 module.exports = app;
 module.exports.handler = serverless(app);

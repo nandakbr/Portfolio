@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="en">
+<html class="scroll-smooth dark" lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -20,18 +20,18 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#FFFFFF",
-                        "primary-secondary": "#A3A9B7",
-                        "background-light": "#FBF9F1",
-                        "background-dark": "#0F1115",
-                        "background-elevated": "#171A20",
-                        "cta-default": "#3C6F57",
-                        "cta-hover": "#315D49",
-                        "btn-default": "#1C2620",
-                        "btn-hover": "#25312A",
-                        "border-color": "#1A221D",
-                        "card-light": "#F0EDE4",
-                        "card-dark": "#171A1E",
+                        primary: "#000000",
+                        "primary-secondary": "#666666",
+                        "background-light": "#F9F9F9",
+                        "background-dark": "#050505",
+                        "background-elevated": "#111111",
+                        "cta-default": "#000000",
+                        "cta-hover": "#333333",
+                        "btn-default": "#000000",
+                        "btn-hover": "#333333",
+                        "border-color": "#E5E5E5",
+                        "card-light": "#EEEEEE",
+                        "card-dark": "#111111",
                     },
                     fontFamily: {
                         display: ["Outfit", "sans-serif"],
@@ -47,6 +47,11 @@
         };
     </script>
     <style type="text/tailwindcss">
+        :root {
+            --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-apple-soft: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         @layer base {
             body {
                 @apply font-body bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] min-h-screen transition-colors duration-300;
@@ -55,6 +60,22 @@
                 @apply font-display;
             }
         }
+
+        .reveal-init {
+            @apply opacity-0 translate-y-16 scale-[0.97];
+            filter: blur(10px);
+            transition:
+                opacity 1100ms var(--ease-apple),
+                transform 1100ms var(--ease-apple),
+                filter 900ms var(--ease-apple-soft);
+            will-change: transform, opacity, filter;
+        }
+
+        .reveal-active {
+            @apply opacity-100 translate-y-0 scale-100;
+            filter: blur(0);
+        }
+
         .carousel-thumb-btn.active {
             @apply ring-2 ring-[#0B130F] dark:ring-white scale-95;
         }
@@ -62,21 +83,16 @@
 </head>
 
 <body>
-    <header class="max-w-7xl mx-auto px-8 py-10 flex justify-between items-center">
+    <header class="max-w-7xl mx-auto px-8 md:px-12 py-10 flex justify-between items-center">
         <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
         <nav class="flex gap-8 items-center">
             <!-- <a class="text-lg hover:opacity-70 transition-opacity" href="/work">Work</a>
             <a class="text-lg hover:opacity-70 transition-opacity" href="/about">About</a> -->
-            <button
-                class="p-2 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
-                id="theme-toggle">
-                <span class="material-symbols-outlined block dark:hidden">dark_mode</span>
-                <span class="material-symbols-outlined hidden dark:block">light_mode</span>
-            </button>
+
         </nav>
     </header>
-    <main class="max-w-7xl mx-auto px-8 pb-32">
-        <div class="mb-12">
+    <main class="max-w-7xl mx-auto px-8 md:px-12 pb-32">
+        <div class="mb-12 reveal-item">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
                 PTOSM Redesign
             </h1>
@@ -87,7 +103,7 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            <div class="lg:col-span-8 flex flex-col gap-8">
+            <div class="lg:col-span-8 flex flex-col gap-8 reveal-item">
                 <div class="bg-card-light dark:bg-card-dark p-8 md:p-12 rounded-2xl shadow-sm aspect-[16/10] flex items-center justify-center overflow-hidden cursor-pointer group"
                     onclick="openLightbox(currentIndex)">
                     <div class="w-full h-full transition-all duration-300 opacity-100 relative" id="main-content-area">
@@ -133,7 +149,7 @@
                 </div>
             </div>
             <aside
-                class="lg:col-span-4 flex flex-col border-l border-[#0B130F]/10 dark:border-white/10 pl-0 lg:pl-12 pt-4">
+                class="lg:col-span-4 flex flex-col border-l border-[#0B130F]/10 dark:border-white/10 pl-0 lg:pl-12 pt-4 reveal-item">
                 <div class="flex-grow flex flex-col">
                     <div class="mb-16" id="text-content">
                         <span class="text-[11px] font-bold tracking-[0.3em] text-[#68706C] uppercase mb-5 block">Key
@@ -224,22 +240,7 @@
             let nextIndex = (currentIndex + 1) % projectData.length;
             updateCarousel(nextIndex);
         }
-        // Dark mode persistence
-        function initDarkMode() {
-            const isDark = localStorage.getItem('darkMode') === 'true';
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-            }
-        }
 
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('darkMode', isDark);
-        });
-
-        initDarkMode();
         updateCarousel(0);
     </script>
 
@@ -383,6 +384,43 @@
                 if (e.key === 'ArrowRight') lightboxNext();
             }
         });
+    </script>
+
+    <script>
+        // Reveal animation
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const isReducedMotion = () => prefersReducedMotion.matches;
+
+        const revealItems = document.querySelectorAll('.reveal-item');
+
+        if (isReducedMotion()) {
+            revealItems.forEach((el) => {
+                el.classList.add('reveal-init', 'reveal-active');
+            });
+        } else {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        const alreadyPlayed = entry.target.dataset.revealed === 'true';
+                        const delay = alreadyPlayed ? 0 : index * 110;
+                        setTimeout(() => {
+                            entry.target.classList.add('reveal-active');
+                            entry.target.dataset.revealed = 'true';
+                        }, delay);
+                    } else {
+                        entry.target.classList.remove('reveal-active');
+                    }
+                });
+            }, {
+                threshold: 0.08,
+                rootMargin: '0px 0px -8% 0px'
+            });
+
+            revealItems.forEach((el) => {
+                el.classList.add('reveal-init');
+                observer.observe(el);
+            });
+        }
     </script>
 
 </body>

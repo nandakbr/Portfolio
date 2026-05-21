@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="en">
+<html class="scroll-smooth dark" lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -22,16 +22,16 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#FFFFFF",
-                        "primary-secondary": "#A3A9B7",
-                        "background-light": "#FBF9F1",
-                        "background-dark": "#0F1115",
-                        "background-elevated": "#171A20",
-                        "cta-default": "#3C6F57",
-                        "cta-hover": "#315D49",
-                        "btn-default": "#1C2620",
-                        "btn-hover": "#25312A",
-                        "border-color": "#1A221D",
+                        primary: "#000000",
+                        "primary-secondary": "#666666",
+                        "background-light": "#F9F9F9",
+                        "background-dark": "#050505",
+                        "background-elevated": "#111111",
+                        "cta-default": "#000000",
+                        "cta-hover": "#333333",
+                        "btn-default": "#000000",
+                        "btn-hover": "#333333",
+                        "border-color": "#E5E5E5",
                     },
                     fontFamily: {
                         display: ["Outfit", "sans-serif"],
@@ -59,21 +59,18 @@
 </head>
 
 <body>
-    <header class="max-w-7xl mx-auto px-8 py-10 flex justify-between items-center">
-        <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
-        <nav class="flex gap-8 items-center">
-            <a class="text-lg hover:opacity-70 transition-opacity" href="/work">Work</a>
-            <a class="text-lg hover:opacity-70 transition-opacity" href="/about">About</a>
-            <button
-                class="p-2 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
-                id="theme-toggle">
-                <span class="material-symbols-outlined block dark:hidden">dark_mode</span>
-                <span class="material-symbols-outlined hidden dark:block">light_mode</span>
-            </button>
+    <header class="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-lg border-b border-white/5">
+        <nav class="max-w-7xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
+            <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
+            <div class="flex gap-10 items-center">
+                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/work">Work</a>
+                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/about">About</a>
+
+            </div>
         </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto px-8 py-32 flex flex-col items-center justify-center min-h-[60vh] text-center">
+    <main class="max-w-7xl mx-auto px-8 md:px-12 py-32 flex flex-col items-center justify-center min-h-[60vh] text-center">
         <div class="mb-8">
             <h1 class="text-[12rem] md:text-[16rem] font-bold leading-none tracking-tighter opacity-10">404</h1>
         </div>
@@ -100,24 +97,7 @@
     </footer>
 
     <script>
-        // Dark mode persistence
-        function initDarkMode() {
-            const isDark = localStorage.getItem('darkMode') === 'true';
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-            }
-        }
 
-        const themeToggle = document.getElementById('theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                document.documentElement.classList.toggle('dark');
-                const isDark = document.documentElement.classList.contains('dark');
-                localStorage.setItem('darkMode', isDark);
-            });
-        }
-
-        initDarkMode();
     </script>
 </body>
 
