@@ -109,7 +109,7 @@
                     <div class="w-full h-full transition-all duration-300 opacity-100 relative" id="main-content-area">
                         <img alt="Main Portfolio Showcase" class="w-full h-full object-cover rounded-xl shadow-2xl"
                             id="main-carousel-image"
-                            src="/assets/Ops Plan Detail 1.png" />
+                            src="/assets/Ops Plan Detail 1.webp"  loading="lazy" decoding="async">
                         <div
                             class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 pointer-events-none">
                             <div
@@ -124,22 +124,22 @@
                     <button
                         class="carousel-thumb-btn active bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
                         onclick="updateCarousel(0)">
-                        <img alt="Thumbnail 1" class="w-full h-24 object-cover" src="/assets/Ops Plan Detail 1.png" />
+                        <img alt="Thumbnail 1" class="w-full h-24 object-cover" src="/assets/Ops Plan Detail 1.webp"  loading="lazy" decoding="async">
                     </button>
                     <button
                         class="carousel-thumb-btn bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
                         onclick="updateCarousel(1)">
-                        <img alt="Thumbnail 2" class="w-full h-24 object-cover" src="/assets/Ops Plan.png" />
+                        <img alt="Thumbnail 2" class="w-full h-24 object-cover" src="/assets/Ops Plan.webp"  loading="lazy" decoding="async">
                     </button>
                     <button
                         class="carousel-thumb-btn bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
                         onclick="updateCarousel(2)">
-                        <img alt="Thumbnail 3" class="w-full h-24 object-cover" src="/assets/ENTRY.png" />
+                        <img alt="Thumbnail 3" class="w-full h-24 object-cover" src="/assets/ENTRY.webp"  loading="lazy" decoding="async">
                     </button>
                     <button
                         class="carousel-thumb-btn bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
                         onclick="updateCarousel(3)">
-                        <img alt="Thumbnail 4" class="w-full h-24 object-cover" src="/assets/ENTRY FORM.png" />
+                        <img alt="Thumbnail 4" class="w-full h-24 object-cover" src="/assets/ENTRY FORM.webp"  loading="lazy" decoding="async">
                     </button>
                 </div>
             </div>
@@ -291,22 +291,22 @@
             {
                 title: "In-Depth Ops Plan Detail",
                 description: "A granular operational plan view that surfaces berth allocations, schedules, and resource assignments in a single, focused workspace.",
-                image: "/assets/Ops Plan Detail 1.png"
+                image: "/assets/Ops Plan Detail 1.webp"
             },
             {
                 title: "Operations Planning Overview",
                 description: "A high-level operations board that visualizes berth schedules and vessel timelines, giving planners a clear pulse of daily terminal activity.",
-                image: "/assets/Ops Plan.png"
+                image: "/assets/Ops Plan.webp"
             },
             {
                 title: "Vessel Entry Management",
                 description: "A centralized entry log that tracks incoming vessels, status updates, and key milestones with a clean, scannable layout.",
-                image: "/assets/ENTRY.png"
+                image: "/assets/ENTRY.webp"
             },
             {
                 title: "Streamlined Entry Form",
                 description: "A guided form that simplifies vessel entry submissions, reducing data entry friction while ensuring required terminal information is captured accurately.",
-                image: "/assets/ENTRY FORM.png"
+                image: "/assets/ENTRY FORM.webp"
             }
         ];
         let currentIndex = 0;
@@ -360,7 +360,7 @@
             <div class="relative inline-block">
                 <img id="lightbox-image" src="" alt="Expanded Work"
                     class="max-w-full max-h-[85vh] object-contain scale-95 transition-transform duration-300 rounded-lg shadow-2xl cursor-default select-none"
-                    onclick="event.stopPropagation()" />
+                    onclick="event.stopPropagation()"  loading="lazy" decoding="async">
                 <button id="lightbox-close"
                     class="absolute top-4 right-4 text-white/80 hover:text-white z-20 transition-colors p-2 bg-black/50 rounded-full backdrop-blur-md"
                     onclick="event.stopPropagation()">
