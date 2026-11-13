@@ -1,0 +1,413 @@
+<!-- PTOS-M Design System — component documentation body. Shared between the
+     mobile scroll page and the desktop sticky-nav layout (same markup, the
+     parent decides the surrounding chrome). scope = 'mobile' | 'desktop',
+     used only to tighten a couple of grid columns on small screens. -->
+<% const narrow = scope === 'mobile'; %>
+
+<!-- 01 — Foundations: Color / Typography / Spacing / Elevation -->
+<section id="<%= narrow ? 'm-' : '' %>ds-01" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">01</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">FOUNDATIONS</h2>
+    </div>
+    <p class="text-sm mb-8" style="color:var(--neutral-500)">Color palette, typography, spacing scale, and elevation — the base tokens every component below is built from.</p>
+
+    <h3 class="text-sm font-semibold mb-1">Color Palette</h3>
+    <p class="text-xs mb-4" style="color:var(--neutral-500)">Core colors: primary navy tones, accent blues, neutrals, and status colors.</p>
+    <p class="text-[11px] uppercase tracking-wide mb-2" style="color:var(--neutral-400)">Primary</p>
+    <div class="grid grid-cols-3 <%= narrow ? '' : 'md:grid-cols-6' %> gap-3 mb-6">
+        <% [['Navy 900','#02284F'],['Navy 800','#0F2444'],['Navy 700','#172144'],['Navy 600','#3B4256'],['Blue 500','#038FDD'],['Blue 300','#79D4FE']].forEach(function(c){ %>
+        <div>
+            <div class="h-14 rounded-lg" style="background:<%= c[1] %>"></div>
+            <p class="text-xs font-medium mt-2"><%= c[0] %></p>
+            <p class="text-[11px]" style="color:var(--neutral-400)"><%= c[1] %></p>
+        </div>
+        <% }) %>
+    </div>
+    <p class="text-[11px] uppercase tracking-wide mb-2" style="color:var(--neutral-400)">Neutrals</p>
+    <div class="flex gap-1 mb-6">
+        <% ['#F9FAFC','#F1F3F6','#DFE5ED','#AFB7C1','#666666','#2C2C2C','#000000'].forEach(function(c){ %>
+        <div class="flex-1 h-8 rounded" style="background:<%= c %>; border:1px solid var(--neutral-200)"></div>
+        <% }) %>
+    </div>
+    <p class="text-[11px] uppercase tracking-wide mb-2" style="color:var(--neutral-400)">Status</p>
+    <div class="grid grid-cols-3 gap-3 mb-10 max-w-sm">
+        <% [['Success','#27B45E'],['Error','#CC443B'],['Warning','#FA8C16']].forEach(function(c){ %>
+        <div>
+            <div class="h-8 rounded" style="background:<%= c[1] %>"></div>
+            <p class="text-[11px] mt-1" style="color:var(--neutral-500)"><%= c[0] %></p>
+        </div>
+        <% }) %>
+    </div>
+
+    <h3 class="text-sm font-semibold mb-1">Typography</h3>
+    <p class="text-xs mb-4" style="color:var(--neutral-500)">Type scale (Geist in the source file, mapped to Inter here to stay inside the portfolio's own font system).</p>
+    <div class="flex flex-col gap-4 mb-10">
+        <% [
+            ['Display','Bold · 44px / 52px','Dashboard', 700, 44, 52],
+            ['Heading 1','Bold · 32px / 40px','Terminal Monitoring', 700, 32, 40],
+            ['Heading 2','SemiBold · 24px / 32px','Section Header', 600, 24, 32],
+            ['Body Large','Regular · 16px / 24px','Primary body text for content and descriptions.', 400, 16, 24],
+            ['Body','Regular · 14px / 22px','Standard body text used across tables, forms, and data displays.', 400, 14, 22],
+            ['Caption','Regular · 12px / 18px','Chart labels, timestamps, footnotes', 400, 12, 18]
+        ].forEach(function(t){ %>
+        <div class="flex items-baseline gap-6 border-b pb-3" style="border-color:var(--neutral-200)">
+            <div class="w-28 shrink-0">
+                <p class="text-xs font-semibold"><%= t[0] %></p>
+                <p class="text-[11px]" style="color:var(--neutral-400)"><%= t[1] %></p>
+            </div>
+            <p style="font-weight:<%= t[3] %>; font-size:<%= t[4] %>px; line-height:<%= t[5] %>px"><%= t[2] %></p>
+        </div>
+        <% }) %>
+    </div>
+
+    <div class="grid grid-cols-1 <%= narrow ? '' : 'md:grid-cols-2' %> gap-10">
+        <div>
+            <h3 class="text-sm font-semibold mb-1">Spacing Scale</h3>
+            <div class="flex flex-col gap-2 mt-3">
+                <% [['spacing-xs','4px'],['spacing-sm','8px'],['spacing-base','16px'],['spacing-xl','24px'],['spacing-2xl','32px'],['spacing-4xl','64px']].forEach(function(s){ %>
+                <div class="flex items-center gap-3">
+                    <div style="width:<%= s[1] %>; height:12px; background:var(--blue-500); border-radius:3px"></div>
+                    <p class="text-xs" style="color:var(--neutral-500)"><%= s[0] %> · <%= s[1] %></p>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+        <div>
+            <h3 class="text-sm font-semibold mb-1">Elevation &amp; Effects</h3>
+            <div class="flex flex-col gap-3 mt-3">
+                <% [['Level 0','No shadow','none'],['Level 1','Cards','0 2px 8px rgba(0,0,0,0.04)'],['Level 2','Raised','0 4px 12px rgba(0,0,0,0.08)'],['Level 3','Dropdowns','0 8px 24px rgba(2,40,79,0.12)'],['Level 4','Modals','0 16px 40px rgba(2,40,79,0.18)']].forEach(function(e){ %>
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-10 rounded-lg bg-white shrink-0" style="box-shadow:<%= e[2] %>; border:1px solid var(--neutral-200)"></div>
+                    <p class="text-xs" style="color:var(--neutral-500)"><span class="font-semibold" style="color:var(--navy-800)"><%= e[0] %></span> — <%= e[1] %></p>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 02 — Top Navigation (1:1 from Figma node 4845:6009, Theme=Light) -->
+<section id="<%= narrow ? 'm-' : '' %>ds-02" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">02</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">TOP NAVIGATION</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">App-shell header: search, notifications, branch context, sign-out.</p>
+    <div class="flex items-center justify-between gap-4 h-16 px-4 rounded-[15px] flex-wrap" style="background:#F9FAFC; border:1px solid #E2E8F0">
+        <div class="flex items-center gap-2 flex-1 min-w-0">
+            <button class="w-9 h-9 rounded-[18px] flex items-center justify-center shrink-0" style="background:rgba(226,232,240,0.5); border:1px solid #E2E8F0" aria-label="Notifications"><i data-lucide="bell" style="width:20px;height:20px;color:#0F2444"></i></button>
+            <button class="w-9 h-9 rounded-[18px] flex items-center justify-center shrink-0" style="background:rgba(226,232,240,0.5); border:1px solid #E2E8F0" aria-label="Help"><i data-lucide="info" style="width:20px;height:20px;color:#0F2444"></i></button>
+            <div class="hidden sm:flex items-center gap-2 h-9 px-3 rounded-[10px] bg-white flex-1 max-w-[280px]" style="border:1px solid #E2E8F0">
+                <i data-lucide="search" style="width:20px;height:20px;color:#94A3B8"></i>
+                <span class="text-[13px]" style="color:#94A3B8">Search...</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+            <div class="hidden md:flex items-center gap-2.5 h-[34px] pl-3.5 pr-4 rounded-[20px]" style="background:rgba(226,232,240,0.4); border:1px solid #E2E8F0">
+                <i data-lucide="map-pin" style="width:16px;height:16px;color:#0F2444"></i>
+                <p class="text-[12px] font-semibold tracking-wide" style="color:#0F2444">PT PELINDO MULTI TERMINAL - TANJUNG PRIOK</p>
+            </div>
+            <button class="w-9 h-9 rounded-[18px] flex items-center justify-center" style="background:rgba(226,232,240,0.5); border:1px solid #E2E8F0" aria-label="Log out"><i data-lucide="log-out" style="width:20px;height:20px;color:#0F2444"></i></button>
+        </div>
+    </div>
+</section>
+
+<!-- 03 — Sidebar Navigation -->
+<section id="<%= narrow ? 'm-' : '' %>ds-03" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">03</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">SIDEBAR NAVIGATION</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">1:1 from Figma's Sidebar / Light / Default variant (node 4860:7622) — brand area, 12-item nav list with chevron affordance, user footer card. Click an item — the active state is real, not a static screenshot.</p>
+    <div class="grid grid-cols-1 <%= narrow ? '' : 'md:grid-cols-[280px_1fr]' %> gap-8 items-start">
+        <nav class="rounded-2xl overflow-hidden flex flex-col w-full <%= narrow ? '' : 'md:w-[280px]' %>" style="background:#fff; border:1px solid #E5E7EB">
+            <!-- Brand-Area: real PTOS-M wordmark + icon SVG assets pulled
+                 straight from Figma (PTOS-M Logo/Icon/Colored, /Text/Colored). -->
+            <div class="flex items-center justify-between px-4 py-[18px]">
+                <div class="flex items-center gap-2.5">
+                    <img src="/assets/ptosm-logo-icon.svg" alt="" class="h-5 w-auto">
+                    <img src="/assets/ptosm-logo-text.svg" alt="PTOS-M" class="h-3 w-auto">
+                </div>
+                <i data-lucide="menu" style="width:18px;height:18px;color:#3B4256"></i>
+            </div>
+            <div class="h-px mx-4" style="background:#E5E7EB"></div>
+            <!-- Navigation-List — "Permohonan" is expandable (data-ptos-submenu),
+                 matching Figma's Light/Expanded instance 1:1: 5 bulleted
+                 sub-items reveal on click, chevron rotates from > to v. -->
+            <div data-ptos-sidebar class="flex flex-col gap-1 p-2">
+                <% [
+                    ['home','Dashboard', true, null],
+                    ['wrench','Maintenance', false, null],
+                    ['anchor','Vessel', false, null],
+                    ['folder','Permohonan', false, ['Operation Plan B/M','Pindah','Penumpukan','Pengeluaran','Jadwal & Konfirmasi Kapal']],
+                    ['calendar','Perencanaan', false, null],
+                    ['wallet-cards','Pembayaran', false, null],
+                    ['clipboard-check','Penetapan', false, null],
+                    ['check-circle','Realisasi', false, null],
+                    ['eye','Monitoring', false, null],
+                    ['shield-check','Verifikasi', false, null],
+                    ['file-text','Pranota', false, null],
+                    ['x-circle','Pembatalan', false, null]
+                ].forEach(function(item){ %>
+                <% if (item[3]) { %>
+                <div data-ptos-submenu>
+                    <div class="ptos-sidebar-item" data-submenu-trigger>
+                        <span class="flex items-center gap-3"><i data-lucide="<%= item[0] %>" style="width:18px;height:18px"></i><%= item[1] %></span>
+                        <i data-lucide="chevron-right" class="sidebar-chevron" style="width:16px;height:16px"></i>
+                    </div>
+                    <div class="ptos-submenu-panel">
+                        <% item[3].forEach(function(sub){ %>
+                        <div class="ptos-submenu-item"><span class="ptos-submenu-bullet"></span><%= sub %></div>
+                        <% }) %>
+                    </div>
+                </div>
+                <% } else { %>
+                <div class="ptos-sidebar-item <%= item[2] ? 'is-active' : '' %>">
+                    <span class="flex items-center gap-3"><i data-lucide="<%= item[0] %>" style="width:18px;height:18px"></i><%= item[1] %></span>
+                    <i data-lucide="chevron-right" class="sidebar-chevron" style="width:16px;height:16px"></i>
+                </div>
+                <% } %>
+                <% }) %>
+            </div>
+            <div class="h-px mx-4" style="background:#E5E7EB"></div>
+            <!-- Footer: user card -->
+            <div class="flex items-center gap-2.5 m-2 p-2.5 rounded-xl" style="background:#EEF4FF">
+                <div class="w-8 h-8 rounded-full shrink-0" style="background:#CBD5E1"></div>
+                <div class="min-w-0">
+                    <p class="text-sm font-semibold truncate" style="color:#0F2444">Nanda A.</p>
+                    <p class="text-xs truncate" style="color:var(--neutral-400)">Operator</p>
+                </div>
+            </div>
+        </nav>
+        <div class="ptos-card text-sm" style="color:var(--neutral-500)">
+            Sidebar drives the module currently in view. The active item (Dashboard) drops its chevron and gets a tinted blue background — the same state the live app toggles on route change, handled here by <code class="text-xs" style="color:var(--navy-800)">.is-active</code>.
+        </div>
+    </div>
+</section>
+
+<!-- 04 — Form Components -->
+<section id="<%= narrow ? 'm-' : '' %>ds-04" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">04</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">FORM COMPONENTS</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">Every state below is real: focus the input, tick the checkbox, flip the toggle, open the dropdown.</p>
+    <div class="grid grid-cols-1 <%= narrow ? '' : 'md:grid-cols-2' %> gap-8">
+        <div class="ptos-card">
+            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Text Input</p>
+            <div class="flex flex-col gap-3">
+                <input class="ptos-input" placeholder="Enter value...">
+                <input class="ptos-input is-invalid" value="invalid-email">
+                <input class="ptos-input" value="Disabled" disabled>
+            </div>
+        </div>
+        <div class="ptos-card">
+            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Dropdown</p>
+            <div data-ptos-dropdown class="relative">
+                <button type="button" class="ptos-dropdown-trigger" aria-expanded="false">
+                    <span class="label">Select option...</span>
+                    <i data-lucide="chevron-down" class="chev" style="width:16px;height:16px"></i>
+                </button>
+                <div class="ptos-dropdown-menu hidden absolute left-0 right-0 mt-1 z-10">
+                    <div class="ptos-dropdown-item">BC 2.0</div>
+                    <div class="ptos-dropdown-item">On Demand</div>
+                    <div class="ptos-dropdown-item">NPE</div>
+                    <div class="ptos-dropdown-item">Pabean Manual</div>
+                </div>
+            </div>
+        </div>
+        <div class="ptos-card">
+            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Checkbox &amp; Radio</p>
+            <div class="flex flex-col gap-3">
+                <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" class="ptos-checkbox" checked> Checked</label>
+                <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" class="ptos-checkbox"> Unchecked</label>
+                <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="ds-radio-demo" class="ptos-radio" checked> Option A</label>
+                <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="ds-radio-demo" class="ptos-radio"> Option B</label>
+            </div>
+        </div>
+        <div class="ptos-card">
+            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Toggle Switch</p>
+            <div class="flex flex-col gap-3">
+                <label class="flex items-center gap-3 text-sm cursor-pointer"><input type="checkbox" class="ptos-toggle" checked> On</label>
+                <label class="flex items-center gap-3 text-sm cursor-pointer"><input type="checkbox" class="ptos-toggle"> Off</label>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 05 — Card Components -->
+<section id="<%= narrow ? 'm-' : '' %>ds-05" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">05</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">CARD COMPONENTS</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">List-item cards. Click one to select it — only one state at a time, same as a real list.</p>
+    <div data-ptos-card-group class="grid grid-cols-1 <%= narrow ? '' : 'md:grid-cols-3' %> gap-4">
+        <% [
+            ['user','Non-authorized person','Lorem ipsum dolor sit amet, consectetur.'],
+            ['shield-check','Authorized representative','Has delegated signing rights.'],
+            ['id-card','Representative','Acting on behalf of the principal.']
+        ].forEach(function(c){ %>
+        <div data-ptos-card class="ptos-card flex items-center gap-3 cursor-pointer">
+            <i data-lucide="<%= c[0] %>" style="width:20px;height:20px;color:var(--blue-500)"></i>
+            <div class="min-w-0">
+                <p class="text-sm font-medium"><%= c[1] %></p>
+                <p class="text-xs truncate" style="color:var(--neutral-500)"><%= c[2] %></p>
+            </div>
+            <i data-lucide="arrow-right" style="width:16px;height:16px;color:var(--neutral-300);margin-left:auto"></i>
+        </div>
+        <% }) %>
+    </div>
+    <div class="ptos-card ptos-card-dark mt-4">
+        <p class="text-xs font-semibold mb-1" style="color:var(--blue-300)">Dark theme</p>
+        <p class="text-sm">Designed close to the reference style using the primary navy palette — used for high-contrast operational surfaces.</p>
+    </div>
+</section>
+
+<!-- 06 — Icon Set -->
+<section id="<%= narrow ? 'm-' : '' %>ds-06" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">06</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">ICON SET</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">Maritime &amp; logistics, status, and UI glyphs used consistently across every module.</p>
+    <div class="grid grid-cols-4 <%= narrow ? '' : 'md:grid-cols-8' %> gap-3">
+        <% ['ship','anchor','box','truck','forklift','warehouse','compass','life-buoy','waves','ship-wheel','weight','route','bell','search','settings-2','check-circle','x-circle','eye','shield-check','refresh-cw'].forEach(function(icon){ %>
+        <div class="ptos-card flex flex-col items-center justify-center gap-2 py-4">
+            <i data-lucide="<%= icon %>" style="width:22px;height:22px;color:var(--navy-700)"></i>
+            <p class="text-[10px] text-center" style="color:var(--neutral-400)"><%= icon %></p>
+        </div>
+        <% }) %>
+    </div>
+</section>
+
+<!-- 07 — Button System -->
+<section id="<%= narrow ? 'm-' : '' %>ds-07" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">07</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">BUTTON SYSTEM</h2>
+    </div>
+    <p class="text-sm mb-1" style="color:var(--neutral-500)">240 variants across 5 axes in the source file (Style × State × Size × Theme × Icon) — hover/click these for the real Default → Hover → Active → Disabled behavior.</p>
+    <div class="flex flex-wrap items-center gap-3 mt-6">
+        <button class="ptos-btn ptos-btn-primary">Primary</button>
+        <button class="ptos-btn ptos-btn-secondary">Secondary</button>
+        <button class="ptos-btn ptos-btn-ghost">Ghost Button</button>
+        <button class="ptos-btn ptos-btn-danger">Delete Endpoint</button>
+        <button class="ptos-btn ptos-btn-primary" disabled>Disabled</button>
+    </div>
+</section>
+
+<!-- 08 — Tab Navigation -->
+<section id="<%= narrow ? 'm-' : '' %>ds-08" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">08</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">TAB NAVIGATION</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">Underline tab bar (matches Figma's PTOS Tab Bar) and pill-tab filters (PTOS Pill Tab) — click to switch, one active at a time.</p>
+    <div data-ptos-tabs class="flex gap-2 mb-8 border-b" style="border-color:var(--neutral-200)">
+        <div data-ptos-tab class="ptos-tab-underline is-active">All Requests</div>
+        <div data-ptos-tab class="ptos-tab-underline">Pending Approval</div>
+        <div data-ptos-tab class="ptos-tab-underline">Completed</div>
+    </div>
+    <div data-ptos-tabs class="flex gap-2 flex-wrap">
+        <div data-ptos-tab class="ptos-pill-tab is-active">All Requests</div>
+        <div data-ptos-tab class="ptos-pill-tab">Pending Approval</div>
+        <div data-ptos-tab class="ptos-pill-tab">Completed</div>
+        <div data-ptos-tab class="ptos-pill-tab">Closed</div>
+    </div>
+</section>
+
+<!-- 09 — Table Components -->
+<section id="<%= narrow ? 'm-' : '' %>ds-09" class="ptos-chapter mb-20">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">09</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">TABLE COMPONENTS</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">Dense operational table cell — status badges, hover row highlight.</p>
+    <div class="ptos-card p-0 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="ptos-table">
+                <thead>
+                    <tr><th>No. PPK</th><th>Nama Kapal</th><th>Tanggal</th><th>Tonase</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>PPK-0231</td><td>MV Jamrud Sentosa</td><td>12 Jul 2026</td><td>4,230 T</td><td><span class="ptos-badge ptos-badge-success">Completed</span></td></tr>
+                    <tr><td>PPK-0232</td><td>MV Nusa Perkasa</td><td>13 Jul 2026</td><td>1,980 T</td><td><span class="ptos-badge ptos-badge-warning">Pending Approval</span></td></tr>
+                    <tr><td>PPK-0233</td><td>MV Teluk Bayur</td><td>14 Jul 2026</td><td>—</td><td><span class="ptos-badge ptos-badge-error">Rejected</span></td></tr>
+                    <tr><td>PPK-0234</td><td>MV Lintas Samudra</td><td>15 Jul 2026</td><td>3,105 T</td><td><span class="ptos-badge ptos-badge-neutral">Closed</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- 10 — Chart & Widget -->
+<section id="<%= narrow ? 'm-' : '' %>ds-10" class="ptos-chapter">
+    <div class="flex items-center gap-3 mb-2">
+        <span class="w-8 h-8 rounded-[6px] flex items-center justify-center ptos-ds-chip">10</span>
+        <h2 class="text-xl font-semibold tracking-tight" style="color:var(--blue-500)">CHART &amp; WIDGET</h2>
+    </div>
+    <p class="text-sm mb-6" style="color:var(--neutral-500)">Monitoring widgets — real Chart.js renders using the token colors above, not static exports.</p>
+    <div class="grid grid-cols-1 <%= narrow ? '' : 'md:grid-cols-2' %> gap-6">
+        <div class="ptos-card">
+            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Produksi per Shift</p>
+            <canvas id="<%= narrow ? 'm-' : '' %>ds-chart-line" height="160"></canvas>
+        </div>
+        <div class="ptos-card">
+            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Arus Barang per Kemasan</p>
+            <canvas id="<%= narrow ? 'm-' : '' %>ds-chart-bar" height="160"></canvas>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 <%= narrow ? '' : 'md:grid-cols-3' %> gap-4 mt-6">
+        <% [['Jumlah Kunjungan Kapal','37','Kapal','+4 dari Juni',true],['Arus Tonase','12,430','Ton','+820 dari Juni',true],['Antrean Truk','6','Unit','-2 dari kemarin',false]].forEach(function(m){ %>
+        <div class="ptos-card">
+            <p class="text-xs" style="color:var(--neutral-500)"><%= m[0] %></p>
+            <p class="text-2xl font-bold mt-1" style="color:var(--navy-900)"><%= m[1] %> <span class="text-xs font-normal" style="color:var(--neutral-400)"><%= m[2] %></span></p>
+            <p class="text-xs mt-1" style="color:<%= m[4] ? 'var(--success)' : 'var(--error)' %>"><%= m[3] %></p>
+        </div>
+        <% }) %>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+    (function () {
+        const lineEl = document.getElementById('<%= narrow ? 'm-' : '' %>ds-chart-line');
+        const barEl = document.getElementById('<%= narrow ? 'm-' : '' %>ds-chart-bar');
+        if (!lineEl || !barEl || !window.Chart) return;
+        new Chart(lineEl, {
+            type: 'line',
+            data: {
+                labels: ['Shift 1', 'Shift 2', 'Shift 3', 'Shift 4'],
+                datasets: [{
+                    data: [820, 960, 740, 1010],
+                    borderColor: '#038FDD',
+                    backgroundColor: 'rgba(3,143,221,0.1)',
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: '#0F2444'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { grid: { color: '#F1F3F6' } }, x: { grid: { display: false } } }
+            }
+        });
+        new Chart(barEl, {
+            type: 'bar',
+            data: {
+                labels: ['Box', 'Bag', 'Drum', 'Loose'],
+                datasets: [{
+                    data: [540, 320, 210, 130],
+                    backgroundColor: ['#0F2444', '#038FDD', '#79D4FE', '#AFB7C1'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { grid: { color: '#F1F3F6' } }, x: { grid: { display: false } } }
+            }
+        });
+    })();
+</script>

@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="robots" content="noindex" />
+    <title>PTOS-M UI Library | Nanda Akbar</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/css/output.css" />
+    <style>
+        /* PTOS-M UI Library — scoped tokens so nothing leaks into the rest
+           of the portfolio's own design language. Values 1:1 from the
+           Figma "UI Lib PTOSM" file (fileKey oqW1XKTaRi9iFpeQcR28uL),
+           section "DESIGN SYSTEM - Komponen / Navigasi".
+           Font maps Geist -> Inter (same geometric-sans shape). */
+        .ptos-ui {
+            --navy-900: #02284F;
+            --navy-800: #0F2444;
+            --accent: #038FDE;
+            --neutral-50: #F9FAFC;
+            --neutral-100: #F1F3F6;
+            --neutral-200: #DFE5ED;
+            --neutral-300: #AFB7C1;
+            --neutral-400: #8692A1;
+            --neutral-500: #666666;
+            font-family: 'Inter', sans-serif;
+            color: var(--navy-800);
+        }
+        .ptos-ui * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+
+        /* ---- doc chrome (not part of the shipped components) ---- */
+        .ptos-ui-chip { background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; }
+        .ptos-ui-stage {
+            background: var(--neutral-50);
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            padding: 32px 24px;
+            display: flex;
+            align-items: flex-start;
+            overflow-x: auto;
+        }
+        .ptos-ui-stage.is-dark { background: var(--navy-900); }
+        .ptos-ui-note {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--neutral-500);
+        }
+        .ptos-ui-note code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            background: var(--neutral-100);
+            color: var(--navy-800);
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        /* =====================================================
+           SIDEBAR NAVIGATION - tokens read from the Figma "Sidebar"
+           component set (Expanded=<module> / Collapsed, Theme=Dark|Light).
+           Frame r24 + 1px stroke; brand 72; list pad 8/16 gap 4;
+           item 44 r12 15px; user bar 80 r12. Hover is not in Figma.
+           ===================================================== */
+        .ptos-sb {
+            display: flex; flex-direction: column; width: 280px; min-height: 822px; /* Figma: Default 822, Expanded 973 - grows with the open sub-menu */
+            border: 1px solid; border-radius: 24px; overflow: hidden; box-sizing: border-box;
+            transition: width 180ms ease; flex-shrink: 0;
+        }
+        .ptos-sb.is-collapsed { width: 64px; height: 822px; }
+        .ptos-sb[data-theme="dark"]  { background: #0F2444; border-color: #172144; color: #DFE5ED; }
+        .ptos-sb[data-theme="light"] { background: #F9FAFC; border-color: #DFE5ED; color: #0F2444; }
+
+        .ptos-sb-brand { display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 24px 24px 16px; box-sizing: border-box; flex-shrink: 0; }
+        .ptos-sb-brand-mark { display: flex; align-items: center; gap: 12px; overflow: hidden; }
+        .ptos-sb-brand-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-sizing: border-box; }
+        .ptos-sb-brand-icon img { display: block; width: 18px; height: 20px; }
+        .ptos-sb-brand-text { display: block; width: 82px; height: 12px; flex-shrink: 0; }
+        .ptos-sb[data-theme="dark"] .ptos-sb-brand-icon { background: #fff; border: 1px solid #172144; }
+        .ptos-sb[data-theme="light"] .ptos-sb-brand-icon { background: var(--neutral-100); border: 1px solid var(--neutral-200); }
+        .ptos-sb.is-collapsed .ptos-sb-brand { justify-content: center; padding-left: 0; padding-right: 0; }
+        .ptos-sb.is-collapsed .ptos-sb-brand-mark { display: none; }
+
+        .ptos-sb-burger { width: 32px; height: 32px; border: 0; border-radius: 6px; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0; flex-shrink: 0; transition: background-color 120ms ease; }
+        .ptos-sb-burger span { display: block; width: 18px; height: 2px; border-radius: 1px; background: currentColor; }
+        .ptos-sb[data-theme="dark"] .ptos-sb-burger { color: #DFE5ED; }
+        .ptos-sb[data-theme="light"] .ptos-sb-burger { color: #172144; }
+        .ptos-sb[data-theme="dark"] .ptos-sb-burger:hover { background: rgba(255,255,255,0.08); }
+        .ptos-sb[data-theme="light"] .ptos-sb-burger:hover { background: rgba(15,36,68,0.06); }
+        .ptos-sb-burger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        .ptos-sb-divider { position: relative; height: 16px; margin: 0 16px; flex-shrink: 0; }
+        .ptos-sb-divider::after { content: ''; position: absolute; left: 0; right: 0; top: 8px; height: 1px; }
+        .ptos-sb[data-theme="dark"] .ptos-sb-divider::after { background: #172144; }
+        .ptos-sb[data-theme="light"] .ptos-sb-divider::after { background: #DFE5ED; }
+
+        .ptos-sb-list {
+            flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 8px 16px 4px; display: flex; flex-direction: column; gap: 0;
+            scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.25) transparent;
+        }
+        .ptos-sb[data-theme="light"] .ptos-sb-list { scrollbar-color: rgba(15,36,68,0.25) transparent; }
+        .ptos-sb-list::-webkit-scrollbar { width: 6px; }
+        .ptos-sb-list::-webkit-scrollbar-track { background: transparent; }
+        .ptos-sb-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 999px; }
+        .ptos-sb-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.35); }
+        .ptos-sb[data-theme="light"] .ptos-sb-list::-webkit-scrollbar-thumb { background: rgba(15,36,68,0.18); }
+        .ptos-sb[data-theme="light"] .ptos-sb-list::-webkit-scrollbar-thumb:hover { background: rgba(15,36,68,0.32); }
+
+        .ptos-sb-item {
+            display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 16px; box-sizing: border-box;
+            border-radius: 12px; font-size: 15px; font-weight: 500; line-height: 20px; white-space: nowrap; overflow: hidden;
+            cursor: pointer; flex-shrink: 0; margin-bottom: 4px; transition: background-color 120ms ease, color 120ms ease;
+        }
+        .ptos-sb-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-item:hover { background: rgba(255,255,255,0.06); }
+        .ptos-sb[data-theme="light"] .ptos-sb-item:hover { background: rgba(15,36,68,0.05); }
+        .ptos-sb-ico { width: 20px; height: 20px; flex-shrink: 0; }
+        .ptos-sb[data-theme="light"] .ptos-sb-ico { color: #666666; }
+        .ptos-sb-item .chev { margin-left: auto; width: 16px; height: 16px; flex-shrink: 0; transition: transform 150ms ease; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-item .chev { color: #AFB7C1; }
+        .ptos-sb[data-theme="light"] .ptos-sb-item .chev { color: #666666; }
+        .ptos-sb-item-label { overflow: hidden; text-overflow: ellipsis; }
+
+        .ptos-sb-item.is-active { background: rgba(3,143,221,0.13); font-weight: 600; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-item.is-active { color: #fff; }
+        .ptos-sb[data-theme="light"] .ptos-sb-item.is-active { color: #0F2444; }
+        .ptos-sb[data-theme="light"] .ptos-sb-item.is-active .ptos-sb-ico,
+        .ptos-sb[data-theme="light"] .ptos-sb-item.is-active .chev { color: #02284F; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-item.is-active .chev { color: #fff; }
+        .ptos-sb-item.is-active .chev { transform: rotate(90deg); }
+
+        .ptos-sb.is-collapsed .ptos-sb-item-label,
+        .ptos-sb.is-collapsed .ptos-sb-item .chev,
+        .ptos-sb.is-collapsed .ptos-sb-user-info { display: none; }
+        .ptos-sb.is-collapsed .ptos-sb-item { justify-content: center; padding: 0; }
+
+        .ptos-sb-sub { display: flex; flex-direction: column; gap: 12px; max-height: 0; overflow: hidden; padding: 0 12px 0 32px; flex-shrink: 0; transition: max-height 200ms ease, padding 200ms ease, margin 200ms ease; }
+        .ptos-sb-item.is-active + .ptos-sb-sub { box-sizing: content-box; }
+        .ptos-sb-item.is-active + .ptos-sb-sub { max-height: 240px; padding: 4px 12px 10px 32px; margin-bottom: 4px; }
+        .ptos-sb.is-collapsed .ptos-sb-sub { display: none; }
+        .ptos-sb-sub-item { display: flex; align-items: center; gap: 8px; height: 17px; font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; flex-shrink: 0; transition: color 120ms ease; }
+        .ptos-sb-sub-bullet { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-sub-item { color: #A0ABB1; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-sub-item:hover { color: #fff; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-sub-bullet { background: #555555; }
+        .ptos-sb[data-theme="light"] .ptos-sb-sub-item { color: #666666; }
+        .ptos-sb[data-theme="light"] .ptos-sb-sub-item:hover { color: #0F2444; }
+        .ptos-sb[data-theme="light"] .ptos-sb-sub-bullet { background: #808080; }
+
+        /* ---- Collapsed-rail interaction: hover tooltip, click flyout popover ----
+           Per spec: hovering an icon-only item shows its name first; clicking it
+           (when it has sub-items) opens a popover with the submenu list, same
+           popover pattern as the table's Action Menu. Expanded rail keeps the
+           existing inline-expand behavior untouched. */
+        .ptos-sb-tooltip { display: none; }
+        .ptos-sb.is-collapsed .ptos-sb-item { position: relative; }
+        .ptos-sb.is-collapsed .ptos-sb-tooltip {
+            display: block; position: fixed; left: 0; top: 0;
+            font-size: 12px; font-weight: 500; white-space: nowrap;
+            padding: 6px 10px; border-radius: 6px;
+            opacity: 0; pointer-events: none; transition: opacity 120ms ease; z-index: 60;
+        }
+        .ptos-sb.is-collapsed .ptos-sb-item:hover .ptos-sb-tooltip { opacity: 1; }
+        .ptos-sb.is-collapsed .ptos-sb-item.has-flyout-open .ptos-sb-tooltip { opacity: 0; }
+        .ptos-sb-item.has-flyout-open { opacity: 1; }
+        .ptos-sb-flyout {
+            position: fixed; left: 0; top: 0; z-index: 61; width: 200px;
+            border-radius: 10px; padding: 6px;
+        }
+        .ptos-sb-flyout-title { padding: 8px 10px 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+        .ptos-sb-flyout-item { padding: 8px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color 100ms ease; }
+
+        /* Dark rail -> dark tooltip, dark popover, dark hover (panel/hover tokens from Figma "Dropdown / Dark") */
+        .ptos-sb[data-theme="dark"] .ptos-sb-tooltip { background: #0F2444; color: #F9FAFC; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 4px 12px rgba(0,0,0,0.35); }
+        .ptos-sb[data-theme="dark"] .ptos-sb-item.has-flyout-open { background: rgba(255,255,255,0.12); }
+        .ptos-sb[data-theme="dark"] .ptos-sb-flyout { background: #0F2444; border: 1px solid #8692A1; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .ptos-sb[data-theme="dark"] .ptos-sb-flyout-title { color: rgba(249,250,252,0.55); }
+        .ptos-sb[data-theme="dark"] .ptos-sb-flyout-item { color: #F9FAFC; }
+        .ptos-sb[data-theme="dark"] .ptos-sb-flyout-item:hover { background: rgba(255,255,255,0.12); }
+
+        /* Light rail -> light tooltip, light popover, light hover */
+        .ptos-sb[data-theme="light"] .ptos-sb-tooltip { background: #fff; color: var(--navy-800); border: 1px solid var(--neutral-200); box-shadow: 0 4px 12px rgba(2,40,79,0.12); }
+        .ptos-sb[data-theme="light"] .ptos-sb-item.has-flyout-open { background: var(--neutral-100); }
+        .ptos-sb[data-theme="light"] .ptos-sb-flyout { background: #fff; border: 1px solid var(--neutral-200); box-shadow: 0 8px 24px rgba(2,40,79,0.14); }
+        .ptos-sb[data-theme="light"] .ptos-sb-flyout-title { color: var(--neutral-400); }
+        .ptos-sb[data-theme="light"] .ptos-sb-flyout-item { color: #3B4256; }
+        .ptos-sb[data-theme="light"] .ptos-sb-flyout-item:hover { background: var(--neutral-100); }
+
+        .ptos-sb-user { display: flex; align-items: center; gap: 12px; height: 80px; padding: 20px; box-sizing: border-box; border-radius: 12px; background: rgba(3,143,221,0.1); flex-shrink: 0; overflow: hidden; }
+        .ptos-sb.is-collapsed .ptos-sb-user { justify-content: center; padding: 20px 0; }
+        .ptos-sb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-sizing: border-box; border: 1px solid; display: block; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-avatar { border-color: #172144; }
+        .ptos-sb[data-theme="light"] .ptos-sb-avatar { border-color: #DFE5ED; }
+        .ptos-sb-user-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+        .ptos-sb-user-info p { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ptos-sb-user-info .name { font-size: 14px; font-weight: 600; line-height: 18px; }
+        .ptos-sb-user-info .role { font-size: 12px; font-weight: 400; line-height: 16px; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-user-info .name { color: #fff; }
+        .ptos-sb[data-theme="dark"]  .ptos-sb-user-info .role { color: #A0ABB1; }
+        .ptos-sb[data-theme="light"] .ptos-sb-user-info .name { color: #0F2444; }
+        .ptos-sb[data-theme="light"] .ptos-sb-user-info .role { color: #666666; }
+
+        /* =====================================================
+           TOP NAVIGATION - Figma "Top Navigation" set, Theme=Dark|Light.
+           Bar 64 r15 pad 12/24; buttons 36 circle; search 284x36 r10; badge r20.
+           NOTE: Figma paints every Dark icon #0F2444 on a #0F2444 bar, which is
+           invisible. Dark icons here use #DFE5ED (the Sidebar icon color).
+           ===================================================== */
+        .ptos-tn { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; padding: 12px 24px; border: 1px solid; border-radius: 15px; width: 100%; min-width: 760px; box-sizing: border-box; }
+        .ptos-tn[data-theme="dark"]  { background: #0F2444; border-color: #172144; color: #fff; }
+        .ptos-tn[data-theme="light"] { background: #F9FAFC; border-color: #E2E8F0; color: #0F2444; }
+        .ptos-tn-left, .ptos-tn-right { display: flex; align-items: center; }
+        .ptos-tn-left { gap: 8px; min-width: 0; }
+        .ptos-tn-right { gap: 12px; flex-shrink: 0; }
+        .ptos-tn-icon-btn { width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; border: 1px solid; cursor: pointer; flex-shrink: 0; padding: 0; transition: background-color 120ms ease; }
+        .ptos-tn[data-theme="dark"]  .ptos-tn-icon-btn { background: rgba(59,66,86,0.5); border-color: #172144; color: #DFE5ED; }
+        .ptos-tn[data-theme="dark"]  .ptos-tn-icon-btn:hover { background: rgba(59,66,86,0.85); }
+        .ptos-tn[data-theme="light"] .ptos-tn-icon-btn { background: rgba(226,232,240,0.5); border-color: #E2E8F0; color: #0F2444; }
+        .ptos-tn[data-theme="light"] .ptos-tn-icon-btn:hover { background: rgba(226,232,240,0.95); }
+        .ptos-tn-icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+        .ptos-tn-search { display: flex; align-items: center; gap: 8px; width: 284px; height: 36px; padding: 8px 12px; border: 1px solid; border-radius: 10px; box-sizing: border-box; flex-shrink: 1; min-width: 0; transition: border-color 120ms ease; }
+        .ptos-tn-search:focus-within { border-color: var(--accent); }
+        .ptos-tn[data-theme="dark"]  .ptos-tn-search { background: rgba(3,143,221,0.1); border-color: #172144; color: #DFE5ED; }
+        .ptos-tn[data-theme="light"] .ptos-tn-search { background: #fff; border-color: #E2E8F0; color: #0F2444; }
+        .ptos-tn-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 13px; padding: 0; }
+        .ptos-tn[data-theme="dark"]  .ptos-tn-search input { color: #fff; }
+        .ptos-tn[data-theme="light"] .ptos-tn-search input { color: #0F2444; }
+        .ptos-tn[data-theme="dark"]  .ptos-tn-search input::placeholder { color: #8291A0; }
+        .ptos-tn[data-theme="light"] .ptos-tn-search input::placeholder { color: #94A3B8; }
+        .ptos-tn-badge { display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 14px; border: 1px solid; border-radius: 20px; font-size: 12px; font-weight: 600; line-height: 16px; white-space: nowrap; }
+        .ptos-tn[data-theme="dark"]  .ptos-tn-badge { background: rgba(59,66,86,0.4); border-color: #172144; color: #fff; }
+        .ptos-tn[data-theme="dark"]  .ptos-tn-badge svg { color: #DFE5ED; }
+        .ptos-tn[data-theme="light"] .ptos-tn-badge { background: rgba(226,232,240,0.4); border-color: #E2E8F0; color: #0F2444; }
+
+        /* =====================================================
+           FOOTER - Figma "Footer" set, Theme=Dark|Light|Transparent.
+           64 tall, square, pad 0/40, text 13 +0.5 tracking centered;
+           Light and Transparent carry a 1px TOP border only.
+           ===================================================== */
+        .ptos-ft { display: flex; align-items: center; justify-content: center; height: 64px; padding: 0 40px; box-sizing: border-box; font-size: 13px; letter-spacing: 0.5px; width: 100%; text-align: center; }
+        .ptos-ft[data-theme="dark"] { background: #02284F; color: rgba(255,255,255,0.7); }
+        .ptos-ft[data-theme="light"] { background: #F9FAFC; border-top: 1px solid #DFE5ED; color: #0F2444; }
+        .ptos-ft[data-theme="transparent"] { background: transparent; border-top: 1px solid #DFE5ED; color: #0F2444; }
+        .ptos-ft-backdrop { width: 100%; background: repeating-conic-gradient(var(--neutral-100) 0% 25%, #fff 0% 50%) 0 0 / 20px 20px; }
+
+        /* =====================================================
+           FORM COMPONENTS — 1:1 from Figma "Text Input / Light",
+           "Text Input / Dark", "Date Picker", "Text Area", "Checkbox",
+           "Radio Button", "Toggle Switch", "Dropdown" component sets.
+           Real states via :focus/:checked/:disabled where native,
+           classes where Figma's State axis has no native equivalent.
+           ===================================================== */
+        .ptos-form-group { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+        .ptos-form-panel { display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 12px; width: 100%; box-sizing: border-box; }
+        .ptos-form-panel-light { background: #fff; border: 1px solid var(--neutral-200); }
+        .ptos-form-dark.ptos-form-panel { background: var(--navy-900); }
+        .ptos-form-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; align-items: start; }
+        @media (max-width: 900px) { .ptos-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 560px) { .ptos-form-grid { grid-template-columns: 1fr; } }
+        .ptos-form-label { font-size: 12px; font-weight: 600; color: var(--neutral-500); }
+        .ptos-input {
+            height: 40px; padding: 0 12px; border-radius: 8px;
+            border: 1px solid var(--neutral-300); background: #fff; color: var(--navy-800);
+            font-size: 14px; width: 100%; transition: border-color 120ms ease, background-color 120ms ease;
+        }
+        .ptos-input:focus { outline: none; border: 1.5px solid var(--accent); }
+        .ptos-input.is-error { border: 1.5px solid #CC443B; color: #CC443B; }
+        .ptos-input:disabled { background: var(--neutral-100); border-color: var(--neutral-200); color: var(--neutral-300); cursor: not-allowed; }
+        .ptos-input::placeholder { color: var(--neutral-300); }
+        .ptos-form-error-text { font-size: 12px; line-height: 18px; color: #CC443B; }
+        .ptos-form-group.has-error .ptos-form-error-text { margin-top: -4px; text-wrap: pretty; } /* Figma: 4px between field and helper, label gap stays 8 */
+        .ptos-input.is-error { padding-right: 38px; }
+        .ptos-input-wrap.has-leading-icon .ptos-input.is-error { padding-left: 38px; }
+        .ptos-input-wrap-icon.alert { right: 12px; width: 16px; height: 16px; color: #CC443B; pointer-events: none; }
+        .ptos-form-dark .ptos-input.is-error { background: #0F2444; border-color: #CC443B; color: #CC443B; }
+        .ptos-form-dark .ptos-input.is-error::placeholder { color: #CC443B; }
+        .ptos-form-dark .ptos-input { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: #fff; }
+        .ptos-form-dark .ptos-input::placeholder { color: rgba(255,255,255,0.35); }
+        .ptos-form-dark .ptos-input:disabled { background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.25); }
+
+        .ptos-input-wrap { position: relative; width: 100%; }
+        .ptos-input-wrap .ptos-input { width: 100%; }
+        .ptos-input-wrap.has-leading-icon .ptos-input { padding-left: 38px; }
+        .ptos-input-wrap.has-trailing-icon .ptos-input { padding-right: 38px; }
+        .ptos-input-wrap-icon { position: absolute; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--neutral-400); pointer-events: none; }
+        .ptos-input-wrap-icon.leading { left: 12px; }
+        .ptos-input-wrap-icon.trailing { right: 12px; pointer-events: auto; cursor: pointer; background: none; border: none; padding: 0; }
+        .ptos-form-dark .ptos-input-wrap-icon { color: rgba(255,255,255,0.4); }
+
+        .ptos-datepicker { position: relative; width: 100%; }
+        .ptos-datepicker-panel {
+            position: absolute; top: calc(100% + 4px); left: 0; z-index: 10; width: 280px;
+            background: #fff; border: 1px solid var(--neutral-200); border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(2,40,79,0.12); padding: 16px;
+        }
+        .ptos-form-dark .ptos-datepicker-panel { background: var(--navy-800); border-color: rgba(255,255,255,0.12); }
+        .ptos-dp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .ptos-dp-header span { font-size: 13px; font-weight: 600; color: var(--navy-900); }
+        .ptos-form-dark .ptos-dp-header span { color: #fff; }
+        .ptos-dp-nav-btn { width: 28px; height: 28px; border-radius: 8px; border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--navy-800); transition: background-color 120ms ease; }
+        .ptos-dp-nav-btn:hover { background: var(--neutral-100); }
+        .ptos-form-dark .ptos-dp-nav-btn { color: #fff; }
+        .ptos-form-dark .ptos-dp-nav-btn:hover { background: rgba(255,255,255,0.08); }
+        .ptos-dp-weekdays, .ptos-dp-grid-row { display: grid; grid-template-columns: repeat(7, 1fr); }
+        .ptos-dp-weekdays span { text-align: center; font-size: 10px; color: var(--neutral-400); padding: 4px 0; }
+        .ptos-dp-day { width: 100%; aspect-ratio: 1; border: none; background: none; border-radius: 8px; font-size: 12px; color: var(--navy-800); cursor: pointer; transition: background-color 120ms ease; }
+        .ptos-dp-day:hover { background: var(--neutral-100); }
+        .ptos-dp-day.is-outside { color: var(--neutral-300); }
+        .ptos-dp-day.is-selected { background: var(--accent); color: #fff; font-weight: 600; }
+        .ptos-form-dark .ptos-dp-day { color: rgba(255,255,255,0.8); }
+        .ptos-form-dark .ptos-dp-day.is-outside { color: rgba(255,255,255,0.25); }
+        .ptos-form-dark .ptos-dp-day:hover { background: rgba(255,255,255,0.08); }
+
+        .ptos-textarea { min-height: 88px; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--neutral-300); background: #fff; color: var(--navy-800); font-size: 14px; width: 100%; resize: vertical; font-family: 'Inter', sans-serif; }
+        .ptos-textarea:focus { outline: none; border: 1.5px solid var(--accent); }
+        .ptos-form-dark .ptos-textarea { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: #fff; }
+
+        .ptos-checkbox, .ptos-radio {
+            width: 18px; height: 18px; border: 1px solid var(--neutral-300); background: #fff;
+            appearance: none; cursor: pointer; display: inline-grid; place-content: center; flex-shrink: 0;
+            transition: background-color 120ms ease, border-color 120ms ease;
+        }
+        .ptos-checkbox { border-radius: 5px; }
+        .ptos-radio { border-radius: 50%; }
+        .ptos-checkbox:checked { background: var(--accent); border-color: var(--accent); }
+        .ptos-checkbox:checked::after { content: ""; width: 8px; height: 6px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translate(1px, -1px); }
+        .ptos-radio:checked { border: 5px solid var(--accent); }
+        .ptos-form-dark .ptos-checkbox, .ptos-form-dark .ptos-radio { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
+        .ptos-form-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+
+        .ptos-toggle {
+            width: 40px; height: 22px; border-radius: 11px; position: relative; cursor: pointer;
+            appearance: none; flex-shrink: 0;
+            transition: background-color 150ms ease, box-shadow 150ms ease;
+            background: rgba(255,255,255,0.65); box-shadow: inset 0 0 0 1px #8692A1;
+        }
+        .ptos-toggle::after {
+            content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px;
+            border-radius: 50%; background: #666666; transition: transform 150ms ease;
+        }
+        .ptos-toggle:checked { background: var(--navy-800); box-shadow: none; }
+        .ptos-toggle:checked::after { background: #fff; transform: translateX(19px); }
+        .ptos-form-dark .ptos-toggle { background: var(--navy-800); box-shadow: none; }
+        .ptos-form-dark .ptos-toggle::after { background: #86929F; }
+        .ptos-form-dark .ptos-toggle:checked { background: var(--accent); }
+        .ptos-form-dark .ptos-toggle:checked::after { background: #fff; }
+
+        .ptos-dropdown { position: relative; width: 100%; }
+        .ptos-dropdown-trigger { height: 40px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--neutral-300); background: #fff; color: var(--navy-800); font-size: 14px; width: 100%; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: border-color 120ms ease; }
+        .ptos-dropdown-trigger[aria-expanded="true"] { border: 1.5px solid var(--accent); }
+        .ptos-dropdown-trigger .chev { transition: transform 150ms ease; width: 16px; height: 16px; flex-shrink: 0; }
+        .ptos-dropdown-trigger[aria-expanded="true"] .chev { transform: rotate(180deg); }
+        .ptos-form-dark .ptos-dropdown-trigger { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: #fff; }
+        .ptos-dropdown-menu { position: absolute; left: 0; right: 0; margin-top: 4px; border: 1px solid var(--neutral-200); border-radius: 8px; background: #fff; box-shadow: 0 8px 24px rgba(2,40,79,0.12); overflow: hidden; z-index: 10; }
+        .ptos-dropdown-item { padding: 10px 12px; font-size: 13px; color: var(--navy-800); cursor: pointer; transition: background-color 100ms ease; }
+        .ptos-dropdown-item:hover { background: var(--neutral-50); }
+        .ptos-form-dark .ptos-dropdown-trigger[aria-expanded="true"] { border-color: #79D4FE; }
+        .ptos-form-dark .ptos-dropdown-menu { background: var(--navy-800); border-color: #8692A1; }
+        .ptos-form-dark .ptos-dropdown-item { color: #F9FAFC; }
+        .ptos-form-dark .ptos-dropdown-item:hover { background: rgba(255,255,255,0.12); }
+
+        /* =====================================================
+           BUTTON SYSTEM — 1:1 from Figma "PTOS Button" component
+           set: Style(4) x State(4) x Size(3) x Theme(2) x Icon(4)
+           = 240 variants. Real states via native :hover/:active/
+           :disabled rather than screenshotting each State option.
+           ===================================================== */
+        .ptos-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            border-radius: 20px; font-weight: 600; border: none; cursor: pointer;
+            transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+        }
+        .ptos-btn-medium { height: 40px; padding: 0 20px; font-size: 13px; }
+        .ptos-btn-small { height: 32px; padding: 0 14px; font-size: 12px; }
+        .ptos-btn-large { height: 48px; padding: 0 26px; font-size: 14px; }
+        .ptos-btn-primary { background: var(--navy-800); color: #fff; }
+        .ptos-btn-primary:hover { background: var(--accent); }
+        .ptos-btn-primary:active { background: var(--navy-900); }
+        .ptos-btn-primary:disabled { background: var(--neutral-100); color: var(--neutral-300); cursor: not-allowed; }
+        .ptos-btn-secondary { background: #fff; color: var(--navy-800); border: 1px solid var(--neutral-300); }
+        .ptos-btn-secondary:hover { background: var(--neutral-50); border-color: var(--neutral-400); }
+        .ptos-btn-secondary:active { background: var(--neutral-100); }
+        .ptos-btn-secondary:disabled { background: var(--neutral-100); color: var(--neutral-300); border-color: var(--neutral-200); cursor: not-allowed; }
+        .ptos-btn-ghost { background: transparent; color: var(--navy-800); }
+        .ptos-btn-ghost:hover { background: var(--neutral-100); }
+        .ptos-btn-ghost:active { background: var(--neutral-200); }
+        .ptos-btn-ghost:disabled { color: var(--neutral-300); cursor: not-allowed; }
+        .ptos-btn-danger { background: #CC443B; color: #fff; }
+        .ptos-btn-danger:hover { background: #b23a32; }
+        .ptos-btn-danger:active { background: #962f28; }
+        .ptos-btn-danger:disabled { background: var(--neutral-100); color: var(--neutral-300); cursor: not-allowed; }
+        .ptos-btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
+        /* =====================================================
+           TAB NAVIGATION — 1:1 from Figma "PTOS Tab Bar"
+           (underline) and "PTOS Pill Tab" (filled/outlined/subtle)
+           component sets. Real switching, one active at a time.
+           ===================================================== */
+
+        /* =====================================================
+           FOUNDATIONS - read from Figma "Design System Reference",
+           frame "Color Palette - Typography - Spacing - Elevation".
+           Swatch 240x56 r8; neutral/status chips 32 r4; spacing bars
+           16 tall, widths 16/32/64/96/128/192 (not linear); radius tiles 40; elevation
+           tiles 100x60 r8; stroke boxes 32 r4 / 1.5px.
+           ===================================================== */
+        .ptos-fd-block { background: #fff; border: 0; border-radius: 12px; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px; }
+        .ptos-fd-h { font-size: 18px; font-weight: 600; line-height: 23px; color: #0F2444; margin: 0; }
+        .ptos-fd-h2 { font-size: 14px; font-weight: 600; line-height: 18px; color: #0F2444; margin: 0 0 12px; }
+        .ptos-fd-sub { font-size: 13px; line-height: 17px; color: #666; margin: 4px 0 0; }
+        .ptos-fd-cap { font-size: 11px; font-weight: 500; color: #999; margin: 0 0 8px; }
+        .ptos-fd-swatches { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+        .ptos-fd-swatch { display: flex; flex-direction: column; gap: 6px; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
+        .ptos-fd-swatch .chip { display: block; height: 56px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(15,36,68,0.06); transition: transform 120ms ease; }
+        .ptos-fd-swatch:hover .chip { transform: translateY(-1px); }
+        .ptos-fd-swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+        .ptos-fd-swatch .nm { font-size: 11px; font-weight: 500; color: #0F2444; line-height: 14px; }
+        .ptos-fd-swatch .hx { font-size: 10px; color: #999; line-height: 13px; font-family: 'IBM Plex Mono', monospace; }
+        .ptos-fd-swatch.is-copied .hx { color: var(--accent); }
+        .ptos-fd-row2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; }
+        .ptos-fd-chips { display: flex; gap: 8px; }
+        .ptos-fd-chips .ptos-fd-swatch { flex: 1; min-width: 0; gap: 4px; }
+        .ptos-fd-chips .chip { height: 32px; border-radius: 4px; }
+        .ptos-fd-chips .chip.edge { box-shadow: inset 0 0 0 1px #DFE5ED; }
+        .ptos-fd-chips .nm { font-size: 10px; font-weight: 400; color: #666; }
+        .ptos-fd-weights { display: flex; gap: 28px; align-items: flex-end; flex-wrap: wrap; }
+        .ptos-fd-weights div { display: flex; flex-direction: column; gap: 2px; }
+        .ptos-fd-weights b { font-size: 36px; line-height: 40px; color: #0F2444; }
+        .ptos-fd-weights span { font-size: 11px; color: #999; }
+        .ptos-fd-scale { display: flex; flex-direction: column; }
+        .ptos-fd-type { display: grid; grid-template-columns: 110px 190px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #F1F3F6; }
+        .ptos-fd-type:last-child { border-bottom: 0; }
+        .ptos-fd-type .k, .ptos-fd-type .m { font-size: 12px; color: #999; }
+        .ptos-fd-type .s { color: #0F2444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ptos-fd-space { display: flex; flex-direction: column; gap: 10px; }
+        .ptos-fd-space .r { display: grid; grid-template-columns: 96px 40px minmax(0, 1fr); align-items: center; gap: 8px; font-size: 11px; }
+        .ptos-fd-space .r .n { color: #666; font-family: 'IBM Plex Mono', monospace; }
+        .ptos-fd-space .r .v { color: #999; }
+        .ptos-fd-space .bar { max-width: 100%; height: 16px; border-radius: 2px; background: rgba(3,143,221,0.2); border: 1px solid rgba(3,143,221,0.5); box-sizing: border-box; }
+        .ptos-fd-radii { display: flex; gap: 16px; flex-wrap: wrap; }
+        .ptos-fd-radii div { display: flex; flex-direction: column; gap: 6px; align-items: center; font-size: 10px; color: #999; }
+        .ptos-fd-radii i { display: block; width: 40px; height: 40px; background: #DFE5ED; }
+        .ptos-fd-elev { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; padding: 16px 16px 12px; border-radius: 8px; background: #F1F3F6; } /* backdrop is doc-only: Figma draws white tiles on white, so levels 0-3 are invisible */
+        .ptos-fd-elev div { display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: #999; }
+        .ptos-fd-elev i { display: block; height: 60px; border-radius: 8px; background: #fff; margin-bottom: 8px; }
+        .ptos-fd-elev b { font-weight: 500; color: #666; }
+        .ptos-fd-strokes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+        .ptos-fd-strokes div { display: flex; flex-direction: column; gap: 4px; font-size: 10px; color: #666; }
+        .ptos-fd-strokes i { display: block; height: 32px; border-radius: 4px; background: #fff; border: 1.5px solid; box-sizing: border-box; }
+        .ptos-fd-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px); background: #0F2444; color: #fff; font-size: 12px; padding: 8px 14px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity 150ms ease, transform 150ms ease; z-index: 80; }
+        .ptos-fd-toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }
+        @media (max-width: 900px) { .ptos-fd-swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); } .ptos-fd-row2 { grid-template-columns: 1fr; } .ptos-fd-elev { grid-template-columns: repeat(3, minmax(0, 1fr)); } .ptos-fd-type { grid-template-columns: 1fr; gap: 2px; } }
+        @media (prefers-reduced-motion: reduce) { .ptos-fd-swatch .chip, .ptos-fd-toast { transition: none; } }
+
+        /* ---- Tab Bar (Figma "PTOS Tab Bar": Theme x Tabs 2/3/4/6) ----
+           Track: 1px bottom line, gap 8 (Light) / 4 + pad 0/16 (Dark).
+           Tab: 14px, pad 14/20 (Light) or 14/24/12/24 (Dark), 2px bottom line when active. */
+        .ptos-tabbar { display: flex; align-items: stretch; box-sizing: border-box; border-bottom: 1px solid; overflow-x: auto; scrollbar-width: none; }
+        .ptos-tabbar::-webkit-scrollbar { display: none; }
+        .ptos-tabbar[data-theme="light"] { gap: 8px; border-color: #DFE5ED; }
+        .ptos-tabbar[data-theme="dark"]  { gap: 4px; padding: 0 16px; background: #0F2444; border-color: #172144; }
+        .ptos-tab { display: block; position: relative; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; font: inherit; font-size: 14px; line-height: 18px; font-weight: 500; white-space: nowrap; transition: color 120ms ease, border-color 120ms ease; }
+        .ptos-tabbar[data-theme="light"] .ptos-tab { box-sizing: border-box; height: 46px; padding: 14px 20px 0; color: #666666; }
+        .ptos-tabbar[data-theme="dark"]  .ptos-tab { box-sizing: border-box; height: 47px; padding: 14px 24px 0; color: #A0ABB1; }
+        .ptos-tabbar[data-theme="light"] .ptos-tab:hover:not(.is-active) { color: #0F2444; }
+        .ptos-tabbar[data-theme="dark"]  .ptos-tab:hover:not(.is-active) { color: #fff; }
+        .ptos-tab.is-active { color: #038FDE !important; font-weight: 600; border-bottom-color: #038FDE; }
+        .ptos-tab:focus-visible { outline: 2px solid #038FDE; outline-offset: -2px; border-radius: 4px; }
+        .ptos-tab:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ---- Pill Tab (Figma "PTOS Pill Tab": Theme x Style x State x Icon) ----
+           pill r999, pad 8/16, 13px, icon 16 gap 6. Active = SemiBold. */
+        .ptos-pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1px solid transparent; border-radius: 999px; font: inherit; font-size: 13px; line-height: 16px; font-weight: 500; white-space: nowrap; cursor: pointer; background: transparent; box-sizing: border-box; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease; }
+        .ptos-pill-matrix .ptos-pill { justify-self: start; }
+        .ptos-pill svg { width: 16px; height: 16px; flex-shrink: 0; }
+        .ptos-pill:focus-visible { outline: 2px solid #038FDD; outline-offset: 2px; }
+        .ptos-pill:disabled { opacity: 0.4; cursor: not-allowed; }
+        .ptos-pill.is-active { font-weight: 600; }
+
+        .ptos-pill[data-theme="light"][data-style="filled"]   { color: #3B4256; }
+        .ptos-pill[data-theme="light"][data-style="filled"]:hover:not(.is-active) { background: #EFF2F5; color: #0F2444; }
+        .ptos-pill[data-theme="light"][data-style="filled"].is-active { background: #038FDD; color: #fff; }
+        .ptos-pill[data-theme="light"][data-style="outlined"] { color: #3B4256; border-color: #DFE7ED; }
+        .ptos-pill[data-theme="light"][data-style="outlined"]:hover:not(.is-active) { background: #F5F7F9; border-color: #038FDD; color: #0F2444; }
+        .ptos-pill[data-theme="light"][data-style="outlined"].is-active { background: #EAF6FF; border-color: #038FDD; border-width: 1.5px; padding: 7.5px 15.5px; color: #038FDD; }
+        .ptos-pill[data-theme="light"][data-style="subtle"]   { background: #F5F7F9; color: #3B4256; }
+        .ptos-pill[data-theme="light"][data-style="subtle"]:hover:not(.is-active) { background: #EFF2F5; color: #0F2444; }
+        .ptos-pill[data-theme="light"][data-style="subtle"].is-active { background: #fff; color: #038FDD; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+        .ptos-pill[data-theme="dark"][data-style="filled"]    { color: #A0ABB5; }
+        .ptos-pill[data-theme="dark"][data-style="filled"]:hover:not(.is-active) { background: #192D4D; color: #CCD9E5; }
+        .ptos-pill[data-theme="dark"][data-style="filled"].is-active { background: #038FDD; color: #fff; }
+        .ptos-pill[data-theme="dark"][data-style="outlined"]  { color: #A0ABB5; border-color: #3B4256; }
+        .ptos-pill[data-theme="dark"][data-style="outlined"]:hover:not(.is-active) { background: #192D4D; border-color: #038FDD; color: #79D4FE; }
+        .ptos-pill[data-theme="dark"][data-style="outlined"].is-active { background: #038FDD; border-color: #038FDD; border-width: 1.5px; padding: 7.5px 15.5px; color: #fff; }
+        .ptos-pill[data-theme="dark"][data-style="subtle"]    { background: #172144; color: #A0ABB5; }
+        .ptos-pill[data-theme="dark"][data-style="subtle"]:hover:not(.is-active) { background: #192D4D; color: #CCD9E5; }
+        .ptos-pill[data-theme="dark"][data-style="subtle"].is-active { background: #02284F; color: #79D4FE; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+
+        /* demo scaffolding for the section (not part of the component) */
+        .ptos-tabs-panel { border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+        .ptos-tabs-panel[data-theme="light"] { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--neutral-200); }
+        .ptos-tabs-panel[data-theme="dark"]  { background: #0F2444; border: 1px solid #172144; box-shadow: 0 4px 12px rgba(0,0,0,0.24); }
+        .ptos-tabs-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+        .ptos-tabs-panel-title { font-size: 14px; font-weight: 600; }
+        .ptos-tabs-panel-meta { font-size: 12px; color: #999; white-space: nowrap; }
+        .ptos-tabs-panel[data-theme="light"] .ptos-tabs-panel-title { color: #0F2444; }
+        .ptos-tabs-panel[data-theme="dark"]  .ptos-tabs-panel-title { color: #fff; }
+        .ptos-tabs-group-label { font-size: 12px; font-weight: 600; color: var(--neutral-500); margin: 0 0 8px; }
+        .ptos-pill-matrices { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(386px, 100%), 1fr)); gap: 16px; align-items: stretch; } /* 386 = natural matrix width; stacks to 1 column when two no longer fit */
+        .ptos-pill-matrix .mx-title { font-size: 12px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+        .ptos-pill-matrix[data-theme="light"] .mx-title { color: #0F2444; }
+        .ptos-pill-matrix[data-theme="dark"]  .mx-title { color: #fff; }
+        .ptos-pill-matrix { display: grid; grid-template-columns: 96px repeat(2, max-content); column-gap: 16px; row-gap: 14px; align-items: center; padding: 20px 24px; border-radius: 12px; overflow-x: auto; }
+        .ptos-pill-matrix[data-theme="light"] { background: #fff; border: 1px solid var(--neutral-200); }
+        .ptos-pill-matrix[data-theme="dark"]  { background: #0F2444; border: 1px solid #172144; }
+        .ptos-pill-matrix .col-h, .ptos-pill-matrix .row-h { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+        .ptos-pill-matrix[data-theme="light"] .col-h, .ptos-pill-matrix[data-theme="light"] .row-h { color: #8692A1; }
+        .ptos-pill-matrix[data-theme="dark"]  .col-h, .ptos-pill-matrix[data-theme="dark"]  .row-h { color: #A0ABB1; }
+
+        /* =====================================================
+           TABLE COMPONENTS — 1:1 from Figma "Table Cell"
+           component set: Type(Header/Body) x Content(Plain,
+           Stacked, Avatar, Badge, Action, Checkbox) x Theme.
+           ===================================================== */
+        .ptos-table-stack { display: flex; flex-direction: column; gap: 32px; }
+        .ptos-table-wrap {
+            border-radius: 12px; width: 100%; padding: 20px;
+            background: #F9FAFC;
+        }
+        .ptos-table-wrap.is-dark { background: #0F2444; }
+        .ptos-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .ptos-table th { text-align: left; font-weight: 500; color: var(--navy-900); padding: 14px 16px; background: #F9FAFC; font-size: 13px; }
+        .ptos-table td { padding: 16px; border-bottom: 1px solid var(--neutral-200); color: var(--navy-800); background: #fff; font-size: 13px; }
+        .ptos-table-wrap.is-dark th { background: #02284F; color: #fff; }
+        .ptos-table-wrap.is-dark td { background: #0F2444; color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .ptos-table tbody tr { transition: background-color 100ms ease; cursor: default; }
+        .ptos-table tbody tr:hover td { background: var(--neutral-50); }
+        .ptos-table-wrap.is-dark tbody tr:hover td { background: #16305a; }
+        .ptos-table-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; margin-right: 8px; vertical-align: middle; }
+        .ptos-table-badge { display: inline-flex; align-items: center; border-radius: 12px; padding: 4px 12px; font-size: 12px; font-weight: 500; }
+        .ptos-table-badge-success { background: #DCFCE7; color: #16A34A; }
+        .ptos-table-badge-error { background: #FEE2E2; color: #DC2626; }
+        .ptos-table-badge-warning { background: #FEF3C7; color: #D97706; }
+        .ptos-table-badge-neutral { background: var(--neutral-100); color: var(--neutral-500); }
+        .ptos-table-action-btn { background: none; border: none; cursor: pointer; color: var(--neutral-400); padding: 4px; border-radius: 6px; transition: background-color 120ms ease, color 120ms ease; position: relative; }
+        .ptos-table-action-btn:hover { background: var(--neutral-100); color: var(--navy-800); }
+        .ptos-table-wrap.is-dark .ptos-table-action-btn { color: rgba(255,255,255,0.5); }
+        .ptos-table-wrap.is-dark .ptos-table-action-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        /* ---- Action Menu (kebab popover), 1:1 from Figma Overlay-Components ---- */
+        .ptos-action-menu-wrap { position: relative; display: inline-block; }
+        .ptos-action-menu {
+            position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; width: 184px;
+            background: #fff; border-radius: 10px; box-shadow: 0 8px 24px rgba(2,40,79,0.18);
+            padding: 6px; text-align: left;
+        }
+        .ptos-action-menu-item { display: block; width: 100%; text-align: left; padding: 8px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #3B4256; background: none; border: none; cursor: pointer; transition: background-color 100ms ease; }
+        .ptos-action-menu-item:hover { background: var(--neutral-100); }
+        .ptos-action-menu-divider { height: 1px; background: var(--neutral-200); margin: 4px 0; }
+        .ptos-action-menu-item-danger { color: #CC443B; }
+        .ptos-action-menu-item-danger:hover { background: #FEE2E2; }
+        /* Figma's Action Menu component has no Dark variant axis; this dark styling is
+           derived consistently from the existing navy/white tokens used elsewhere in this doc. */
+        .ptos-table-wrap.is-dark .ptos-action-menu { background: var(--navy-800); box-shadow: 0 8px 24px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); }
+        .ptos-table-wrap.is-dark .ptos-action-menu-item { color: rgba(255,255,255,0.85); }
+        .ptos-table-wrap.is-dark .ptos-action-menu-item:hover { background: rgba(255,255,255,0.08); }
+        .ptos-table-wrap.is-dark .ptos-action-menu-divider { background: rgba(255,255,255,0.12); }
+        .ptos-table-wrap.is-dark .ptos-action-menu-item-danger { color: #FF8178; }
+        .ptos-table-wrap.is-dark .ptos-action-menu-item-danger:hover { background: rgba(204,68,59,0.18); }
+
+        /* ---- Pagination & Item Display, 1:1 from Figma components ---- */
+        .ptos-table-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; flex-wrap: wrap; gap: 12px; }
+        .ptos-item-display { font-size: 13px; color: var(--neutral-500); }
+        .ptos-table-wrap.is-dark .ptos-item-display { color: rgba(255,255,255,0.5); }
+        .ptos-pagination { display: flex; gap: 4px; }
+        .ptos-pagination button { width: 32px; height: 32px; border-radius: 6px; border: none; background: none; font-size: 13px; color: var(--neutral-500); cursor: pointer; transition: background-color 120ms ease, color 120ms ease; }
+        .ptos-pagination button:hover:not(.is-active) { background: var(--neutral-100); }
+        .ptos-pagination button.is-active { background: var(--accent); color: #fff; font-weight: 600; }
+        .ptos-table-wrap.is-dark .ptos-pagination button { background: #0D1A33; color: rgba(255,255,255,0.75); }
+        .ptos-table-wrap.is-dark .ptos-pagination button:hover:not(.is-active) { background: rgba(255,255,255,0.1); }
+        .ptos-table-wrap.is-dark .ptos-pagination button.is-active { background: var(--accent); color: #fff; }
+        .ptos-pagination-dark button { background: #0D1A33; color: rgba(255,255,255,0.75); }
+        .ptos-pagination-dark button:hover:not(.is-active) { background: rgba(255,255,255,0.1); }
+        .ptos-pagination-dark button.is-active { background: var(--accent); color: #fff; }
+
+        /* =====================================================
+           CARD COMPONENTS — 1:1 from Figma "ListItemCard":
+           Theme(Dark/Light) x Type(Default/Hover/Selected/Disabled)
+           x Size(Compact 12px/Default 16px/Large 24px padding).
+           ===================================================== */
+        .ptos-list-card {
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            border-radius: 16px; border: 1px solid var(--neutral-200); background: #fff;
+            cursor: pointer; transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+        }
+        .ptos-list-card.ptos-card-compact { padding: 12px 16px; }
+        .ptos-list-card.ptos-card-default { padding: 16px 20px; }
+        .ptos-list-card.ptos-card-large { padding: 24px 28px; }
+        .ptos-list-card:hover { background: var(--neutral-50); border-color: var(--neutral-300); }
+        .ptos-list-card.is-selected { background: rgba(3,143,221,0.06); border: 1.5px solid var(--accent); }
+        .ptos-list-card.is-disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+        .ptos-list-card-content { display: flex; align-items: center; gap: 14px; min-width: 0; }
+        .ptos-list-card-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(3,143,221,0.1); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .ptos-list-card-text { min-width: 0; }
+        .ptos-list-card-title { font-size: 14px; font-weight: 600; color: var(--navy-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ptos-list-card-desc { font-size: 12px; color: var(--neutral-500); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+        .ptos-list-card-arrow { color: var(--neutral-300); flex-shrink: 0; }
+        .ptos-list-card.is-dark { background: var(--navy-900); border-color: rgba(255,255,255,0.1); }
+        .ptos-list-card.is-dark:hover { background: #1c2d47; border-color: rgba(255,255,255,0.2); }
+        .ptos-list-card.is-dark .ptos-list-card-title { color: #fff; }
+        .ptos-list-card.is-dark .ptos-list-card-desc { color: rgba(255,255,255,0.5); }
+        .ptos-list-card.is-dark .ptos-list-card-icon { background: rgba(255,255,255,0.08); color: #79D4FE; }
+
+        /* =====================================================
+           ICON SET — 115 Lucide icons across 6 categories, 1:1
+           from Figma's Icon / <Category> component instances.
+           ===================================================== */
+        .ptos-icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 4px; }
+        .ptos-icon-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px 4px; border-radius: 10px; transition: background-color 120ms ease; }
+        .ptos-icon-cell:hover { background: var(--neutral-50); }
+
+        /* ---- Icon Set accordion. Desktop/tablet: every category stays open and the header is a plain label.
+           <= 640px: categories collapse (first one open) so 118 icons do not become a 4000px scroll. ---- */
+        .ptos-acc-head { display: flex; align-items: center; gap: 8px; width: 100%; padding: 0; margin: 0 0 12px; background: none; border: 0; text-align: left; font: inherit; color: var(--neutral-500); cursor: default; pointer-events: none; }
+        .ptos-acc-title { font-size: 12px; font-weight: 600; line-height: 16px; }
+        .ptos-acc-count { font-size: 10px; font-weight: 400; color: var(--neutral-300); }
+        .ptos-acc-count::before { content: "("; } .ptos-acc-count::after { content: ")"; }
+        .ptos-acc-chev, .ptos-acc-bar { display: none; }
+        .ptos-acc-body { display: grid; grid-template-rows: 1fr; }
+        .ptos-acc-inner { min-height: 0; overflow: hidden; }
+        @keyframes ptIconIn { from { opacity: 0; transform: translateY(10px) scale(.9); } to { opacity: 1; transform: none; } }
+        @keyframes ptSheen { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
+
+        .ptos-acc-num { display: none; }
+        /* <= 640px: same grammar as the homepage index rows (hairline rule, blue 01 index, medium title,
+           faded count, "+" that turns into "x" when open, title nudges 4px on press/open, ink pill button). */
+        @media (max-width: 640px) {
+            #ui-10 .ptos-pf-pad { background: #FAF9F4; padding-block: 20px; }
+            #ui-10 .ptos-pf-pad > div { gap: 0 !important; }
+            .ptos-acc { border-top: 1px solid rgba(0,0,0,.1); }
+            .ptos-acc:last-child { border-bottom: 1px solid rgba(0,0,0,.1); }
+            .ptos-acc-head { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0; padding: 16px 0; min-height: 56px; cursor: pointer; pointer-events: auto; color: #20211F; -webkit-tap-highlight-color: transparent; }
+            .ptos-acc-title { transition: transform 160ms cubic-bezier(.16,1,.3,1); }
+            .ptos-acc-head:active .ptos-acc-title, .ptos-acc.is-open .ptos-acc-title { transform: translateX(4px); }
+            .ptos-acc-head:focus-visible { outline: 2px solid #244BFF; outline-offset: 2px; border-radius: 4px; }
+            .ptos-acc-num { display: inline-block; width: 28px; flex-shrink: 0; font-size: 12px; line-height: 16px; color: #244BFF; font-variant-numeric: tabular-nums; }
+            .ptos-acc-title { flex: 1; min-width: 0; padding-right: 8px; overflow-wrap: anywhere; font-size: 16px; font-weight: 500; line-height: 22px; color: #20211F; }
+            .ptos-acc-count { font-size: 12px; font-weight: 400; line-height: 16px; color: #20211F; opacity: .6; font-variant-numeric: tabular-nums; }
+            .ptos-acc-count::before, .ptos-acc-count::after { content: none; }
+            .ptos-acc-chev { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: #20211F; opacity: .5; transition: transform 200ms cubic-bezier(.16,1,.3,1); }
+            .ptos-acc.is-open .ptos-acc-chev { transform: rotate(45deg) scale(1.3); }
+            .ptos-acc-body { transition: grid-template-rows 360ms cubic-bezier(.16,1,.3,1), visibility 0s; }
+            .ptos-acc:not(.is-open) .ptos-acc-body { grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 280ms cubic-bezier(.4,0,.2,1), visibility 0s 280ms; }
+            .ptos-acc .ptos-icon-grid { padding: 0 0 16px; justify-items: stretch; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+            .ptos-acc .ptos-icon-cell span { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; line-height: 12px; color: #77796F; font-size: 10px; }
+            .ptos-acc .ptos-icon-cell { padding: 12px 2px; justify-content: flex-start; }
+            .ptos-acc.is-opening .ptos-icon-cell { animation: ptIconIn 400ms cubic-bezier(.34,1.56,.64,1) both; animation-delay: calc(min(var(--i), 18) * 16ms + 40ms); }
+
+            .ptos-acc-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 0 14px; }
+            .ptos-acc-sum { font-size: .6rem; line-height: 1; text-transform: uppercase; letter-spacing: .15em; color: #20211F; opacity: .6; font-variant-numeric: tabular-nums; }
+            .ptos-acc-all { font: inherit; font-size: 12px; font-weight: 500; line-height: 16px; color: #FAF9F4; background: #20211F; border: 0; border-radius: 999px; padding: 8px 16px; min-height: 36px; cursor: pointer; transition: background-color 200ms cubic-bezier(.16,1,.3,1), transform 150ms cubic-bezier(.16,1,.3,1); -webkit-tap-highlight-color: transparent; }
+            .ptos-acc-all:active { transform: scale(.95); }
+            @media (hover: hover) { .ptos-acc-all:hover { background: #309BEE; } }
+            .ptos-acc-all:focus-visible { outline: 2px solid #244BFF; outline-offset: 2px; }
+        }
+        /* tap feedback on every icon (all widths) */
+        .ptos-icon-cell { transition: background-color .15s ease, transform .2s cubic-bezier(.34,1.56,.64,1); -webkit-tap-highlight-color: transparent; }
+        .ptos-icon-cell svg { transition: transform .35s cubic-bezier(.34,1.56,.64,1), color .15s ease; }
+        .ptos-icon-cell:active { transform: scale(.93); background: rgba(3,143,221,.08); }
+        .ptos-icon-cell:active svg, .ptos-icon-cell:hover svg { color: #038FDD !important; }
+        .ptos-icon-cell:hover svg { transform: translateY(-2px) scale(1.12); }
+        .ptos-icon-cell:active svg { transform: scale(1.22) rotate(-8deg); }
+        @media (prefers-reduced-motion: reduce) {
+            .ptos-acc, .ptos-acc::before, .ptos-acc-head, .ptos-acc-chev, .ptos-acc-count, .ptos-acc-body, .ptos-acc-all, .ptos-icon-cell, .ptos-icon-cell svg { transition: none !important; }
+            .ptos-acc.is-opening .ptos-icon-cell { animation: none !important; }
+        }
+        .ptos-icon-cell span { font-size: 10px; color: var(--neutral-400); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+
+
+        /* =====================================================
+           PORTFOLIO PAGE CHROME - page-level style only.
+           Tokens from the portfolio DS (tailwind.config.js + Figma
+           "Portfolio / Primitives|Semantic"): paper #F2F0E8 / window
+           #FAF9F4 / titlebar #E8E7DF, ink #20211F / #77796F, hairline
+           #CDCEC4, action #244BFF, window radius 12, window shadow
+           0 6px 18px rgba(32,33,31,.06). PTOS-M component content inside
+           the windows is untouched.
+           ===================================================== */
+        .ptos-pf-top { margin-bottom: 56px; }
+        .ptos-pf-top-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .ptos-pf-back { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #20211F; opacity: .7; text-decoration: none; transition: opacity 150ms ease; }
+        .ptos-pf-back:hover { opacity: 1; }
+        html.is-embedded .ptos-pf-back { visibility: hidden; } /* inside the index iframe window: its own close button is the way out */
+        .ptos-pf-back svg { width: 16px; height: 16px; }
+        .ptos-pf-running { font-size: 0.6rem; text-transform: uppercase; letter-spacing: .15em; color: #20211F; opacity: .5; margin: 0; }
+        .ptos-pf-rule { border-top: 1px solid rgba(0,0,0,.1); margin: 12px 0 40px; }
+        .ptos-pf-eyebrow { font-size: 0.6rem; text-transform: uppercase; letter-spacing: .1em; color: #244BFF; margin: 0 0 12px; }
+        .ptos-pf-h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 500; line-height: 1.05; letter-spacing: -0.02em; color: #20211F; margin: 0; }
+        .ptos-pf-h2 { font-size: 20px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; color: #20211F; margin: 0; }
+        .ptos-pf-head { margin-bottom: 12px; }
+        .ptos-pf-head .ptos-pf-eyebrow { margin-bottom: 8px; }
+        .ptos-ui .ptos-ui-note { font-size: 14px; line-height: 1.7; color: #77796F; }
+        .ptos-ui .ptos-ui-note code { background: #E6E6DE; color: #20211F; }
+        .ptos-ui .ptos-tabs-group-label, .ptos-ui .ptos-pf-cap { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 400; text-transform: uppercase; letter-spacing: .08em; color: #77796F; }
+
+        .ptos-ui-chapter { scroll-margin-top: 40px; }
+        .ptos-ui-chapter:not(:first-child) { border-top: 1px solid #CDCEC4; padding-top: 48px; }
+
+        .ptos-pf-window { border: 1px solid rgba(0,0,0,.1); border-radius: 8px; overflow: hidden; background: #FAF9F4; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1); } /* = homepage rounded-lg shadow-md */
+        .ptos-pf-window + .ptos-pf-window { margin-top: 24px; }
+        .ptos-pf-titlebar { display: flex; align-items: center; gap: 14px; padding: 0 14px; height: 34px; background: #F2F0E8; } /* = homepage: h-[34px] px-3.5 gap-3.5 bg-background-light, no bottom border */
+        .ptos-pf-dots { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .ptos-pf-dots i { width: 8px; height: 8px; border-radius: 50%; background: #FAF9F4; border: .8px solid #77796F; box-sizing: border-box; display: block; }
+        .ptos-ui .ptos-pf-wtitle { flex: 1; min-width: 0; text-align: center; font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #20211F; opacity: .5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ptos-pf-pad { padding: 28px 16px; background: #F9FAFC; }
+        /* ---- Narrow windows (phones). Container queries follow the WINDOW width, not the screen,
+           so the same rules also protect any other narrow host. The window is overflow:hidden, so anything wider
+           than it is silently cropped - these rules make every specimen fit or scroll with a visible cue. ---- */
+        .ptos-pf-window { container-type: inline-size; container-name: ptw; }
+        @container ptw (max-width: 800px) {
+            .ptos-tn { min-width: 0; height: auto; flex-wrap: wrap; row-gap: 12px; }
+            .ptos-tn-left { flex: 1 1 100%; }
+            .ptos-tn-search { flex: 1 1 auto; width: auto; }
+            .ptos-tn-right { flex: 1 1 100%; flex-shrink: 1; min-width: 0; }
+            .ptos-tn-badge { flex: 1 1 auto; min-width: 0; white-space: normal; }
+        }
+        @container ptw (max-width: 420px) {
+            .ptos-ui-stage { padding-inline: 12px !important; }
+            .ptos-pf-pad { padding-inline: 12px; }
+            .ptos-tabs-panel { padding: 16px; }
+            .ptos-tabs-panel-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+            .ptos-tabs-panel-meta { white-space: normal; }
+            .ptos-pill-matrix { grid-template-columns: auto repeat(2, max-content); column-gap: 8px; padding: 16px 12px; }
+        }
+
+        @container ptw (max-width: 520px) {
+            .ptos-fd-block { padding: 20px 16px; gap: 20px; }
+            .ptos-fd-swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+            .ptos-fd-chips { flex-wrap: wrap; }
+            .ptos-fd-chips .ptos-fd-swatch { flex: 0 0 calc((100% - 24px) / 4); }
+            .ptos-fd-row2 { grid-template-columns: minmax(0, 1fr) !important; gap: 20px; }
+            .ptos-fd-type { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+            .ptos-fd-type .s { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+            .ptos-fd-elev { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .ptos-fd-strokes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+            .ptos-fd-weights { gap: 20px; }
+            .ptos-fd-space .r { grid-template-columns: 84px 36px minmax(0, 1fr); }
+        }
+        @media (max-width: 480px) {
+            main.ptos-ui { padding-inline: 16px; }
+            .ptos-pf-jump { margin-inline: -16px; padding-inline: 16px; }
+        }
+        /* scroll cue: the tab bar scrolls sideways on narrow windows; fade the edge that still has content */
+        .ptos-tabbar { --fl: 0px; --fr: 0px; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%); }
+
+        .ptos-pf-window .ptos-ui-stage { border: 0; border-radius: 0; padding-inline: 16px; } /* 24 -> 16: frees 16px so 4 sidebars (819) and the 6-tab bar (715) fit the 847px column unscrolled */
+
+        .ptos-ui-chapter-nav a { display: block; padding: 6px 0 6px 12px; border-left: 1px solid #CDCEC4; border-radius: 0; font-size: 12px; color: #77796F; background: none; transition: color 120ms ease, border-color 120ms ease; }
+        .ptos-ui-chapter-nav a:hover, .ptos-ui-chapter-nav a.is-active { background: none; color: #20211F; font-weight: 500; border-left-color: #244BFF; }
+        /* content column = main - side nav - gap. 160 + 32 keeps it >= 943px in the 1150px index window,
+           which fits the widest specimens (4 sidebars = 819, 2 pill matrices = 788) with no horizontal scroll */
+        .ptos-pf-layout { display: flex; gap: 32px; }
+        .ptos-pf-aside { width: 160px; flex-shrink: 0; display: none; }
+        @media (min-width: 1024px) { .ptos-pf-aside { display: block; } }
+        .ptos-pf-jump { position: sticky; top: 0; z-index: 30; display: flex; gap: 6px; overflow-x: auto; margin: 0 -24px 24px; padding: 10px 24px; background: rgba(242,240,232,.92); backdrop-filter: blur(6px); border-bottom: 1px solid rgba(0,0,0,.1); scrollbar-width: none; }
+        .ptos-pf-jump::-webkit-scrollbar { display: none; }
+        .ptos-pf-jump a { flex: none; font-size: 12px; line-height: 16px; padding: 6px 10px; border-radius: 6px; color: #77796F; border: 1px solid transparent; text-decoration: none; white-space: nowrap; transition: color 120ms ease, border-color 120ms ease, background 120ms ease; }
+        .ptos-pf-jump a:hover { color: #20211F; }
+        .ptos-pf-jump a.is-active { color: #244BFF; border-color: #244BFF; background: #FAF9F4; font-weight: 500; }
+        .ptos-pf-jump a:focus-visible { outline: 2px solid #244BFF; outline-offset: 2px; }
+        .ptos-ui-chapter { scroll-margin-top: 64px; }
+        @media (min-width: 1024px) { .ptos-pf-jump { display: none; } }
+        @media (min-width: 1024px) { .ptos-ui-chapter { scroll-margin-top: 40px; } }
+        @media (prefers-reduced-motion: reduce) { .ptos-pf-jump a { transition: none; } }
+        .ptos-ui-chapter-nav a:focus-visible { outline: 2px solid #244BFF; outline-offset: 2px; }
+        .ptos-fd-toast { background: #20211F; }
+        @media (prefers-reduced-motion: reduce) { .ptos-pf-back { transition: none; } }
+
+    </style>
+</head>
+
+<body>
+    <script>if (window.self !== window.top) document.documentElement.classList.add('is-embedded');</script>
+    <main class="ptos-ui max-w-7xl mx-auto px-6 md:px-12 pt-10 pb-32">
+        <header class="ptos-pf-top">
+            <div class="ptos-pf-top-row">
+                <a href="/" class="ptos-pf-back focus-ring" aria-label="Back to portfolio index"><i data-lucide="arrow-left"></i>Index</a>
+                <p class="ptos-pf-running">PORTFOLIO / PTOS-M UI LIBRARY</p>
+            </div>
+            <div class="ptos-pf-rule"></div>
+            <p class="ptos-pf-eyebrow">UI/UX DESIGN</p>
+            <h1 class="ptos-pf-h1">UI Component Library</h1>
+            <p class="ptos-ui-note mt-4 max-w-2xl">
+                Interactive reference for navigation, form, and generic UI components. Each section shows the default
+                state only — try the real interaction (click, hover, focus, toggle) to see the other states.
+            </p>
+        </header>
+
+
+        <nav class="ptos-pf-jump" aria-label="Sections">
+                <a href="#ui-00" data-spy="ui-00">00 Foundations</a>
+                <a href="#ui-01" data-spy="ui-01">01 Sidebar</a>
+                <a href="#ui-02" data-spy="ui-02">02 Top Navigation</a>
+                <a href="#ui-03" data-spy="ui-03">03 Footer</a>
+                <a href="#ui-04" data-spy="ui-04">04 Form Components</a>
+                <a href="#ui-05" data-spy="ui-05">05 Button System</a>
+                <a href="#ui-06" data-spy="ui-06">06 Tab Navigation</a>
+                <a href="#ui-07" data-spy="ui-07">07 Table Components</a>
+                <a href="#ui-08" data-spy="ui-08">08 Card Components</a>
+                <a href="#ui-09" data-spy="ui-09">09 Pagination</a>
+                <a href="#ui-10" data-spy="ui-10">10 Icon Set</a>
+        </nav>
+
+        <div class="ptos-pf-layout">
+            <aside class="ptos-pf-aside">
+                <nav class="ptos-ui-chapter-nav sticky top-10 flex flex-col gap-1">
+                    <a href="#ui-00">00 · Foundations</a>
+                    <a href="#ui-01">01 · Sidebar</a>
+                    <a href="#ui-02">02 · Top Navigation</a>
+                    <a href="#ui-03">03 · Footer</a>
+                    <a href="#ui-04">04 · Form Components</a>
+                    <a href="#ui-05">05 · Button System</a>
+                    <a href="#ui-06">06 · Tab Navigation</a>
+                    <a href="#ui-07">07 · Table Components</a>
+                    <a href="#ui-08">08 · Card Components</a>
+                    <a href="#ui-09">09 · Pagination</a>
+                    <a href="#ui-10">10 · Icon Set</a>
+                </nav>
+            </aside>
+
+            <div class="flex-1 min-w-0 flex flex-col gap-12">
+
+                <section id="ui-00" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">00 &mdash; Foundations</p><h2 class="ptos-pf-h2">Foundations</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Color, typography, spacing, radius, elevation and stroke tokens from the Figma Design System Reference.
+                        Click any swatch to copy its hex. Figma sets type in Geist; this page renders it in Inter.
+                    </p>
+                    <%
+                        var FD_PRIMARY = [['Navy 900','#02284F'],['Navy 800','#0F2444'],['Navy 700','#172144'],['Navy 600','#3B4256'],['Blue 500','#038FDD'],['Blue 300','#79D4FE']];
+                        var FD_NEUTRAL = [['Neutral 50','#F9FAFC'],['Neutral 100','#F1F3F6'],['Neutral 200','#DFE5ED'],['Neutral 300','#AFB7C1'],['Neutral 500','#666666'],['Neutral 800','#2C2C2C'],['Black','#000000']];
+                        var FD_STATUS = [['Success','#27B45E'],['Error','#CC443B'],['Warning','#FA8C16']];
+                        var FD_WEIGHTS = [['Bold',700],['SemiBold',600],['Medium',500],['Regular',400]];
+                        var FD_TYPE = [
+                            ['Display','Bold · 44px / 52px','Dashboard',700,44,52],
+                            ['Heading 1','Bold · 32px / 40px','Terminal Monitoring',700,32,40],
+                            ['Heading 2','SemiBold · 24px / 32px','Section Header',600,24,32],
+                            ['Body Large','Regular · 16px / 24px','Primary body text for content and descriptions.',400,16,24],
+                            ['Body','Regular · 14px / 22px','Standard body text used across tables, forms, and data displays.',400,14,22],
+                            ['Caption','Regular · 12px / 18px','Chart labels, timestamps, footnotes',400,12,18]
+                        ];
+                        var FD_SPACE = [['spacing-xs',4,16],['spacing-sm',8,32],['spacing-base',16,64],['spacing-xl',24,96],['spacing-2xl',32,128],['spacing-4xl',64,192]]; /* [name, px, Figma bar width] - not linear */
+                        var FD_RADIUS = [0,5,8,12,20,32];
+                        var FD_ELEV = [
+                            ['Level 0','No shadow','none'],
+                            ['Level 1','Cards','0 3px 6px rgba(0,0,0,.04), 0 6px 18px rgba(0,0,0,.06)'],
+                            ['Level 2','Raised','0 4px 8px rgba(0,0,0,.04), 0 10px 24px rgba(0,0,0,.07)'],
+                            ['Level 3','Dropdowns','0 6px 12px rgba(0,0,0,.05), 0 14px 32px rgba(0,0,0,.09)'],
+                            ['Level 4','Modals','0 10px 18px rgba(0,0,0,.05), 0 20px 44px rgba(0,0,0,.10)']
+                        ];
+                        var FD_STROKE = [['Primary','#02284F'],['Light','#DFE5ED'],['Muted','#A0ABB1']];
+                    %>
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">foundations.tokens</span></div><div class="ptos-ui-stage" style="flex-direction:column; align-items:stretch; gap:20px">
+
+                        <div class="ptos-fd-block">
+                            <div>
+                                <h3 class="ptos-fd-h">Color Palette</h3>
+                                <p class="ptos-fd-sub">Core colors: primary navy tones, accent blues, neutrals, and status colors.</p>
+                            </div>
+                            <div>
+                                <p class="ptos-fd-cap">Primary</p>
+                                <div class="ptos-fd-swatches">
+                                    <% FD_PRIMARY.forEach(function (c) { %>
+                                    <button type="button" class="ptos-fd-swatch" data-ptos-copy="<%= c[1] %>" aria-label="Copy <%= c[0] %> <%= c[1] %>">
+                                        <span class="chip" style="background:<%= c[1] %>"></span><span class="nm"><%= c[0] %></span><span class="hx"><%= c[1] %></span>
+                                    </button>
+                                    <% }) %>
+                                </div>
+                            </div>
+                            <div class="ptos-fd-row2">
+                                <div>
+                                    <p class="ptos-fd-cap">Neutrals</p>
+                                    <div class="ptos-fd-chips">
+                                        <% FD_NEUTRAL.forEach(function (c) { %>
+                                        <button type="button" class="ptos-fd-swatch" data-ptos-copy="<%= c[1] %>" aria-label="Copy <%= c[0] %> <%= c[1] %>">
+                                            <span class="chip<%= c[1] === '#F9FAFC' ? ' edge' : '' %>" style="background:<%= c[1] %>"></span><span class="nm"><%= c[0].replace('Neutral ', '') %></span><span class="hx" style="font-size:9px"><%= c[1] %></span>
+                                        </button>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="ptos-fd-cap">Status</p>
+                                    <div class="ptos-fd-chips">
+                                        <% FD_STATUS.forEach(function (c) { %>
+                                        <button type="button" class="ptos-fd-swatch" data-ptos-copy="<%= c[1] %>" aria-label="Copy <%= c[0] %> <%= c[1] %>">
+                                            <span class="chip" style="background:<%= c[1] %>"></span><span class="nm"><%= c[0] %></span><span class="hx"><%= c[1] %></span>
+                                        </button>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ptos-fd-block">
+                            <div>
+                                <h3 class="ptos-fd-h">Typography</h3>
+                                <p class="ptos-fd-sub">Type scale using Geist. All weights and sizes documented below.</p>
+                            </div>
+                            <div class="ptos-fd-weights">
+                                <% FD_WEIGHTS.forEach(function (w) { %><div><b style="font-weight:<%= w[1] %>">Aa</b><span><%= w[0] %> <%= w[1] %></span></div><% }) %>
+                            </div>
+                            <div class="ptos-fd-scale">
+                                <% FD_TYPE.forEach(function (t) { %>
+                                <div class="ptos-fd-type">
+                                    <span class="k"><%= t[0] %></span><span class="m"><%= t[1] %></span>
+                                    <span class="s" style="font-weight:<%= t[3] %>; font-size:<%= t[4] %>px; line-height:<%= t[5] %>px"><%= t[2] %></span>
+                                </div>
+                                <% }) %>
+                            </div>
+                        </div>
+
+                        <div class="ptos-fd-block">
+                            <div class="ptos-fd-row2" style="grid-template-columns: 1fr 1fr">
+                                <div>
+                                    <h3 class="ptos-fd-h" style="margin-bottom:16px">Spacing Scale</h3>
+                                    <div class="ptos-fd-space">
+                                        <% FD_SPACE.forEach(function (sp) { %>
+                                        <div class="r"><span class="n"><%= sp[0] %></span><span class="v"><%= sp[1] %>px</span><span class="bar" style="width:<%= sp[2] %>px"></span></div>
+                                        <% }) %>
+                                    </div>
+                                    <h4 class="ptos-fd-h2" style="margin-top:28px">Corner Radius</h4>
+                                    <div class="ptos-fd-radii">
+                                        <% FD_RADIUS.forEach(function (r) { %><div><i style="border-radius:<%= r %>px"></i><%= r %>px</div><% }) %>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="ptos-fd-h" style="margin-bottom:16px">Elevation &amp; Effects</h3>
+                                    <div class="ptos-fd-elev">
+                                        <% FD_ELEV.forEach(function (e) { %><div><i style="box-shadow:<%= e[2] %>"></i><b><%= e[0] %></b><%= e[1] %></div><% }) %>
+                                    </div>
+                                    <h4 class="ptos-fd-h2" style="margin-top:28px">Border &amp; Stroke</h4>
+                                    <div class="ptos-fd-strokes">
+                                        <% FD_STROKE.forEach(function (b) { %><div><i style="border-color:<%= b[1] %>"></i><%= b[0] %> <%= b[1] %></div><% }) %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>
+                    <div class="ptos-fd-toast" id="ptos-fd-toast" role="status" aria-live="polite"></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 01 — SIDEBAR NAVIGATION                        -->
+                <!-- ============================================= -->
+                <section id="ui-01" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">01 &mdash; Sidebar Navigation</p><h2 class="ptos-pf-h2">Sidebar Navigation</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Primary app navigation, fixed to the left edge. Two variants, each in both themes at once:
+                        Expanded (labels, chevrons, inline sub-items) and Icon-only (the collapsed rail, 64px, no logo).
+                        Click a module to expand it; click the burger to collapse. In the rail, hover an icon for its name
+                        and click one with sub-items for a popover list.</p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">sidebar.nav</span></div><div class="ptos-ui-stage" style="gap:16px; flex-wrap:wrap; align-items:flex-start">
+                        <% [['dark', false], ['light', false], ['dark', true], ['light', true]].forEach(function (v) { var theme = v[0], iconOnly = v[1]; %>
+                        <div class="flex flex-col gap-2" style="flex-shrink:0">
+                        <p class="text-xs font-semibold" style="color:var(--neutral-500)"><%= iconOnly ? 'Icon-only' : 'Expanded' %> · <%= theme === 'dark' ? 'Dark' : 'Light' %></p>
+                        <div class="ptos-sb<%= iconOnly ? ' is-collapsed' : '' %>" data-theme="<%= theme %>" id="sb-demo-<%= theme %><%= iconOnly ? '-icon' : '' %>">
+                            <div class="ptos-sb-brand">
+                                <div class="ptos-sb-brand-mark">
+                                    <span class="ptos-sb-brand-icon"><img src="/assets/ptosm-logo-icon.svg" alt="" width="18" height="20" /></span>
+                                    <img class="ptos-sb-brand-text" src="/assets/<%= theme === 'dark' ? 'ptosm-logo-text-white.svg' : 'ptosm-logo-text.svg' %>" alt="PTOS-M" width="82" height="12" />
+                                </div>
+                                <button type="button" class="ptos-sb-burger" data-sb-toggle aria-label="Toggle sidebar"><span></span><span></span><span></span></button>
+                            </div>
+                            <div class="ptos-sb-divider"></div>
+                            <div class="ptos-sb-list" data-ptos-sb-list>
+                                <% [
+                                    ['house', 'Dashboard', null],
+                                    ['wrench', 'Maintenance', ['Preventive', 'Corrective', 'Inspection', 'Spare Parts']],
+                                    ['anchor', 'Vessel', ['Fleet List', 'Tracking', 'Documents', 'Crew Management']],
+                                    ['cog', 'Settings', ['General', 'Users & Roles', 'Notifications', 'Integrations']],
+                                    ['folder', 'Permohonan', ['Operation Plan B/M', 'Pindah', 'Penumpukan', 'Pengeluaran', 'Jadwal & Konfirmasi Kapal']],
+                                    ['calendar', 'Perencanaan', ['Schedule', 'Resource Allocation', 'Timeline', 'Milestones']],
+                                    ['wallet-cards', 'Pembayaran', ['Invoices', 'Payment History', 'Outstanding', 'Reports']],
+                                    ['clipboard-check', 'Penetapan', ['New Request', 'Approved', 'Pending', 'Rejected']],
+                                    ['circle-check', 'Realisasi', ['In Progress', 'Completed', 'Overdue']],
+                                    ['eye', 'Monitoring', ['Live Tracking', 'Alerts', 'Performance', 'Logs']],
+                                    ['shield-check', 'Verifikasi', ['Pending Review', 'Verified', 'Returned']],
+                                    ['file-text', 'Pranota', ['Active', 'Archived', 'Templates']],
+                                    ['circle-x', 'Pembatalan', ['Requested', 'Approved', 'History']]
+                                ].forEach(function (item, idx) { %>
+                                <div class="ptos-sb-item<%= idx === 0 ? ' is-active' : '' %>" data-sb-item tabindex="0" role="button" aria-label="<%= item[1] %>">
+                                    <i data-lucide="<%= item[0] %>" class="ptos-sb-ico"></i>
+                                    <span class="ptos-sb-item-label"><%= item[1] %></span>
+                                    <% if (item[2]) { %><i data-lucide="chevron-right" class="chev"></i><% } %>
+                                    <span class="ptos-sb-tooltip"><%= item[1] %></span>
+                                    <% if (item[2]) { %>
+                                    <div class="ptos-sb-flyout hidden">
+                                        <p class="ptos-sb-flyout-title"><%= item[1] %></p>
+                                        <% item[2].forEach(function (sub) { %>
+                                        <div class="ptos-sb-flyout-item"><%= sub %></div>
+                                        <% }) %>
+                                    </div>
+                                    <% } %>
+                                </div>
+                                <% if (item[2]) { %>
+                                <div class="ptos-sb-sub">
+                                    <% item[2].forEach(function (sub) { %>
+                                    <div class="ptos-sb-sub-item"><span class="ptos-sb-sub-bullet"></span><%= sub %></div>
+                                    <% }) %>
+                                </div>
+                                <% } %>
+                                <% }) %>
+                            </div>
+                            <div class="ptos-sb-divider"></div>
+                            <div class="ptos-sb-user">
+                                <img class="ptos-sb-avatar" src="/assets/ptosm-avatar.png" alt="" width="40" height="40" />
+                                <div class="ptos-sb-user-info">
+                                    <p class="name">Nanda A</p>
+                                    <p class="role">Product Designer</p>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <% }) %>
+                    </div></div>
+
+                    <div class="mt-4 flex flex-wrap gap-6 ptos-ui-note">
+                        <p><span class="font-semibold" style="color:var(--navy-800)">Module coverage —</span> Dashboard, Maintenance, Vessel, Settings, Permohonan, Perencanaan, Pembayaran, Penetapan, Realisasi, Monitoring, Verifikasi, Pranota, Pembatalan.</p>
+                    </div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 02 — TOP NAVIGATION                            -->
+                <!-- ============================================= -->
+                <section id="ui-02" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">02 &mdash; Top Navigation</p><h2 class="ptos-pf-h2">Top Navigation</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Utility bar above the content area: notifications, help, search, the operator's company badge and
+                        sign-out. Dark and Light shown at once. The search field is a real input.
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">top-nav.nav</span></div><div class="ptos-ui-stage" style="gap:16px; flex-direction:column">
+                        <% ['dark', 'light'].forEach(function (theme) { %>
+                        <div class="flex flex-col gap-2" style="width:100%">
+                        <p class="text-xs font-semibold" style="color:var(--neutral-500)"><%= theme === 'dark' ? 'Dark' : 'Light' %></p>
+                        <div class="ptos-tn" data-theme="<%= theme %>">
+                            <div class="ptos-tn-left">
+                                <button type="button" class="ptos-tn-icon-btn" aria-label="Notifications"><i data-lucide="bell" style="width:20px;height:20px"></i></button>
+                                <button type="button" class="ptos-tn-icon-btn" aria-label="Help"><i data-lucide="info" style="width:20px;height:20px"></i></button>
+                                <label class="ptos-tn-search">
+                                    <i data-lucide="search" style="width:20px;height:20px;flex-shrink:0"></i>
+                                    <input type="text" placeholder="Search..." aria-label="Search" />
+                                </label>
+                            </div>
+                            <div class="ptos-tn-right">
+                                <div class="ptos-tn-badge">
+                                    <i data-lucide="map-pin" style="width:16px;height:16px;flex-shrink:0"></i>
+                                    PT PELINDO MULTI TERMINAL - TANJUNG PRIOK
+                                </div>
+                                <button type="button" class="ptos-tn-icon-btn" aria-label="Log out"><i data-lucide="log-out" style="width:20px;height:20px"></i></button>
+                            </div>
+                        </div>
+                        </div>
+                        <% }) %>
+                    </div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 03 — FOOTER                                    -->
+                <!-- ============================================= -->
+                <section id="ui-03" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">03 &mdash; Footer</p><h2 class="ptos-pf-h2">Footer</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Copyright strip closing the page. Dark, Light and Transparent shown at once. Light and Transparent
+                        have a 1px top border only; Transparent sits on the page behind it (checkerboard here to show that).
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">footer.nav</span></div><div class="ptos-ui-stage" style="gap:16px; flex-direction:column">
+                        <% [['dark', 'Dark'], ['light', 'Light'], ['transparent', 'Transparent']].forEach(function (t) { %>
+                        <div class="flex flex-col gap-2" style="width:100%">
+                            <p class="text-xs font-semibold" style="color:var(--neutral-500)"><%= t[1] %></p>
+                            <% if (t[0] === 'transparent') { %><div class="ptos-ft-backdrop"><% } %>
+                            <footer class="ptos-ft" data-theme="<%= t[0] %>">PELABUHAN INDONESIA (Persero) &copy; 2026</footer>
+                            <% if (t[0] === 'transparent') { %></div><% } %>
+                        </div>
+                        <% }) %>
+                    </div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 04 — FORM COMPONENTS                           -->
+                <!-- ============================================= -->
+                <section id="ui-04" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">04 &mdash; Form Components</p><h2 class="ptos-pf-h2">Form Components</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Text Input (Text/Date/Email/Password), Text Area, Checkbox, Radio, Toggle Switch, and Dropdown —
+                        1:1 from Figma's Light and Dark component sets. Every state below is real: focus a field, tick
+                        a box, flip a toggle, open the dropdown.
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">form-fields.ui</span></div><div class="ptos-ui-stage" style="gap:32px; flex-wrap:wrap; align-items:flex-start">
+                        <div class="ptos-form-panel ptos-form-panel-light">
+                            <p class="text-xs font-semibold" style="color:var(--neutral-500)">Light theme</p>
+                            <div class="ptos-form-grid">
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Text Input</label>
+                                    <input class="ptos-input" placeholder="Enter value...">
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Email</label>
+                                    <div class="ptos-input-wrap has-leading-icon">
+                                        <i data-lucide="mail" class="ptos-input-wrap-icon leading"></i>
+                                        <input type="email" class="ptos-input" placeholder="Enter email...">
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Password</label>
+                                    <div class="ptos-input-wrap has-trailing-icon">
+                                        <input type="password" class="ptos-input" data-ptos-password-input placeholder="Enter password...">
+                                        <button type="button" class="ptos-input-wrap-icon trailing" data-ptos-password-toggle aria-label="Toggle password visibility">
+                                            <i data-lucide="eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Date Picker</label>
+                                    <div class="ptos-datepicker" data-ptos-datepicker>
+                                        <div class="ptos-input-wrap has-trailing-icon">
+                                            <input type="text" class="ptos-input" data-ptos-dp-trigger readonly value="08/10/2026" style="cursor:pointer">
+                                            <i data-lucide="calendar-check" class="ptos-input-wrap-icon trailing" style="pointer-events:none"></i>
+                                        </div>
+                                        <div class="ptos-datepicker-panel hidden">
+                                            <div class="ptos-dp-header">
+                                                <button type="button" class="ptos-dp-nav-btn"><i data-lucide="arrow-left" style="width:16px;height:16px"></i></button>
+                                                <span>Oktober 2026</span>
+                                                <button type="button" class="ptos-dp-nav-btn"><i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+                                            </div>
+                                            <div class="ptos-dp-weekdays"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day is-outside" type="button">28</button><button class="ptos-dp-day is-outside" type="button">29</button><button class="ptos-dp-day is-outside" type="button">30</button><button class="ptos-dp-day" type="button">1</button><button class="ptos-dp-day" type="button">2</button><button class="ptos-dp-day" type="button">3</button><button class="ptos-dp-day" type="button">4</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">5</button><button class="ptos-dp-day" type="button">6</button><button class="ptos-dp-day" type="button">7</button><button class="ptos-dp-day is-selected" type="button">8</button><button class="ptos-dp-day" type="button">9</button><button class="ptos-dp-day" type="button">10</button><button class="ptos-dp-day" type="button">11</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">12</button><button class="ptos-dp-day" type="button">13</button><button class="ptos-dp-day" type="button">14</button><button class="ptos-dp-day" type="button">15</button><button class="ptos-dp-day" type="button">16</button><button class="ptos-dp-day" type="button">17</button><button class="ptos-dp-day" type="button">18</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">19</button><button class="ptos-dp-day" type="button">20</button><button class="ptos-dp-day" type="button">21</button><button class="ptos-dp-day" type="button">22</button><button class="ptos-dp-day" type="button">23</button><button class="ptos-dp-day" type="button">24</button><button class="ptos-dp-day" type="button">25</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">26</button><button class="ptos-dp-day" type="button">27</button><button class="ptos-dp-day" type="button">28</button><button class="ptos-dp-day" type="button">29</button><button class="ptos-dp-day" type="button">30</button><button class="ptos-dp-day" type="button">31</button><button class="ptos-dp-day is-outside" type="button">1</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label">Error state · Text</label>
+                                    <div class="ptos-input-wrap">
+                                        <input class="ptos-input is-error" value="KM Sinar#7" aria-invalid="true">
+                                        <i data-lucide="circle-alert" class="ptos-input-wrap-icon alert"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">Only letters, numbers and spaces are allowed.</span>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label">Error state · Email</label>
+                                    <div class="ptos-input-wrap has-leading-icon">
+                                        <i data-lucide="mail" class="ptos-input-wrap-icon leading"></i>
+                                        <input class="ptos-input is-error" value="nanda@pelindo" aria-invalid="true">
+                                        <i data-lucide="circle-alert" class="ptos-input-wrap-icon alert"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">Email must include a full domain, e.g. name@company.co.id.</span>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label">Error state · Date</label>
+                                    <div class="ptos-input-wrap has-trailing-icon">
+                                        <input class="ptos-input is-error" value="31/02/2026" aria-invalid="true">
+                                        <i data-lucide="calendar-check" class="ptos-input-wrap-icon" style="right:12px;color:#CC443B"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">That date doesn't exist. Check the day and month.</span>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label">Error state · Password</label>
+                                    <div class="ptos-input-wrap has-trailing-icon">
+                                        <input class="ptos-input is-error" type="password" value="12345" aria-invalid="true">
+                                        <i data-lucide="eye" class="ptos-input-wrap-icon" style="right:12px;color:#CC443B"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">Password must be at least 8 characters.</span>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Disabled</label>
+                                    <input class="ptos-input" value="Disabled field" disabled>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Text Area</label>
+                                    <textarea class="ptos-textarea" placeholder="Notes, remarks..."></textarea>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Dropdown</label>
+                                    <div class="ptos-dropdown" data-ptos-dropdown>
+                                        <button type="button" class="ptos-dropdown-trigger" aria-expanded="false">
+                                            <span class="label">Select clearance type...</span>
+                                            <i data-lucide="chevron-down" class="chev"></i>
+                                        </button>
+                                        <div class="ptos-dropdown-menu hidden">
+                                            <div class="ptos-dropdown-item">BC 2.0</div>
+                                            <div class="ptos-dropdown-item">On Demand</div>
+                                            <div class="ptos-dropdown-item">NPE</div>
+                                            <div class="ptos-dropdown-item">Pabean Manual</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Checkbox &amp; Radio</label>
+                                    <label class="ptos-form-row" style="cursor:pointer"><input type="checkbox" class="ptos-checkbox" checked> Checked</label>
+                                    <label class="ptos-form-row" style="cursor:pointer"><input type="checkbox" class="ptos-checkbox"> Unchecked</label>
+                                    <label class="ptos-form-row" style="cursor:pointer"><input type="radio" name="ui-radio-light" class="ptos-radio" checked> Option A</label>
+                                    <label class="ptos-form-row" style="cursor:pointer"><input type="radio" name="ui-radio-light" class="ptos-radio"> Option B</label>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label">Toggle Switch</label>
+                                    <label class="ptos-form-row" style="cursor:pointer"><input type="checkbox" class="ptos-toggle" checked> On</label>
+                                    <label class="ptos-form-row" style="cursor:pointer"><input type="checkbox" class="ptos-toggle"> Off</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ptos-form-dark ptos-form-panel">
+                            <p class="text-xs font-semibold" style="color:rgba(255,255,255,0.5)">Dark theme</p>
+                            <div class="ptos-form-grid">
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Text Input</label>
+                                    <input class="ptos-input" placeholder="Enter value...">
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Email</label>
+                                    <div class="ptos-input-wrap has-leading-icon">
+                                        <i data-lucide="mail" class="ptos-input-wrap-icon leading"></i>
+                                        <input type="email" class="ptos-input" placeholder="Enter email...">
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Password</label>
+                                    <div class="ptos-input-wrap has-trailing-icon">
+                                        <input type="password" class="ptos-input" data-ptos-password-input placeholder="Enter password...">
+                                        <button type="button" class="ptos-input-wrap-icon trailing" data-ptos-password-toggle aria-label="Toggle password visibility">
+                                            <i data-lucide="eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Date Picker</label>
+                                    <div class="ptos-datepicker" data-ptos-datepicker>
+                                        <div class="ptos-input-wrap has-trailing-icon">
+                                            <input type="text" class="ptos-input" data-ptos-dp-trigger readonly value="08/10/2026" style="cursor:pointer">
+                                            <i data-lucide="calendar-check" class="ptos-input-wrap-icon trailing" style="pointer-events:none"></i>
+                                        </div>
+                                        <div class="ptos-datepicker-panel hidden">
+                                            <div class="ptos-dp-header">
+                                                <button type="button" class="ptos-dp-nav-btn"><i data-lucide="arrow-left" style="width:16px;height:16px"></i></button>
+                                                <span>Oktober 2026</span>
+                                                <button type="button" class="ptos-dp-nav-btn"><i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+                                            </div>
+                                            <div class="ptos-dp-weekdays"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day is-outside" type="button">28</button><button class="ptos-dp-day is-outside" type="button">29</button><button class="ptos-dp-day is-outside" type="button">30</button><button class="ptos-dp-day" type="button">1</button><button class="ptos-dp-day" type="button">2</button><button class="ptos-dp-day" type="button">3</button><button class="ptos-dp-day" type="button">4</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">5</button><button class="ptos-dp-day" type="button">6</button><button class="ptos-dp-day" type="button">7</button><button class="ptos-dp-day is-selected" type="button">8</button><button class="ptos-dp-day" type="button">9</button><button class="ptos-dp-day" type="button">10</button><button class="ptos-dp-day" type="button">11</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">12</button><button class="ptos-dp-day" type="button">13</button><button class="ptos-dp-day" type="button">14</button><button class="ptos-dp-day" type="button">15</button><button class="ptos-dp-day" type="button">16</button><button class="ptos-dp-day" type="button">17</button><button class="ptos-dp-day" type="button">18</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">19</button><button class="ptos-dp-day" type="button">20</button><button class="ptos-dp-day" type="button">21</button><button class="ptos-dp-day" type="button">22</button><button class="ptos-dp-day" type="button">23</button><button class="ptos-dp-day" type="button">24</button><button class="ptos-dp-day" type="button">25</button></div>
+                                            <div class="ptos-dp-grid-row"><button class="ptos-dp-day" type="button">26</button><button class="ptos-dp-day" type="button">27</button><button class="ptos-dp-day" type="button">28</button><button class="ptos-dp-day" type="button">29</button><button class="ptos-dp-day" type="button">30</button><button class="ptos-dp-day" type="button">31</button><button class="ptos-dp-day is-outside" type="button">1</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Error state · Text</label>
+                                    <div class="ptos-input-wrap">
+                                        <input class="ptos-input is-error" value="KM Sinar#7" aria-invalid="true">
+                                        <i data-lucide="circle-alert" class="ptos-input-wrap-icon alert"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">Only letters, numbers and spaces are allowed.</span>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Error state · Email</label>
+                                    <div class="ptos-input-wrap has-leading-icon">
+                                        <i data-lucide="mail" class="ptos-input-wrap-icon leading"></i>
+                                        <input class="ptos-input is-error" value="nanda@pelindo" aria-invalid="true">
+                                        <i data-lucide="circle-alert" class="ptos-input-wrap-icon alert"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">Email must include a full domain, e.g. name@company.co.id.</span>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Error state · Date</label>
+                                    <div class="ptos-input-wrap has-trailing-icon">
+                                        <input class="ptos-input is-error" value="31/02/2026" aria-invalid="true">
+                                        <i data-lucide="calendar-check" class="ptos-input-wrap-icon" style="right:12px;color:#CC443B"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">That date doesn't exist. Check the day and month.</span>
+                                </div>
+                                <div class="ptos-form-group has-error">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Error state · Password</label>
+                                    <div class="ptos-input-wrap has-trailing-icon">
+                                        <input class="ptos-input is-error" type="password" value="12345" aria-invalid="true">
+                                        <i data-lucide="eye" class="ptos-input-wrap-icon" style="right:12px;color:#CC443B"></i>
+                                    </div>
+                                    <span class="ptos-form-error-text">Password must be at least 8 characters.</span>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Disabled</label>
+                                    <input class="ptos-input" value="Disabled field" disabled>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Text Area</label>
+                                    <textarea class="ptos-textarea" placeholder="Notes, remarks..."></textarea>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Dropdown</label>
+                                    <div class="ptos-dropdown" data-ptos-dropdown>
+                                        <button type="button" class="ptos-dropdown-trigger" aria-expanded="false">
+                                            <span class="label">Select clearance type...</span>
+                                            <i data-lucide="chevron-down" class="chev"></i>
+                                        </button>
+                                        <div class="ptos-dropdown-menu hidden">
+                                            <div class="ptos-dropdown-item">BC 2.0</div>
+                                            <div class="ptos-dropdown-item">On Demand</div>
+                                            <div class="ptos-dropdown-item">NPE</div>
+                                            <div class="ptos-dropdown-item">Pabean Manual</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Checkbox &amp; Radio</label>
+                                    <label class="ptos-form-row" style="cursor:pointer;color:#fff"><input type="checkbox" class="ptos-checkbox" checked> Checked</label>
+                                    <label class="ptos-form-row" style="cursor:pointer;color:#fff"><input type="checkbox" class="ptos-checkbox"> Unchecked</label>
+                                    <label class="ptos-form-row" style="cursor:pointer;color:#fff"><input type="radio" name="ui-radio-dark" class="ptos-radio" checked> Option A</label>
+                                    <label class="ptos-form-row" style="cursor:pointer;color:#fff"><input type="radio" name="ui-radio-dark" class="ptos-radio"> Option B</label>
+                                </div>
+                                <div class="ptos-form-group">
+                                    <label class="ptos-form-label" style="color:rgba(255,255,255,0.5)">Toggle Switch</label>
+                                    <label class="ptos-form-row" style="cursor:pointer;color:#fff"><input type="checkbox" class="ptos-toggle" checked> On</label>
+                                    <label class="ptos-form-row" style="cursor:pointer;color:#fff"><input type="checkbox" class="ptos-toggle"> Off</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 05 — BUTTON SYSTEM                             -->
+                <!-- ============================================= -->
+                <section id="ui-05" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">05 &mdash; Button System</p><h2 class="ptos-pf-h2">Button System</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        240 variants in the source file — 4 Styles × 4 States × 3 Sizes × 2 Themes × 4 Icon
+                        placements. Hover/click the buttons below for the real Default → Hover → Active →
+                        Disabled behavior rather than one screenshot per state.
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">buttons.ui</span></div><div class="ptos-ui-stage" style="flex-direction:column; gap:20px; align-items:stretch">
+                        <div class="ptos-btn-row">
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-primary">Primary</button>
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-secondary">Secondary</button>
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-ghost">Ghost Button</button>
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-danger">Delete Endpoint</button>
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-primary" disabled>Disabled</button>
+                        </div>
+                        <div class="ptos-btn-row">
+                            <button class="ptos-btn ptos-btn-small ptos-btn-primary">Small</button>
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-primary">Medium</button>
+                            <button class="ptos-btn ptos-btn-large ptos-btn-primary">Large</button>
+                        </div>
+                        <div class="ptos-btn-row">
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-primary"><i data-lucide="plus" style="width:16px;height:16px"></i>Leading Icon</button>
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-secondary">Trailing Icon<i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+                            <button class="ptos-btn ptos-btn-medium ptos-btn-ghost" aria-label="Icon only" style="width:40px;padding:0"><i data-lucide="settings" style="width:16px;height:16px"></i></button>
+                        </div>
+                    </div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 06 — TAB NAVIGATION                            -->
+                <!-- ============================================= -->
+                <section id="ui-06" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">06 &mdash; Tab Navigation</p><h2 class="ptos-pf-h2">Tab Navigation</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Underline tab bar (PTOS Tab Bar: Light/Dark, 2/3/4/6 tabs) and pill tabs (PTOS Pill Tab: Light/Dark,
+                        Filled/Outlined/Subtle, Default/Hover/Active, with or without icon). Tabs are live: click to switch,
+                        hover for the Hover state. One active at a time per group.
+                    </p>
+                    <%
+                        var TAB_CFG = [{"t": "2-Tab Configuration (General Toggle)", "m": "2 Options \u00b7 Active: General Data", "tabs": ["General Data", "Time Ops Plan"]}, {"t": "3-Tab Configuration (Workflow Status)", "m": "3 Options \u00b7 Active: All Requests", "tabs": ["All Requests", "Pending Approval", "Completed"]}, {"t": "4-Tab Configuration (Module Navigation)", "m": "4 Options \u00b7 Active: Dashboard", "tabs": ["Dashboard", "Vessel Schedule", "Maintenance", "System Logs"]}, {"t": "6-Tab Configuration (Comprehensive Filters)", "m": "6 Options \u00b7 Active: Overview", "tabs": ["Overview", "Planning", "Realization", "Verifications", "Billing", "Settings"]}];
+                        var PILL_STYLES = [['filled','Filled'],['outlined','Outlined'],['subtle','Subtle']];
+                        var PILL_STATES = [['default','Default'],['hover','Hover'],['active','Active']];
+                    %>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">tabs.ui</span></div><div class="ptos-pf-pad"><p class="ptos-tabs-group-label">Tab Bar &middot; Light</p>
+                    <div class="ptos-ui-stage" style="flex-direction:column; gap:16px; align-items:stretch">
+                        <% TAB_CFG.forEach(function (c) { %>
+                        <div class="ptos-tabs-panel" data-theme="light">
+                            <div class="ptos-tabs-panel-head"><span class="ptos-tabs-panel-title"><%= c.t %></span><span class="ptos-tabs-panel-meta" data-ptos-meta="<%= c.tabs.length %>"><%= c.m %></span></div>
+                            <div class="ptos-tabbar" data-theme="light" data-ptos-tabs role="tablist">
+                                <% c.tabs.forEach(function (t, i) { %><button type="button" role="tab" class="ptos-tab<%= i === 0 ? ' is-active' : '' %>" data-ptos-tab aria-selected="<%= i === 0 %>"><%= t %></button><% }) %>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+
+                    <p class="ptos-tabs-group-label" style="margin-top:32px">Tab Bar &middot; Dark</p>
+                    <div class="ptos-ui-stage is-dark" style="flex-direction:column; gap:16px; align-items:stretch; background:#081325">
+                        <% TAB_CFG.forEach(function (c) { %>
+                        <div class="ptos-tabs-panel" data-theme="dark">
+                            <div class="ptos-tabs-panel-head"><span class="ptos-tabs-panel-title"><%= c.t %></span><span class="ptos-tabs-panel-meta" data-ptos-meta="<%= c.tabs.length %>"><%= c.m %></span></div>
+                            <div class="ptos-tabbar" data-theme="dark" data-ptos-tabs role="tablist">
+                                <% c.tabs.forEach(function (t, i) { %><button type="button" role="tab" class="ptos-tab<%= i === 0 ? ' is-active' : '' %>" data-ptos-tab aria-selected="<%= i === 0 %>"><%= t %></button><% }) %>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+
+                    <p class="ptos-tabs-group-label" style="margin-top:32px">Pill Tab <span style="font-weight:400">(hover it, click to toggle Active)</span></p>
+                    <div class="ptos-pill-matrices">
+                        <% ['light','dark'].forEach(function (theme) { %>
+                        <div class="ptos-pill-matrix" data-theme="<%= theme %>">
+                            <span class="mx-title"><%= theme === 'light' ? 'Light' : 'Dark' %></span><span class="col-h">No icon</span><span class="col-h">With icon</span>
+                            <% PILL_STYLES.forEach(function (sty) { %>
+                            <span class="row-h"><%= sty[1] %></span>
+                            <% [false, true].forEach(function (withIcon) { %>
+                            <button type="button" class="ptos-pill" data-theme="<%= theme %>" data-style="<%= sty[0] %>" data-ptos-toggle aria-pressed="false">
+                                <% if (withIcon) { %><i data-lucide="house"></i><% } %>Tab Label
+                            </button>
+                            <% }) %>
+                            <% }) %>
+                        </div>
+                        <% }) %>
+                    </div>
+
+                    <p class="ptos-tabs-group-label" style="margin-top:32px">Pill Tab &middot; live group (click to switch)</p>
+                    <div class="ptos-ui-stage" style="flex-direction:column; gap:20px; align-items:stretch">
+                        <% ['light','dark'].forEach(function (theme) { %>
+                        <div class="ptos-tabs-panel" data-theme="<%= theme %>">
+                            <% PILL_STYLES.forEach(function (sty) { %>
+                            <div class="flex gap-2 flex-wrap" data-ptos-tabs role="tablist">
+                                <% ['All Requests','Pending Approval','Completed','Rejected'].forEach(function (t, i) { %>
+                                <button type="button" role="tab" class="ptos-pill<%= i === 0 ? ' is-active' : '' %>" data-theme="<%= theme %>" data-style="<%= sty[0] %>" data-ptos-tab aria-selected="<%= i === 0 %>"><i data-lucide="<%= ['inbox','clock','circle-check','circle-x'][i] %>"></i><%= t %></button>
+                                <% }) %>
+                            </div>
+                            <% }) %>
+                        </div>
+                        <% }) %>
+                    </div>
+                    </div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 07 — TABLE COMPONENTS                          -->
+                <!-- ============================================= -->
+                <section id="ui-07" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">07 &mdash; Table Components</p><h2 class="ptos-pf-h2">Table Components</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Table Cell set — Header/Body rows × Plain, Avatar, Badge, and Action content types, plus
+                        Pagination and Item Display, 1:1 from Figma. Click the kebab for the real action popover
+                        (Lihat Detail / Edit / Hapus — Hapus destructive, divider-separated).
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">data-table.ui</span></div><div class="ptos-pf-pad"><div class="ptos-table-stack">
+                        <div class="ptos-table-wrap">
+                            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Light theme</p>
+                            <div class="overflow-x-auto">
+                                <table class="ptos-table">
+                                    <thead>
+                                        <tr><th>No. PPK</th><th>Nama Kapal</th><th>Operator</th><th>Tonase</th><th>Status</th><th></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>PPK-0231</td><td>MV Jamrud Sentosa</td>
+                                            <td><span class="ptos-table-avatar">NA</span>Nanda A.</td>
+                                            <td>4.230 T</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-success">Completed</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPK-0232</td><td>MV Nusa Perkasa</td>
+                                            <td><span class="ptos-table-avatar">BW</span>Budi W.</td>
+                                            <td>1.980 T</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-warning">Pending Approval</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPK-0233</td><td>MV Teluk Bayur</td>
+                                            <td><span class="ptos-table-avatar">SR</span>Sari R.</td>
+                                            <td>—</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-error">Rejected</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPK-0234</td><td>MV Lintas Samudra</td>
+                                            <td><span class="ptos-table-avatar">DP</span>Dian P.</td>
+                                            <td>3.105 T</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-neutral">Closed</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ptos-table-footer">
+                                <span class="ptos-item-display">Showing 1-4 of 50 entries</span>
+                                <div class="ptos-pagination" data-ptos-pagination>
+                                    <button type="button" aria-label="Previous page">‹</button>
+                                    <button type="button" class="is-active">1</button>
+                                    <button type="button">2</button>
+                                    <button type="button">3</button>
+                                    <button type="button">4</button>
+                                    <button type="button">5</button>
+                                    <button type="button" aria-label="Next page">›</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ptos-table-wrap is-dark">
+                            <p class="text-xs font-semibold mb-3" style="color:rgba(255,255,255,0.5)">Dark theme</p>
+                            <div class="overflow-x-auto">
+                                <table class="ptos-table">
+                                    <thead>
+                                        <tr><th>No. PPK</th><th>Nama Kapal</th><th>Operator</th><th>Tonase</th><th>Status</th><th></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>PPK-0231</td><td>MV Jamrud Sentosa</td>
+                                            <td><span class="ptos-table-avatar">NA</span>Nanda A.</td>
+                                            <td>4.230 T</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-success">Completed</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPK-0232</td><td>MV Nusa Perkasa</td>
+                                            <td><span class="ptos-table-avatar">BW</span>Budi W.</td>
+                                            <td>1.980 T</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-warning">Pending Approval</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPK-0233</td><td>MV Teluk Bayur</td>
+                                            <td><span class="ptos-table-avatar">SR</span>Sari R.</td>
+                                            <td>—</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-error">Rejected</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPK-0234</td><td>MV Lintas Samudra</td>
+                                            <td><span class="ptos-table-avatar">DP</span>Dian P.</td>
+                                            <td>3.105 T</td>
+                                            <td><span class="ptos-table-badge ptos-table-badge-neutral">Closed</span></td>
+                                            <td><%- include('partials/ptos-action-menu-cell') %></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ptos-table-footer">
+                                <span class="ptos-item-display">Showing 1-4 of 50 entries</span>
+                                <div class="ptos-pagination" data-ptos-pagination>
+                                    <button type="button" aria-label="Previous page">‹</button>
+                                    <button type="button" class="is-active">1</button>
+                                    <button type="button">2</button>
+                                    <button type="button">3</button>
+                                    <button type="button">4</button>
+                                    <button type="button">5</button>
+                                    <button type="button" aria-label="Next page">›</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 08 — CARD COMPONENTS                           -->
+                <!-- ============================================= -->
+                <section id="ui-08" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">08 &mdash; Card Components</p><h2 class="ptos-pf-h2">Card Components</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        ListItemCard — Light/Dark theme, Default/Hover/Selected/Disabled interaction states, and a
+                        Compact/Default/Large sizing scale. Click a card to select it; hover for the real highlight.
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">list-card.ui</span></div><div class="ptos-ui-stage" style="flex-direction:column; gap:28px; align-items:stretch">
+                        <div>
+                            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Light theme — click to select</p>
+                            <div data-ptos-card-group class="flex flex-col gap-3">
+                                <div data-ptos-card class="ptos-list-card ptos-card-default">
+                                    <div class="ptos-list-card-content">
+                                        <div class="ptos-list-card-icon"><i data-lucide="user" style="width:18px;height:18px"></i></div>
+                                        <div class="ptos-list-card-text">
+                                            <p class="ptos-list-card-title">Non-authorized person</p>
+                                            <p class="ptos-list-card-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:18px;height:18px"></i>
+                                </div>
+                                <div data-ptos-card class="ptos-list-card ptos-card-default">
+                                    <div class="ptos-list-card-content">
+                                        <div class="ptos-list-card-icon"><i data-lucide="shield-check" style="width:18px;height:18px"></i></div>
+                                        <div class="ptos-list-card-text">
+                                            <p class="ptos-list-card-title">Authorized person</p>
+                                            <p class="ptos-list-card-desc">Donec pellentesque interdum est vel tempor.</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:18px;height:18px"></i>
+                                </div>
+                                <div class="ptos-list-card ptos-card-default is-disabled">
+                                    <div class="ptos-list-card-content">
+                                        <div class="ptos-list-card-icon"><i data-lucide="id-card" style="width:18px;height:18px"></i></div>
+                                        <div class="ptos-list-card-text">
+                                            <p class="ptos-list-card-title">Authorized representative</p>
+                                            <p class="ptos-list-card-desc">Disabled state — faded interface presence.</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:18px;height:18px"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-5 rounded-xl" style="background:var(--navy-900)">
+                            <p class="text-xs font-semibold mb-3" style="color:rgba(255,255,255,0.5)">Dark theme</p>
+                            <div class="flex flex-col gap-3">
+                                <div data-ptos-card class="ptos-list-card is-dark ptos-card-default">
+                                    <div class="ptos-list-card-content">
+                                        <div class="ptos-list-card-icon"><i data-lucide="anchor" style="width:18px;height:18px"></i></div>
+                                        <div class="ptos-list-card-text">
+                                            <p class="ptos-list-card-title">Vessel Berthing Request</p>
+                                            <p class="ptos-list-card-desc">Designed for high-contrast dark operational surfaces.</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:18px;height:18px;color:rgba(255,255,255,0.3)"></i>
+                                </div>
+                                <div data-ptos-card class="ptos-list-card is-dark ptos-card-default">
+                                    <div class="ptos-list-card-content">
+                                        <div class="ptos-list-card-icon"><i data-lucide="container" style="width:18px;height:18px"></i></div>
+                                        <div class="ptos-list-card-text">
+                                            <p class="ptos-list-card-title">Container Stacking Plan</p>
+                                            <p class="ptos-list-card-desc">Normal interaction state — click, hover, select all apply.</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:18px;height:18px;color:rgba(255,255,255,0.3)"></i>
+                                </div>
+                                <div class="ptos-list-card is-dark ptos-card-default is-disabled">
+                                    <div class="ptos-list-card-content">
+                                        <div class="ptos-list-card-icon"><i data-lucide="file-text" style="width:18px;height:18px"></i></div>
+                                        <div class="ptos-list-card-text">
+                                            <p class="ptos-list-card-title">Archived Manifest</p>
+                                            <p class="ptos-list-card-desc">Disabled state — faded interface presence on dark surfaces too.</p>
+                                        </div>
+                                    </div>
+                                    <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:18px;height:18px;color:rgba(255,255,255,0.3)"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Sizing scale</p>
+                            <div class="flex flex-col gap-3">
+                                <div>
+                                    <p class="text-[11px] mb-1.5" style="color:var(--neutral-400)">Compact (12px padding)</p>
+                                    <div class="ptos-list-card ptos-card-compact">
+                                        <div class="ptos-list-card-content">
+                                            <div class="ptos-list-card-icon"><i data-lucide="layout-list" style="width:16px;height:16px"></i></div>
+                                            <div class="ptos-list-card-text"><p class="ptos-list-card-title">Compact Representative</p></div>
+                                        </div>
+                                        <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:16px;height:16px"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-[11px] mb-1.5" style="color:var(--neutral-400)">Default (16px padding)</p>
+                                    <div class="ptos-list-card ptos-card-default">
+                                        <div class="ptos-list-card-content">
+                                            <div class="ptos-list-card-icon"><i data-lucide="layout-list" style="width:18px;height:18px"></i></div>
+                                            <div class="ptos-list-card-text"><p class="ptos-list-card-title">Default Representative</p></div>
+                                        </div>
+                                        <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:18px;height:18px"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-[11px] mb-1.5" style="color:var(--neutral-400)">Large (24px padding)</p>
+                                    <div class="ptos-list-card ptos-card-large">
+                                        <div class="ptos-list-card-content">
+                                            <div class="ptos-list-card-icon"><i data-lucide="layout-list" style="width:20px;height:20px"></i></div>
+                                            <div class="ptos-list-card-text"><p class="ptos-list-card-title">Large Representative</p></div>
+                                        </div>
+                                        <i data-lucide="chevron-right" class="ptos-list-card-arrow" style="width:20px;height:20px"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 09 — PAGINATION                                -->
+                <!-- ============================================= -->
+                <section id="ui-09" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">09 &mdash; Pagination</p><h2 class="ptos-pf-h2">Pagination</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        Pagination + Item Display, 1:1 from Figma's "Pagination" / "Item Display" component sets
+                        (Theme=Light, Theme=Dark). Click a page number or the ‹ › arrows — this is the same
+                        logic driving the table pagination in section 07, shown here on its own.
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">pagination.ui</span></div><div class="ptos-ui-stage" style="flex-direction:column; gap:28px; align-items:stretch">
+                        <div class="p-5 rounded-xl" style="background:#F9FAFC">
+                            <p class="text-xs font-semibold mb-3" style="color:var(--neutral-500)">Light theme</p>
+                            <div class="ptos-table-footer" style="margin-top:0">
+                                <span class="ptos-item-display" style="color:var(--neutral-500)">Showing 1-10 of 50 entries</span>
+                                <div class="ptos-pagination" data-ptos-pagination>
+                                    <button type="button" aria-label="Previous page">‹</button>
+                                    <button type="button" class="is-active">1</button>
+                                    <button type="button">2</button>
+                                    <button type="button">3</button>
+                                    <button type="button">4</button>
+                                    <button type="button">5</button>
+                                    <button type="button" aria-label="Next page">›</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-5 rounded-xl" style="background:#0F2444">
+                            <p class="text-xs font-semibold mb-3" style="color:rgba(255,255,255,0.5)">Dark theme</p>
+                            <div class="ptos-table-footer ptos-pagination-dark-footer" style="margin-top:0">
+                                <span class="ptos-item-display" style="color:rgba(255,255,255,0.5)">Showing 1-10 of 50 entries</span>
+                                <div class="ptos-pagination ptos-pagination-dark" data-ptos-pagination>
+                                    <button type="button" aria-label="Previous page">‹</button>
+                                    <button type="button" class="is-active">1</button>
+                                    <button type="button">2</button>
+                                    <button type="button">3</button>
+                                    <button type="button">4</button>
+                                    <button type="button">5</button>
+                                    <button type="button" aria-label="Next page">›</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 10 — ICON SET                                  -->
+                <!-- ============================================= -->
+                <section id="ui-10" class="ptos-ui-chapter">
+                    <div class="ptos-pf-head"><p class="ptos-pf-eyebrow">10 &mdash; Icon Set</p><h2 class="ptos-pf-h2">Icon Set</h2></div>
+                    <p class="ptos-ui-note mb-6 max-w-2xl">
+                        118 icons across 6 categories, 1:1 from Figma's Icon component instances — maritime &amp;
+                        logistics, general UI, system, media, documents &amp; files, and communication &amp; commerce.
+                    </p>
+
+                    <div class="ptos-pf-window"><div class="ptos-pf-titlebar"><span class="ptos-pf-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ptos-pf-wtitle">icon-set.svg</span></div><div class="ptos-pf-pad"><div class="flex flex-col gap-8">
+                        <div class="ptos-acc-bar" data-acc-bar>
+                            <span class="ptos-acc-sum" data-acc-sum aria-live="polite"></span>
+                            <button type="button" class="ptos-acc-all" data-acc-all>Expand all</button>
+                        </div>
+                        <% [
+                            ['Maritime & Logistics', ['ship','anchor','container','construction','truck','forklift','warehouse','dock','compass','life-buoy','waves','ship-wheel','ticket','scale','weight','route','boxes','package']],
+                            ['General UI', ['home','search','settings','user','users','bell','mail','calendar','clock','bookmark','tag','heart','star','thumbs-up','flag','plus','minus','menu','move','layers','hash','zap','refresh-cw','external-link','link','filter','arrow-up-down','eye','eye-off','check-circle','x-circle','alert-triangle','info','map-pin']],
+                            ['System', ['wifi','bluetooth','monitor','smartphone','power','battery','cpu','database','server','cloud','terminal','code','globe','lock','unlock','shield','key','log-out']],
+                            ['Media', ['play','pause','volume-2','mic','camera','image','music','headphones','video']],
+                            ['Documents & Files', ['save','printer','download','upload','share-2','edit','trash-2','copy','clipboard','folder','folder-open','file','file-text','archive','paperclip','scissors','clipboard-check','receipt','barcode','qr-code']],
+                            ['Communication & Commerce', ['message-square','phone','at-sign','send','credit-card','receipt','bar-chart','timer','calendar-check','wrench','hammer','arrow-up','arrow-down','arrow-left','arrow-right','chevron-right','chevron-down','maximize','minimize']]
+                        ].forEach(function (group, gi) { %>
+                        <div class="ptos-acc is-open" data-acc>
+                            <button type="button" class="ptos-acc-head" id="acc-h-<%= gi %>" aria-expanded="true" aria-controls="acc-b-<%= gi %>">
+                                <span class="ptos-acc-num" aria-hidden="true"><%= ('0' + (gi + 1)).slice(-2) %></span>
+                                <span class="ptos-acc-title"><%= group[0] %></span>
+                                <span class="ptos-acc-count" aria-label="<%= group[1].length %> icons"><%= group[1].length %></span>
+                                <span class="ptos-acc-chev" aria-hidden="true"><i data-lucide="plus" style="width:20px;height:20px"></i></span>
+                            </button>
+                            <div class="ptos-acc-body" id="acc-b-<%= gi %>" role="region" aria-labelledby="acc-h-<%= gi %>"><div class="ptos-acc-inner">
+                            <div class="ptos-icon-grid">
+                                <% group[1].forEach(function (icon, ii) { %>
+                                <div class="ptos-icon-cell" style="--i:<%= ii %>">
+                                    <i data-lucide="<%= icon %>" style="width:20px;height:20px;color:var(--navy-700)"></i>
+                                    <span><%= icon %></span>
+                                </div>
+                                <% }) %>
+                            </div>
+                            </div></div>
+                        </div>
+                        <% }) %>
+                    </div></div></div>
+                </section>
+
+                <!-- ============================================= -->
+                <!-- 11 — OTHER COMPONENTS (specimens only)         -->
+                <!-- ============================================= -->
+
+
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        if (window.lucide) { lucide.createIcons(); }
+
+        // Sidebar: collapse toggle
+        document.querySelectorAll('[data-sb-toggle]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const sb = btn.closest('.ptos-sb');
+                if (sb) {
+                    sb.classList.toggle('is-collapsed');
+                    sb.querySelectorAll('.ptos-sb-item.has-flyout-open').forEach(function (i) {
+                        i.classList.remove('has-flyout-open');
+                        i.querySelector('.ptos-sb-flyout').classList.add('hidden');
+                    });
+                }
+            });
+        });
+
+        // Collapsed-rail popups are position:fixed (the rail clips overflow), so place them from the icon's rect.
+        function ptosPlace(el, item) {
+            var r = item.getBoundingClientRect();
+            el.style.left = (r.right + 10) + 'px';
+            el.style.top = Math.max(8, Math.min(r.top + r.height / 2 - el.offsetHeight / 2, window.innerHeight - el.offsetHeight - 8)) + 'px';
+        }
+        function ptosCloseFlyouts() {
+            document.querySelectorAll('.ptos-sb-item.has-flyout-open').forEach(function (i) {
+                i.classList.remove('has-flyout-open');
+                var f = i.querySelector('.ptos-sb-flyout'); if (f) f.classList.add('hidden');
+            });
+        }
+        document.querySelectorAll('.ptos-sb [data-sb-item]').forEach(function (item) {
+            var tip = item.querySelector('.ptos-sb-tooltip');
+            item.addEventListener('mouseenter', function () {
+                if (tip && item.closest('.ptos-sb').classList.contains('is-collapsed')) ptosPlace(tip, item);
+            });
+        });
+        window.addEventListener('scroll', ptosCloseFlyouts, true);
+        window.addEventListener('resize', ptosCloseFlyouts);
+
+        // Sidebar: active module + inline sub-items (one open at a time,
+        // clicking the already-active item closes it back) — expanded rail only.
+        // Collapsed rail: hover shows the tooltip (pure CSS); clicking an item
+        // with sub-items opens a flyout popover instead, closing any other
+        // open flyout first (same "only one open at a time" rule as expanded).
+        document.querySelectorAll('[data-ptos-sb-list]').forEach(function (list) {
+            const sb = list.closest('.ptos-sb');
+            const items = list.querySelectorAll('[data-sb-item]');
+            items.forEach(function (item) {
+                const flyout = item.querySelector('.ptos-sb-flyout');
+                item.addEventListener('click', function (e) {
+                    if (sb.classList.contains('is-collapsed')) {
+                        if (!flyout) return;
+                        e.stopPropagation();
+                        const opening = flyout.classList.contains('hidden');
+                        items.forEach(function (i) {
+                            i.classList.remove('has-flyout-open');
+                            const f = i.querySelector('.ptos-sb-flyout');
+                            if (f) f.classList.add('hidden');
+                        });
+                        if (opening) {
+                            flyout.classList.remove('hidden');
+                            ptosPlace(flyout, item);
+                            item.classList.add('has-flyout-open');
+                        }
+                        return;
+                    }
+                    const wasActive = item.classList.contains('is-active');
+                    items.forEach(function (i) { i.classList.remove('is-active'); });
+                    if (!wasActive) item.classList.add('is-active');
+                });
+                if (flyout) {
+                    flyout.addEventListener('click', function (e) { e.stopPropagation(); });
+                    flyout.querySelectorAll('.ptos-sb-flyout-item').forEach(function (fi) {
+                        fi.addEventListener('click', function (e) {
+                            e.stopPropagation();
+                            flyout.classList.add('hidden');
+                            item.classList.remove('has-flyout-open');
+                        });
+                    });
+                }
+            });
+        });
+        document.addEventListener('click', function () {
+            document.querySelectorAll('.ptos-sb-item.has-flyout-open').forEach(function (i) {
+                i.classList.remove('has-flyout-open');
+                i.querySelector('.ptos-sb-flyout').classList.add('hidden');
+            });
+        });
+
+        // Dropdown: real open/close, click-outside-to-close
+        document.querySelectorAll('[data-ptos-dropdown]').forEach(function (wrap) {
+            const trigger = wrap.querySelector('.ptos-dropdown-trigger');
+            const menu = wrap.querySelector('.ptos-dropdown-menu');
+            if (!trigger || !menu) return;
+            const close = function () { trigger.setAttribute('aria-expanded', 'false'); menu.classList.add('hidden'); };
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const open = trigger.getAttribute('aria-expanded') === 'true';
+                document.querySelectorAll('.ptos-dropdown-trigger[aria-expanded="true"]').forEach(function (t) {
+                    t.setAttribute('aria-expanded', 'false');
+                    t.closest('[data-ptos-dropdown]').querySelector('.ptos-dropdown-menu').classList.add('hidden');
+                });
+                trigger.setAttribute('aria-expanded', open ? 'false' : 'true');
+                menu.classList.toggle('hidden', open);
+            });
+            menu.querySelectorAll('.ptos-dropdown-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    trigger.querySelector('.label').textContent = item.textContent;
+                    close();
+                });
+            });
+        });
+        document.addEventListener('click', function () {
+            document.querySelectorAll('.ptos-dropdown-trigger[aria-expanded="true"]').forEach(function (t) {
+                t.setAttribute('aria-expanded', 'false');
+                t.closest('[data-ptos-dropdown]').querySelector('.ptos-dropdown-menu').classList.add('hidden');
+            });
+        });
+
+        // Tab bar / pill tab: real switching, one active per group
+        document.querySelectorAll('[data-ptos-tabs]').forEach(function (group) {
+            const tabs = group.querySelectorAll('[data-ptos-tab]');
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(function (t) { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+                    tab.classList.add('is-active');
+                    tab.setAttribute('aria-selected', 'true');
+                    const meta = group.parentElement.querySelector('[data-ptos-meta]');
+                    if (meta) meta.textContent = meta.dataset.ptosMeta + ' Options · Active: ' + tab.textContent.trim();
+                });
+            });
+        });
+
+        // Single pill: real hover via CSS, click toggles Active
+        document.querySelectorAll('[data-ptos-toggle]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const on = btn.classList.toggle('is-active');
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+        });
+
+        // Section scroll-spy: highlights the current section in the side nav (lg+) and in the jump bar (below lg)
+        (function () {
+            const links = Array.from(document.querySelectorAll('.ptos-ui-chapter-nav a, .ptos-pf-jump a'));
+            const secs = Array.from(document.querySelectorAll('.ptos-ui-chapter'));
+            if (!links.length || !secs.length || !('IntersectionObserver' in window)) return;
+            const mark = function (id) {
+                links.forEach(function (a) {
+                    const on = a.getAttribute('href') === '#' + id;
+                    a.classList.toggle('is-active', on);
+                    if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+                });
+                const bar = document.querySelector('.ptos-pf-jump');
+                const cur = bar && bar.querySelector('a.is-active');
+                if (cur && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: cur.offsetLeft - 24, behavior: 'smooth' });
+            };
+            const io = new IntersectionObserver(function (entries) {
+                const vis = entries.filter(function (e) { return e.isIntersecting; })
+                    .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+                if (vis.length) mark(vis[0].target.id);
+            }, { rootMargin: '-20% 0px -65% 0px' });
+            secs.forEach(function (s) { io.observe(s); });
+            mark(secs[0].id);
+        })();
+
+        // Tab bars: fade the edge that still has hidden tabs (set --fl / --fr)
+        (function () {
+            const bars = Array.from(document.querySelectorAll('.ptos-tabbar'));
+            const upd = function (b) {
+                const left = b.scrollLeft > 1, right = b.scrollLeft + b.clientWidth < b.scrollWidth - 1;
+                b.style.setProperty('--fl', left ? '40px' : '0px');
+                b.style.setProperty('--fr', right ? '40px' : '0px');
+            };
+            bars.forEach(function (b) { b.addEventListener('scroll', function () { upd(b); }, { passive: true }); upd(b); });
+            window.addEventListener('resize', function () { bars.forEach(upd); });
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { bars.forEach(upd); });
+        })();
+
+        // Icon Set accordion: <= 640px collapsible (first open), wider = always open and the header is inert
+        (function () {
+            const accs = Array.from(document.querySelectorAll('[data-acc]'));
+            if (!accs.length) return;
+            const mq = window.matchMedia('(max-width: 640px)');
+            const allBtn = document.querySelector('[data-acc-all]');
+            const sum = document.querySelector('[data-acc-sum]');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const heads = accs.map(function (a) { return a.querySelector('.ptos-acc-head'); });
+            const set = function (acc, open, animate) {
+                const was = acc.classList.contains('is-open');
+                acc.classList.toggle('is-open', open);
+                acc.querySelector('.ptos-acc-head').setAttribute('aria-expanded', open ? 'true' : 'false');
+                if (open && !was && animate && !reduce.matches) {
+                    acc.classList.add('is-opening');
+                    clearTimeout(acc._t);
+                    acc._t = setTimeout(function () { acc.classList.remove('is-opening'); }, 900);
+                }
+            };
+            const refresh = function () {
+                const open = accs.filter(function (a) { return a.classList.contains('is-open'); }).length;
+                if (sum) sum.textContent = open + ' of ' + accs.length + ' categories open';
+                if (allBtn) allBtn.textContent = open === accs.length ? 'Collapse all' : 'Expand all';
+            };
+            const layout = function () {
+                accs.forEach(function (a, i) { set(a, mq.matches ? i === 0 : true, false); });
+                heads.forEach(function (h) { h.tabIndex = mq.matches ? 0 : -1; });
+                refresh();
+            };
+            heads.forEach(function (h, i) {
+                h.addEventListener('click', function () {
+                    if (!mq.matches) return;
+                    set(accs[i], !accs[i].classList.contains('is-open'), true);
+                    refresh();
+                });
+            });
+            if (allBtn) allBtn.addEventListener('click', function () {
+                const openAll = accs.some(function (a) { return !a.classList.contains('is-open'); });
+                accs.forEach(function (a, i) { setTimeout(function () { set(a, openAll, true); refresh(); }, reduce.matches ? 0 : i * 60); });
+            });
+            if (mq.addEventListener) mq.addEventListener('change', layout); else mq.addListener(layout);
+            layout();
+        })();
+
+        // Foundations: click a swatch to copy its hex
+        (function () {
+            const toast = document.getElementById('ptos-fd-toast');
+            let timer;
+            document.querySelectorAll('[data-ptos-copy]').forEach(function (sw) {
+                sw.addEventListener('click', function () {
+                    const hex = sw.getAttribute('data-ptos-copy');
+                    const done = function (ok) {
+                        if (!toast) return;
+                        toast.textContent = ok ? 'Copied ' + hex : 'Could not copy ' + hex + ' (clipboard blocked)';
+                        toast.classList.add('is-on');
+                        sw.classList.toggle('is-copied', ok);
+                        clearTimeout(timer);
+                        timer = setTimeout(function () { toast.classList.remove('is-on'); sw.classList.remove('is-copied'); }, 1400);
+                    };
+                    // execCommand fallback: the async Clipboard API can be refused (permissions policy, insecure context)
+                    const legacy = function () {
+                        const ta = document.createElement('textarea');
+                        ta.value = hex; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+                        document.body.appendChild(ta); ta.select();
+                        let ok = false;
+                        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                        document.body.removeChild(ta);
+                        done(ok);
+                    };
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(hex).then(function () { done(true); }, legacy);
+                    } else { legacy(); }
+                });
+            });
+        })();
+
+        // Card: click to select (skip disabled cards)
+        document.querySelectorAll('[data-ptos-card]').forEach(function (card) {
+            card.addEventListener('click', function () {
+                if (card.classList.contains('is-disabled')) return;
+                card.classList.toggle('is-selected');
+            });
+        });
+
+        // Password visibility toggle (real)
+        document.querySelectorAll('[data-ptos-password-toggle]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const input = btn.closest('.ptos-input-wrap').querySelector('[data-ptos-password-input]');
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                btn.innerHTML = isPassword ? '<i data-lucide="eye-off"></i>' : '<i data-lucide="eye"></i>';
+                if (window.lucide) window.lucide.createIcons();
+            });
+        });
+
+        // Date Picker: real open/close/select, click-outside-to-close
+        document.querySelectorAll('[data-ptos-datepicker]').forEach(function (wrap) {
+            const trigger = wrap.querySelector('[data-ptos-dp-trigger]');
+            const panel = wrap.querySelector('.ptos-datepicker-panel');
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const opening = panel.classList.contains('hidden');
+                document.querySelectorAll('.ptos-datepicker-panel').forEach(function (p) { p.classList.add('hidden'); });
+                if (opening) panel.classList.remove('hidden');
+            });
+            panel.querySelectorAll('.ptos-dp-day').forEach(function (day) {
+                day.addEventListener('click', function () {
+                    panel.querySelectorAll('.ptos-dp-day').forEach(function (d) { d.classList.remove('is-selected'); });
+                    day.classList.add('is-selected');
+                    trigger.value = day.textContent.padStart(2, '0') + '/10/2026';
+                    panel.classList.add('hidden');
+                });
+            });
+        });
+        document.addEventListener('click', function () {
+            document.querySelectorAll('.ptos-datepicker-panel').forEach(function (p) { p.classList.add('hidden'); });
+        });
+
+        // Action Menu (kebab popover): real open/close, click-outside-to-close
+        document.querySelectorAll('[data-ptos-action-menu-wrap]').forEach(function (wrap) {
+            const trigger = wrap.querySelector('[data-ptos-action-menu-trigger]');
+            const menu = wrap.querySelector('.ptos-action-menu');
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const opening = menu.classList.contains('hidden');
+                document.querySelectorAll('.ptos-action-menu').forEach(function (m) { m.classList.add('hidden'); });
+                document.querySelectorAll('[data-ptos-action-menu-trigger]').forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
+                if (opening) {
+                    menu.classList.remove('hidden');
+                    trigger.setAttribute('aria-expanded', 'true');
+                }
+            });
+            menu.querySelectorAll('.ptos-action-menu-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    menu.classList.add('hidden');
+                    trigger.setAttribute('aria-expanded', 'false');
+                });
+            });
+        });
+        document.addEventListener('click', function () {
+            document.querySelectorAll('.ptos-action-menu').forEach(function (m) { m.classList.add('hidden'); });
+            document.querySelectorAll('[data-ptos-action-menu-trigger]').forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
+        });
+
+        // Pagination: real page switching (numbered buttons + prev/next)
+        document.querySelectorAll('[data-ptos-pagination]').forEach(function (nav) {
+            const buttons = Array.from(nav.querySelectorAll('button'));
+            const pageButtons = buttons.filter(function (b) { return /^\d+$/.test(b.textContent.trim()); });
+            function setActive(btn) {
+                pageButtons.forEach(function (b) { b.classList.remove('is-active'); });
+                btn.classList.add('is-active');
+            }
+            pageButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () { setActive(btn); });
+            });
+            const prevBtn = buttons.find(function (b) { return b.getAttribute('aria-label') === 'Previous page'; });
+            const nextBtn = buttons.find(function (b) { return b.getAttribute('aria-label') === 'Next page'; });
+            if (prevBtn) prevBtn.addEventListener('click', function () {
+                const idx = pageButtons.findIndex(function (b) { return b.classList.contains('is-active'); });
+                if (idx > 0) setActive(pageButtons[idx - 1]);
+            });
+            if (nextBtn) nextBtn.addEventListener('click', function () {
+                const idx = pageButtons.findIndex(function (b) { return b.classList.contains('is-active'); });
+                if (idx < pageButtons.length - 1) setActive(pageButtons[idx + 1]);
+            });
+        });
+
+        // Scroll-spy for the sticky chapter nav
+        (function () {
+            const links = document.querySelectorAll('.ptos-ui-chapter-nav a');
+            if (!links.length) return;
+            const sections = Array.from(links).map(function (l) { return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+            const io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    links.forEach(function (l) { l.classList.remove('is-active'); });
+                    const match = document.querySelector('.ptos-ui-chapter-nav a[href="#' + entry.target.id + '"]');
+                    if (match) match.classList.add('is-active');
+                });
+            }, { rootMargin: '-20% 0px -70% 0px' });
+            sections.forEach(function (s) { io.observe(s); });
+        })();
+    </script>
+</body>
+
+</html>

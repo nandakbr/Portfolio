@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth dark" lang="en">
+<html class="scroll-smooth" lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -21,1150 +21,1251 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Tinos:ital@1&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" media="print" onload="this.media='all'" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#000000",
-                        "primary-secondary": "#666666",
-                        "background-light": "#F9F9F9",
-                        "background-dark": "#050505",
-                        "background-elevated": "#111111",
-                        "cta-default": "#000000",
-                        "cta-hover": "#333333",
-                        "btn-default": "#000000",
-                        "btn-hover": "#333333",
-                        "border-color": "#E5E5E5",
-                    },
-                    fontFamily: {
-                        display: ["Outfit", "sans-serif"],
-                        body: ["Outfit", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.5rem",
-                        '4xl': '2rem',
-                    },
-                },
-            },
-        };
-    </script>
-    <style type="text/tailwindcss">
-        :root {
-            --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
-            --ease-apple-soft: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-apple-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
-            --duration-reveal: 1100ms;
-        }
-
-        .reveal-init {
-            @apply opacity-0 translate-y-16 scale-[0.97];
-            filter: blur(10px);
-            transition:
-                opacity var(--duration-reveal) var(--ease-apple),
-                transform var(--duration-reveal) var(--ease-apple),
-                filter calc(var(--duration-reveal) * 0.9) var(--ease-apple-soft);
-            will-change: transform, opacity, filter;
-        }
-
-        .reveal-active {
-            @apply opacity-100 translate-y-0 scale-100;
-            filter: blur(0);
-        }
-
-        section {
-            @apply relative z-10;
-        }
-
-        body,
-        h1,
-        h2,
-        h3,
-        .nav-link {
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .parallax-layer {
-            --px: 0px;
-            --py: 0px;
-            translate: var(--px) var(--py);
-            will-change: transform, translate;
-        }
-
-        .hero-img-container {
-            border-radius: 4rem;
-            overflow: hidden;
-            mask-image: linear-gradient(to top, transparent 0%, black 40%);
-            -webkit-mask-image: linear-gradient(to top, transparent 0%, black 40%);
-            box-shadow: 0 34px 80px rgba(0, 0, 0, 0.35);
-        }
-
-        .footer-cta-bg {
-            background: linear-gradient(135deg, #050505 0%, #111111 50%, #050505 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .footer-cta-bg::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -20%;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-            filter: blur(60px);
-            pointer-events: none;
-        }
-
-        .footer-cta-bg::after {
-            content: '';
-            position: absolute;
-            top: 20%;
-            right: -10%;
-            width: 80%;
-            height: 60%;
-            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05) 0%, transparent 80%);
-            transform: rotate(-15deg);
-            filter: blur(40px);
-            pointer-events: none;
-        }
-
-        .bento-card {
-            @apply relative overflow-hidden border-none;
-            background-color: #F5F5F7;
-            transition:
-                transform 900ms var(--ease-apple),
-                box-shadow 900ms var(--ease-apple),
-                background-color 500ms var(--ease-apple-soft);
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset;
-        }
-
-        .dark .bento-card {
-            background-color: #1C1C1E;
-        }
-
-        .bento-image-container {
-            @apply relative w-full overflow-hidden flex items-center justify-center p-6 lg:p-8;
-            transition: transform 1000ms var(--ease-apple);
-        }
-
-        .bento-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.18);
-        }
-
-        .dark .bento-card:hover {
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.42);
-        }
-
-        .eraser-cutout::before,
-        .eraser-cutout::after {
-            content: "";
-            position: absolute;
-            background-color: transparent;
-            pointer-events: none;
-            width: 3rem;
-            height: 3rem;
-        }
-
-        .eraser-cutout::before {
-            top: 0;
-            left: -3rem;
-            border-top-right-radius: 3rem;
-            box-shadow: 1.5rem -1.5rem 0 1.5rem #F9F9F9;
-        }
-
-        .eraser-cutout::after {
-            bottom: -3rem;
-            right: 0;
-            border-top-right-radius: 3rem;
-            box-shadow: 1.5rem -1.5rem 0 1.5rem #F9F9F9;
-        }
-
-        .dark .eraser-cutout::before,
-        .dark .eraser-cutout::after {
-            box-shadow: 1.5rem -1.5rem 0 1.5rem #050505;
-        }
-
-        .bento-card:hover .bento-image-container {
-            @apply scale-[1.04];
-        }
-
-        .bento-card-container {
-            perspective: 2200px;
-        }
-
-        .bento-tilt {
-            transition: transform 900ms var(--ease-apple-soft);
-            transform-style: preserve-3d;
-        }
-
-        .bento-card-container:hover .bento-tilt {
-            transform: rotateX(1.5deg) rotateY(-1.5deg);
-        }
-
-        .magnetic-btn:hover span {
-            @apply translate-x-2;
-        }
-
-        .bg-text {
-            @apply absolute -left-20 text-[20vw] font-bold opacity-[0.02] select-none pointer-events-none tracking-tighter whitespace-nowrap leading-none font-display z-0;
-        }
-
-        @keyframes scrollPulse {
-            0%,
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 0.95;
-            }
-
-            50% {
-                transform: translateY(8px) scale(0.96);
-                opacity: 0.6;
-            }
-        }
-
-        .scroll-pulse {
-            animation: scrollPulse 2.8s var(--ease-apple-soft) infinite;
-        }
-
-        .tilt-left {
-            transform: rotate(0deg);
-        }
-
-        .word-carousel-container {
-            display: inline-block;
-            height: 1.2em;
-            overflow: hidden;
-            vertical-align: bottom;
-            position: relative;
-        }
-
-        #word-carousel {
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.65s var(--ease-apple-soft);
-            will-change: transform;
-        }
-
-        .carousel-word {
-            height: 1.2em;
-            line-height: 1.2em;
-            display: block;
-        }
-
-        #scramble-word {
-            display: inline-block;
-            min-width: 4.6ch;
-            text-align: center;
-        }
-
-        .hero-background {
-            position: absolute;
-            inset: -2%;
-            z-index: -1;
-            overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 78%, transparent 100%);
-        }
-
-        .hero-background::before {
-            content: "";
-            position: absolute;
-            inset: -12%;
-            background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.18), transparent 55%);
-            filter: blur(60px);
-            animation: heroGlow 14s var(--ease-apple-soft) infinite alternate;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .bg-slide {
-            position: absolute;
-            inset: -12%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            animation: slide-fade 36s infinite var(--ease-apple-soft);
-            will-change: opacity, transform, filter;
-            filter: brightness(0.72) contrast(1.08);
-            transform: scale(1.04) translate3d(0, 0, 0);
-        }
-
-        .bg-slide:nth-child(1) {
-            background-image: url('/assets/Bonus.webp');
-            animation-delay: 0s;
-        }
-
-        .bg-slide:nth-child(2) {
-            background-image: url('/assets/Monochrome%20-%209.webp');
-            animation-delay: 9s;
-        }
-
-        .bg-slide:nth-child(3) {
-            background-image: url('/assets/6.webp');
-            animation-delay: 18s;
-        }
-
-        .bg-slide:nth-child(4) {
-            background-image: url('/assets/7.webp');
-            animation-delay: 27s;
-        }
-
-        @keyframes heroGlow {
-            0% {
-                transform: translate3d(-3%, -2%, 0) scale(1);
-                opacity: 0.4;
-            }
-
-            100% {
-                transform: translate3d(3%, 2%, 0) scale(1.08);
-                opacity: 0.8;
-            }
-        }
-
-        @keyframes slide-fade {
-            0% {
-                opacity: 0;
-                transform: scale(1.04) translate3d(-1%, -1%, 0);
-                filter: blur(20px) brightness(0.45);
-            }
-
-            10% {
-                opacity: 1;
-                filter: blur(0px) brightness(0.82);
-            }
-
-            38% {
-                opacity: 1;
-                transform: scale(1.08) translate3d(1.5%, 1%, 0);
-                filter: blur(0px) brightness(0.82);
-            }
-
-            52% {
-                opacity: 0;
-                transform: scale(1.12) translate3d(3%, 2%, 0);
-                filter: blur(20px) brightness(0.45);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(1.12) translate3d(3%, 2%, 0);
-            }
-        }
-
-        .hero-background::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.05;
-            mix-blend-mode: overlay;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        @keyframes scrollBtnEnter {
-            from {
-                opacity: 0;
-                transform: translateY(2rem) scale(0.9);
-                filter: blur(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0);
-            }
-        }
-
-        .scroll-btn-enter {
-            opacity: 0;
-            animation: scrollBtnEnter 1.2s var(--ease-apple) 1.6s forwards;
-        }
-
-        .chat-bubble {
-            @apply flex items-center justify-center rounded-[20px] text-2xl lg:text-3xl shadow-xl transition-all duration-300 relative;
-            width: 4rem;
-            height: 4rem;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12));
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-            animation: floatBubble 10s var(--ease-apple-soft) infinite;
-            will-change: transform;
-        }
-
-        .dark .chat-bubble {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.52);
-        }
-
-        @keyframes floatBubble {
-            0%,
-            100% {
-                transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-            }
-
-            50% {
-                transform: translate3d(0, -14px, 0) rotate(2.4deg) scale(1.06);
-            }
-        }
-
-        .bubble-1 {
-            top: 20%;
-            left: 12%;
-        }
-
-        .bubble-2 {
-            top: 28%;
-            right: 15%;
-        }
-
-        .bubble-3 {
-            bottom: 25%;
-            left: 18%;
-        }
-
-        .bubble-4 {
-            bottom: 35%;
-            right: 12%;
-        }
-
-        .bubble-5 {
-            top: 45%;
-            left: 28%;
-        }
-
-        .bubble-1 .chat-bubble {
-            animation-delay: 0s;
-        }
-
-        .bubble-2 .chat-bubble {
-            animation-delay: 1.2s;
-        }
-
-        .bubble-3 .chat-bubble {
-            animation-delay: 2.5s;
-        }
-
-        .bubble-4 .chat-bubble {
-            animation-delay: 3.8s;
-        }
-
-        .bubble-5 .chat-bubble {
-            animation-delay: 1.7s;
-        }
-
-        @keyframes slideSelected {
-            0%,
-            100% {
-                transform: translateX(-3%);
-            }
-
-            50% {
-                transform: translateX(3%);
-            }
-        }
-
-        @keyframes slideWork {
-            0%,
-            100% {
-                transform: translateX(3%);
-            }
-
-            50% {
-                transform: translateX(-3%);
-            }
-        }
-
-        .animate-selected {
-            animation: slideSelected 28s var(--ease-apple-soft) infinite;
-            will-change: transform;
-        }
-
-        .animate-work {
-            animation: slideWork 28s var(--ease-apple-soft) infinite;
-            will-change: transform;
-        }
-
-        /* Skill card scatter hover */
-        .skill-card {
-            position: relative;
-        }
-
-        .skill-icon-base {
-            position: relative;
-            z-index: 10;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 3.25rem;
-            height: 3.25rem;
-            border-radius: 1.15rem;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.4));
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
-            color: #0B130F;
-            transition:
-                opacity 360ms var(--ease-apple),
-                transform 420ms var(--ease-apple),
-                filter 360ms var(--ease-apple);
-            will-change: opacity, transform, filter;
-        }
-
-        .dark .skill-icon-base {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
-            color: #EEF3EE;
-        }
-
-        .skill-icon-base .material-symbols-outlined {
-            font-size: 1.6rem;
-            font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
-        }
-
-        .skill-card:hover .skill-icon-base {
-            opacity: 0;
-            transform: scale(0.4);
-            filter: blur(8px);
-        }
-
-        .skill-scatter {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        .skill-squircle {
-            position: absolute;
-            width: 3rem;
-            height: 3rem;
-            border-radius: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.4));
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
-            color: #0B130F;
-            opacity: 0;
-            transform: scale(0.4) translateY(14px) rotate(0deg);
-            transition:
-                opacity 700ms var(--ease-apple-soft),
-                transform 800ms var(--ease-apple-snap);
-            will-change: transform, opacity;
-        }
-
-        .dark .skill-squircle {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04));
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
-            color: #EEF3EE;
-        }
-
-        .skill-squircle .material-symbols-outlined {
-            font-size: 1.5rem;
-            font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
-        }
-
-        .skill-card:hover .skill-squircle {
-            opacity: 1;
-            transform: scale(1) translateY(0) rotate(var(--rot, 0deg));
-            animation: squircleFloat 4.6s var(--ease-apple-soft) infinite;
-        }
-
-        .skill-card:hover .skill-squircle:nth-child(1) {
-            transition-delay: 80ms;
-            animation-delay: 1.1s;
-        }
-
-        .skill-card:hover .skill-squircle:nth-child(2) {
-            transition-delay: 170ms;
-            animation-delay: 1.4s;
-        }
-
-        .skill-card:hover .skill-squircle:nth-child(3) {
-            transition-delay: 260ms;
-            animation-delay: 1.7s;
-        }
-
-        .skill-card:hover .skill-squircle:nth-child(4) {
-            transition-delay: 340ms;
-            animation-delay: 2s;
-        }
-
-        @keyframes squircleFloat {
-            0%,
-            100% {
-                transform: scale(1) translateY(0) rotate(var(--rot, 0deg));
-            }
-
-            50% {
-                transform: scale(1.05) translateY(-5px) rotate(calc(var(--rot, 0deg) + 3deg));
-            }
-        }
-
-        /* Selected Works mobile snap carousel */
-        .work-dots {
-            display: none;
-        }
-
-        @media (max-width: 767px) {
-            .work-grid {
-                display: flex;
-                flex-direction: row;
-                gap: 1rem;
-                overflow-x: auto;
-                overflow-y: visible;
-                scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
-                scroll-padding-left: 2rem;
-                padding: 1rem 2rem 1.5rem;
-                margin-inline: -2rem;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .work-grid::-webkit-scrollbar {
-                display: none;
-            }
-
-            .work-grid > .work-card {
-                flex: 0 0 calc(100vw - 6rem);
-                height: 480px !important;
-                aspect-ratio: auto !important;
-                scroll-snap-align: start;
-                scroll-snap-stop: always;
-                transform: scale(0.94);
-                transition: transform 700ms var(--ease-apple-soft);
-                will-change: transform;
-            }
-
-            .work-grid > .work-card.work-card-active {
-                transform: scale(1);
-            }
-
-            .work-dots {
-                display: flex;
-                justify-content: center;
-                gap: 0.5rem;
-                margin-top: 2rem;
-            }
-
-            .work-dot {
-                width: 0.4rem;
-                height: 0.4rem;
-                border-radius: 9999px;
-                background: currentColor;
-                opacity: 0.2;
-                border: none;
-                padding: 0;
-                cursor: pointer;
-                transition:
-                    width 420ms var(--ease-apple-soft),
-                    opacity 420ms var(--ease-apple-soft),
-                    background-color 420ms var(--ease-apple-soft);
-            }
-
-            .work-dot.work-dot-active {
-                width: 1.5rem;
-                opacity: 0.9;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-
-            .parallax-layer {
-                --px: 0px !important;
-                --py: 0px !important;
-            }
-
-            .reveal-init {
-                opacity: 1 !important;
-                transform: none !important;
-                filter: none !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/output.css" />
 </head>
 
 <body
-    class="bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] transition-colors duration-300">
-    <header class="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-lg border-b border-white/5">
-        <nav class="max-w-7xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
-            <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
-            <div class="flex gap-10 items-center">
-                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/work">Work</a>
-                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/about">About</a>
-
-            </div>
-        </nav>
+    class="bg-background-light text-[#20211F] transition-colors duration-300">
+    <header class="mode-desktop-only fixed top-0 left-0 right-0 z-50 pointer-events-none">
+        <div class="max-w-[1440px] mx-auto px-[54px] pt-[30px] flex items-center justify-between pointer-events-auto">
+            <a class="text-base font-bold tracking-tight hover:opacity-70 active:opacity-50 transition-opacity focus-ring cursor-pointer" href="/">Nanda Akbar <span class="font-normal opacity-50">— UI/UX Designer</span></a>
+            <nav class="flex items-center gap-8 text-sm">
+                <button type="button" onclick="openIframeModal('/about')" class="magnetic hover:opacity-60 active:opacity-40 transition-opacity focus-ring cursor-pointer">Resume</button>
+                <button type="button" data-folder-trigger="contact" class="magnetic flex items-center gap-1 hover:opacity-60 active:opacity-40 transition-opacity focus-ring cursor-pointer">Contact<span class="material-symbols-outlined text-sm">north_east</span></button>
+            </nav>
+        </div>
     </header>
     <main>
-        <section class="relative w-full min-h-screen flex flex-col pt-32 mb-72 overflow-hidden">
-            <!-- Background Slideshow -->
-            <div class="hero-background parallax-layer" data-parallax-depth="4">
-                <div class="bg-slide"></div>
-                <div class="bg-slide"></div>
-                <div class="bg-slide"></div>
-                <div class="bg-slide"></div>
-            </div>
+        <section class="mode-mobile-desktop-wrap relative w-full min-h-screen flex flex-col overflow-visible md:overflow-hidden">
+            <!-- Background: subtle gradient + grain, no slideshow -->
+            <div class="hero-background"></div>
 
-            <!-- Floating Chat Bubbles -->
-            <div class="absolute bubble-1 z-20 reveal-item parallax-layer" data-delay="500" data-parallax-depth="14">
-                <div class="chat-bubble">✨</div>
-            </div>
-            <div class="absolute bubble-2 z-20 reveal-item parallax-layer" data-delay="700" data-parallax-depth="18">
-                <div class="chat-bubble">🚀</div>
-            </div>
-            <div class="absolute bubble-3 z-20 reveal-item parallax-layer" data-delay="900" data-parallax-depth="12">
-                <div class="chat-bubble">🔥</div>
-            </div>
-            <div class="absolute bubble-4 z-20 reveal-item parallax-layer" data-delay="1100" data-parallax-depth="16">
-                <div class="chat-bubble">💡</div>
-            </div>
-            <div class="absolute bubble-5 z-20 reveal-item parallax-layer" data-delay="1300" data-parallax-depth="10">
-                <div class="chat-bubble">🎨</div>
-            </div>
+            <!-- Mobile (<768px): editorial index.
+                 Desktop is a work desk (windows, folders, files scattered across four corners).
+                 A phone has one axis, so the mobile layout is the table-of-contents page of
+                 the same magazine: masthead, one photograph, one sentence, then a numbered
+                 index whose entries open in place. No window chrome, nothing floats, nothing
+                 dims. Disclosure is native <details name="work"> — exclusive accordion, no JS. -->
+            <!-- Magazine mode, mobile (<768px): 4 full-screen pages, scroll-snap between
+                 them like turning a page — Cover → Summary → Work → Contact. Each section
+                 is exactly one viewport tall; the running head names whichever page is
+                 currently snapped into view. -->
+            <!-- Magazine mode, mobile (<768px): 3 full-screen pages (Cover, Work, Contact),
+                 horizontal swipe between them. Ported from Figma (oqW1XKTaRi9iFpeQcR28uL,
+                 nodes 6897:34726 / 34770 / 34857) — warm cream background, Inter + Tinos
+                 Italic + IBM Plex Mono type system, folder-blue (#244BFF) as the sole accent,
+                 window-chrome kept consistent with the desktop's own traffic-light style. -->
+            <div id="pageSnapContainer" class="mode-mobile-only w-full h-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory flex bg-background-light" style="scroll-behavior: smooth;">
 
-            <div
-                class="max-w-7xl mx-auto px-8 md:px-12 flex-grow flex flex-col justify-center items-center gap-12 lg:gap-16 text-center">
-                <!-- Portrait -->
-                <div class="w-48 md:w-56 lg:w-64 relative tilt-left shrink-0 reveal-item" data-delay="400">
-                    <div class="hero-img-container parallax-layer aspect-[4/5] bg-[#3B82F6] relative group shadow-2xl" data-parallax-depth="8">
-                        <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover object-center"
-                            src="/assets/Main.webp" fetchpriority="high" decoding="async"  loading="lazy">
+                <!-- Header: persists across all 3 pages. Right label swaps per page. -->
+                <div id="runningHead" class="fixed top-0 left-0 right-0 z-30 px-6 py-4 flex items-baseline justify-between bg-background-light/90 backdrop-blur-sm border-b border-black/10">
+                    <p class="text-sm font-bold tracking-tight">Nanda Akbar</p>
+                    <p class="text-[0.6rem] uppercase tracking-[0.15em] opacity-50 running-label" aria-live="polite">PORTFOLIO / <span data-running-text>COVER</span></p>
+                </div>
+
+                <!-- Page 1: Cover -->
+                <section class="snap-start h-screen w-screen shrink-0 relative px-6 pt-20 pb-24" data-running="COVER" data-page-label="Cover">
+                    <p class="text-4xl font-semibold leading-[0.95] tracking-tight">Nanda<br>Akbar</p>
+                    <p class="text-[0.6rem] uppercase tracking-[0.1em] text-[#244BFF] mt-4">01 — THE COVER</p>
+
+                    <!-- Portrait window: same traffic-light chrome as desktop -->
+                    <div class="mt-5 w-[212px] rounded-[10px] border border-black/10 shadow-[0px_6px_16px_0px_rgba(32,33,31,0.06)] overflow-hidden">
+                        <div class="h-[26px] bg-surface-control border-b border-black/10 flex items-center gap-2 px-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="flex-1 text-center text-[0.6rem] opacity-50">nanda_akbar.jpg</span>
+                        </div>
+                        <div class="aspect-[4/5] bg-[#244BFF]">
+                            <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover object-[50%_25%]"
+                                src="/assets/Main.webp" fetchpriority="high" decoding="async">
+                        </div>
+                    </div>
+
+                    <p class="mt-6 text-xl font-light leading-[1.2] tracking-tight">
+                        I turn <span class="font-bold">messy ideas</span> into clean experiences that just <span class="font-bold text-[#244BFF]">click.</span>
+                    </p>
+
+                    <p class="mt-4 text-sm leading-snug opacity-50">
+                        <span class="text-[0.65rem] text-[#244BFF] uppercase tracking-[0.1em]">NOW ↑</span>
+                        Currently making sense of chaos at Pelindo — 80+ port terminals, one TOS.
+                    </p>
+                </section>
+
+                <!-- Page 2: Work -->
+                <section class="snap-start h-screen w-screen shrink-0 overflow-y-auto px-6 pt-20 pb-24" data-running="WORK" data-page-label="Work">
+                    <div class="flex items-start justify-between">
+                        <p class="text-4xl font-semibold leading-[0.95] tracking-tight">Selected<br>work.</p>
+                        <span class="shrink-0 mt-1 w-9 h-9 rounded-full border border-[#244BFF] flex items-center justify-center text-[#244BFF] text-xs">03</span>
+                    </div>
+
+                    <details name="work" class="index-entry group border-t border-black/10 mt-6">
+                        <summary class="index-summary flex items-center gap-4 py-5 cursor-pointer select-none list-none focus-ring [&::-webkit-details-marker]:hidden">
+                            <span class="text-xs tabular-nums text-[#244BFF] w-7">01</span>
+                            <span class="text-lg font-medium flex-1">UI/UX Design</span>
+                            <span class="text-xs tabular-nums opacity-50">5</span>
+                            <span class="material-symbols-outlined text-xl opacity-50 transition-transform duration-200 group-open:rotate-45">add</span>
+                        </summary>
+                        <div class="index-body pb-5 px-1">
+                            <div class="rounded-lg border border-black/10 shadow-sm overflow-hidden bg-surface-window">
+                                <div class="index-chrome-bar flex items-center gap-[9px] px-[11px] h-[27px] bg-surface-titlebar-alt border-b border-black/10">
+                                    <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                                    <span class="flex-1 text-center text-[0.65rem] opacity-50">UI/UX Design</span>
+                                </div>
+                                <div class="divide-y divide-black/10 px-3">
+                            <a href="/unreleased-tos" class="index-project group/row flex items-center gap-4 py-3 focus-ring">
+                                <span class="w-20 h-14 shrink-0 overflow-hidden rounded-sm border border-black/10 transition-transform duration-200 group-active/row:scale-[0.97]"><img alt="" loading="lazy" src="/assets/Ops Plan Detail 1.webp" class="w-full h-full object-cover"></span>
+                                <span class="flex flex-col min-w-0 flex-1"><span class="text-sm font-medium">Unreleased TOS</span><span class="text-xs opacity-50 leading-snug">Next-generation terminal operating system</span></span>
+                                <span class="material-symbols-outlined text-lg text-[#244BFF] transition-transform duration-200 group-active/row:translate-x-1">arrow_forward</span>
+                            </a>
+                            <a href="/ptosm" class="index-project group/row flex items-center gap-4 py-3 focus-ring">
+                                <span class="w-20 h-14 shrink-0 overflow-hidden rounded-sm border border-black/10 transition-transform duration-200 group-active/row:scale-[0.97]"><img alt="" loading="lazy" src="/assets/mockup_ptosm.webp" class="w-full h-full object-cover"></span>
+                                <span class="flex flex-col min-w-0 flex-1"><span class="text-sm font-medium">PTOSM Redesign</span><span class="text-xs opacity-50 leading-snug">TOS dashboard, monitoring, unified UI</span></span>
+                                <span class="material-symbols-outlined text-lg text-[#244BFF] transition-transform duration-200 group-active/row:translate-x-1">arrow_forward</span>
+                            </a>
+                            <a href="/ptos-sso" class="index-project group/row flex items-center gap-4 py-3 focus-ring">
+                                <span class="w-20 h-14 shrink-0 overflow-hidden rounded-sm border border-black/10 transition-transform duration-200 group-active/row:scale-[0.97]"><img alt="" loading="lazy" src="/assets/mockup_terminal.webp" class="w-full h-full object-cover"></span>
+                                <span class="flex flex-col min-w-0 flex-1"><span class="text-sm font-medium">PTOS-SSO</span><span class="text-xs opacity-50 leading-snug">Single sign-on for terminal systems</span></span>
+                                <span class="material-symbols-outlined text-lg text-[#244BFF] transition-transform duration-200 group-active/row:translate-x-1">arrow_forward</span>
+                            </a>
+                            <a href="/ptosm-ui-lib" class="index-project group/row flex items-center gap-4 py-3 focus-ring">
+                                <span class="w-20 h-14 shrink-0 overflow-hidden rounded-sm border border-black/10 transition-transform duration-200 group-active/row:scale-[0.97]"><img alt="" loading="lazy" src="/assets/ds-thumb.svg" class="w-full h-full object-cover"></span>
+                                <span class="flex flex-col min-w-0 flex-1"><span class="text-sm font-medium">PTOS-M UI Library</span><span class="text-xs opacity-50 leading-snug">Tokens, navigation, form, table components</span></span>
+                                <span class="material-symbols-outlined text-lg text-[#244BFF] transition-transform duration-200 group-active/row:translate-x-1">arrow_forward</span>
+                            </a>
+                            <a href="/bea-cukai" class="index-project group/row flex items-center gap-4 py-3 focus-ring">
+                                <span class="w-20 h-14 shrink-0 overflow-hidden rounded-sm border border-black/10 transition-transform duration-200 group-active/row:scale-[0.97]"><img alt="" loading="lazy" src="/assets/mockup_beacukai.webp" class="w-full h-full object-cover"></span>
+                                <span class="flex flex-col min-w-0 flex-1"><span class="text-sm font-medium">Bea Cukai Module</span><span class="text-xs opacity-50 leading-snug">Customs monitoring, before/after</span></span>
+                                <span class="material-symbols-outlined text-lg text-[#244BFF] transition-transform duration-200 group-active/row:translate-x-1">arrow_forward</span>
+                            </a>
+                            </div>
+                            </div>
+                        </div>
+                    </details>
+                    <details name="work" class="index-entry group border-t border-black/10">
+                        <summary class="index-summary flex items-center gap-4 py-5 cursor-pointer select-none list-none focus-ring [&::-webkit-details-marker]:hidden">
+                            <span class="text-xs tabular-nums text-[#244BFF] w-7">02</span>
+                            <span class="text-lg font-medium flex-1">Packaging</span>
+                            <span class="text-xs tabular-nums opacity-50">7</span>
+                            <span class="material-symbols-outlined text-xl opacity-50 transition-transform duration-200 group-open:rotate-45">add</span>
+                        </summary>
+                        <div class="index-body pb-5 px-1">
+                            <div class="rounded-lg border border-black/10 shadow-sm overflow-hidden bg-surface-window">
+                                <div class="index-chrome-bar flex items-center gap-[9px] px-[11px] h-[27px] bg-surface-titlebar-alt border-b border-black/10">
+                                    <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                                    <span class="flex-1 text-center text-[0.65rem] opacity-50">Packaging</span>
+                                </div>
+                                <div class="scroll-fade-container p-3">
+                                    <div class="scroll-fade-content grid grid-cols-2 gap-3 content-start">
+                                        <button type="button" onclick="openImageExpand('/assets/packaging/arjuna.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Arjuna" loading="lazy" src="/assets/packaging/arjuna.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Arjuna<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/packaging/arjuna%20pm.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Arjuna PM" loading="lazy" src="/assets/packaging/arjuna%20pm.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Arjuna PM<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/packaging/blue%20mountain.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Blue Mountain" loading="lazy" src="/assets/packaging/blue%20mountain.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Blue Mountain<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/packaging/gayo%20red%20bourbon.jpg')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Gayo Red Bourbon" loading="lazy" src="/assets/packaging/gayo%20red%20bourbon.jpg" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Gayo Red Bourbon<span class="opacity-60">.jpg</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/packaging/gayo%20red%20-%20%20kawi.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Gayo Red - Kawi" loading="lazy" src="/assets/packaging/gayo%20red%20-%20%20kawi.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Gayo Red - Kawi<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/packaging/putuk%20gede%20-%20flores.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Putuk Gede - Flores" loading="lazy" src="/assets/packaging/putuk%20gede%20-%20flores.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Putuk Gede - Flores<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/packaging/halu.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Halu" loading="lazy" src="/assets/packaging/halu.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Halu<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <details name="work" class="index-entry group border-t border-black/10">
+                        <summary class="index-summary flex items-center gap-4 py-5 cursor-pointer select-none list-none focus-ring [&::-webkit-details-marker]:hidden">
+                            <span class="text-xs tabular-nums text-[#244BFF] w-7">03</span>
+                            <span class="text-lg font-medium flex-1">Social Media</span>
+                            <span class="text-xs tabular-nums opacity-50">19</span>
+                            <span class="material-symbols-outlined text-xl opacity-50 transition-transform duration-200 group-open:rotate-45">add</span>
+                        </summary>
+                        <div class="index-body pb-5 px-1">
+                            <div class="rounded-lg border border-black/10 shadow-sm overflow-hidden bg-surface-window">
+                                <div class="index-chrome-bar flex items-center gap-[9px] px-[11px] h-[27px] bg-surface-titlebar-alt border-b border-black/10">
+                                    <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                                    <span class="flex-1 text-center text-[0.65rem] opacity-50">Social Media</span>
+                                </div>
+                                <div class="scroll-fade-container p-3">
+                                    <div class="scroll-fade-content grid grid-cols-2 gap-3 content-start">
+                                        <button type="button" onclick="openImageExpand('/assets/social/cpopc%201.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="CPOPC 1" loading="lazy" src="/assets/social/cpopc%201.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">CPOPC 1<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/cpopc%202.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="CPOPC 2" loading="lazy" src="/assets/social/cpopc%202.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">CPOPC 2<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/cpopc%203.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="CPOPC 3" loading="lazy" src="/assets/social/cpopc%203.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">CPOPC 3<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/fotofeeds%201.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="FotoFeeds 1" loading="lazy" src="/assets/social/fotofeeds%201.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">FotoFeeds 1<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/fotofeeds%202.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="FotoFeeds 2" loading="lazy" src="/assets/social/fotofeeds%202.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">FotoFeeds 2<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/fotofeeds%203.webp')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="FotoFeeds 3" loading="lazy" src="/assets/social/fotofeeds%203.webp" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">FotoFeeds 3<span class="opacity-60">.webp</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/labq%201.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="LabQ 1" loading="lazy" src="/assets/social/labq%201.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">LabQ 1<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/labq%202.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="LabQ 2" loading="lazy" src="/assets/social/labq%202.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">LabQ 2<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/labq%203.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="LabQ 3" loading="lazy" src="/assets/social/labq%203.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">LabQ 3<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/maro%201.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Maro 1" loading="lazy" src="/assets/social/maro%201.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Maro 1<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/maro%202.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Maro 2" loading="lazy" src="/assets/social/maro%202.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Maro 2<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/maro%203.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Maro 3" loading="lazy" src="/assets/social/maro%203.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Maro 3<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%201.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Perumnas 1" loading="lazy" src="/assets/social/perumnas%201.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Perumnas 1<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%202.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Perumnas 2" loading="lazy" src="/assets/social/perumnas%202.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Perumnas 2<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%203.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Perumnas 3" loading="lazy" src="/assets/social/perumnas%203.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Perumnas 3<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%204.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Perumnas 4" loading="lazy" src="/assets/social/perumnas%204.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Perumnas 4<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/shanas%201.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Shanas 1" loading="lazy" src="/assets/social/shanas%201.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Shanas 1<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/shanas%202.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Shanas 2" loading="lazy" src="/assets/social/shanas%202.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Shanas 2<span class="opacity-60">.png</span></span>
+                                        </button>
+                                        <button type="button" onclick="openImageExpand('/assets/social/shanas%203.png')" class="text-left active:opacity-60 focus-ring">
+                                            <span class="block aspect-square overflow-hidden rounded-sm border border-black/10"><img alt="Shanas 3" loading="lazy" src="/assets/social/shanas%203.png" class="w-full h-full object-cover"></span>
+                                            <span class="block text-xs opacity-50 mt-2">Shanas 3<span class="opacity-60">.png</span></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <div class="border-t border-black/10"></div>
+                </section>
+
+                <!-- Page 3: Contact -->
+                <section class="snap-start h-screen w-screen shrink-0 relative px-6 pt-20 pb-24" data-running="CONTACT" data-page-label="Contact">
+                    <p class="text-[0.6rem] uppercase tracking-[0.1em] text-[#244BFF]">03 — CONTACT</p>
+                    <p class="mt-3 text-4xl font-semibold leading-[0.95] tracking-tight">drop a<br>message,</p>
+                    <p class="mt-2 text-xl italic leading-[1.1] tracking-tight">and I'll take care<br>of the rest.</p>
+
+                    <!-- Contact window: same traffic-light chrome as desktop/portrait -->
+                    <div class="mt-6 rounded-[12px] border border-black/10 shadow-[0px_6px_18px_0px_rgba(32,33,31,0.06)] overflow-hidden bg-surface-window">
+                        <div class="h-[29px] bg-surface-titlebar border-b border-black/10 flex items-center gap-2 px-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="flex-1 text-center text-[0.6rem] opacity-50">new_message.txt</span>
+                        </div>
+                        <ul class="text-sm flex flex-col p-4 gap-1">
+                            <li><a class="inline-block py-2 underline underline-offset-4 decoration-[#244BFF]/40 active:opacity-60 focus-ring" href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">nandaakbar70@gmail.com</a></li>
+                            <li><a class="inline-block py-2 underline underline-offset-4 decoration-[#244BFF]/40 active:opacity-60 focus-ring" href="https://www.linkedin.com/in/nandakbr">LinkedIn</a></li>
+                            <li><a class="inline-block py-2 underline underline-offset-4 decoration-[#244BFF]/40 active:opacity-60 focus-ring" href="https://www.instagram.com/nandakbr_/">Instagram</a></li>
+                        </ul>
+                    </div>
+                    <a href="/about" class="inline-block mt-6 text-sm py-2 -my-2 active:opacity-60 focus-ring underline underline-offset-4 decoration-[#244BFF]/40">View Resume →</a>
+                </section>
+
+                <!-- Footer: pill tab-bar navigation + page indicator, persists across all pages -->
+                <div class="fixed bottom-0 left-0 right-0 z-30 px-6 pb-6 pt-3 bg-gradient-to-t from-background-light via-background-light/90 to-transparent">
+                    <div id="pageTabBar" class="flex gap-[3px] p-1 rounded-[9px] bg-[#E8E7DF] border border-black/10">
+                        <button type="button" data-page-jump="0" class="page-tab flex-1 h-[34px] rounded-[6px] flex items-center justify-center gap-1.5 text-xs transition-all duration-200 bg-surface-window shadow-sm text-[#20211F]">
+                            <span class="text-[0.6rem] opacity-60">01</span><span>Cover</span>
+                        </button>
+                        <button type="button" data-page-jump="1" class="page-tab flex-1 h-[34px] rounded-[6px] flex items-center justify-center gap-1.5 text-xs transition-all duration-200 opacity-50">
+                            <span class="text-[0.6rem] opacity-60">02</span><span>Work</span>
+                        </button>
+                        <button type="button" data-page-jump="2" class="page-tab flex-1 h-[34px] rounded-[6px] flex items-center justify-center gap-1.5 text-xs transition-all duration-200 opacity-50">
+                            <span class="text-[0.6rem] opacity-60">03</span><span>Contact</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between mt-3 px-1">
+                        <p class="text-[0.6rem] opacity-50">© 2026 Nanda Akbar</p>
+                        <p class="text-[0.6rem] text-[#244BFF]" id="pageIndicator">01 / 03</p>
                     </div>
                 </div>
 
-                <!-- Greeting -->
-                <div class="text-xl md:text-3xl lg:text-4xl font-light tracking-tight reveal-item" data-delay="900">
-                    hey <span class="word-carousel-container font-bold text-[#3B82F6] dark:text-[#EEF3EE]">
-                        <span id="word-carousel">
-                            <span class="carousel-word">peeps</span>
-                            <span class="carousel-word">guys</span>
-                            <span class="carousel-word">people</span>
-                            <span class="carousel-word">folks</span>
-                            <span class="carousel-word">ladies</span>
-                            <span class="carousel-word">gents</span>
-                        </span>
-                    </span>! I'm Nanda
-                </div>
+            </div>
+            <!-- Desktop stage: absolute-positioned 1:1 from the Figma "Desktop — 01 Home
+                 workspace" frame (1440x1000 canvas) — every window/folder/footer below
+                 uses the exact x/y Figma gives, translated straight to left/top px.
+                 DESKTOP ONLY — placed after the mobile section so mobile's md:hidden
+                 content never nests inside this hidden md:block parent. -->
+            <div id="desktopStageWrap" class="mode-desktop-only relative w-full flex-grow overflow-hidden">
+            <!-- Ambient cursor glow — a soft radial light that follows the
+                 pointer across the desktop canvas, like the whole workspace
+                 is responding to presence, not just clicks. Sits BEHIND
+                 everything (z-0) and ignores pointer events entirely. -->
+            <div id="desktopGlow" class="absolute inset-0 z-0 pointer-events-none opacity-0 transition-opacity duration-500" style="background: radial-gradient(600px circle at var(--gx, 50%) var(--gy, 50%), rgba(36,75,255,0.07), transparent 60%);"></div>
+            <div id="desktopStage" class="absolute left-1/2 top-1/2 w-[1440px] h-[1000px]" style="transform-origin: center center;">
 
-                <!-- Headline -->
-                <div class="max-w-4xl mx-auto reveal-item" data-delay="1400">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.1] tracking-tight">
-                        I turn <span class="font-bold"><span id="scramble-word">messy</span> ideas</span> into clean
-                        experiences that just <span class="font-bold relative inline-block">
-                            <span id="click-word" class="inline-block transition-transform duration-150">click.</span>
-                        </span>
-                    </h1>
+            <!-- Portrait window: "nanda_akbar.jpg" — x:78 y:500 w:248 (Figma) -->
+            <div class="absolute left-[78px] top-[500px] w-[248px] z-10 reveal-item" data-delay="400">
+                <div class="group relative transition-transform duration-500 ease-out group-hover:scale-[1.03]">
+                    <div class="rounded-lg overflow-hidden shadow-md border border-black/10 transition-transform duration-500 ease-out group-hover:scale-[1.05]">
+                        <!-- Window titlebar -->
+                        <div class="flex items-center gap-1 px-2 h-[20px] bg-surface-control">
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        </div>
+                        <!-- Window content -->
+                        <div class="aspect-[4/5] bg-[#244BFF]">
+                            <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover object-center"
+                                src="/assets/Main.webp" fetchpriority="high" decoding="async" loading="lazy">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Bottom: Scroll Prompt -->
-            <div class="pb-12 flex justify-center">
-                <a href="#about"
-                    class="scroll-btn-enter w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-white transition-all hover:bg-white hover:text-background-dark scroll-pulse group">
-                    <span
-                        class="material-symbols-outlined text-2xl transition-transform group-hover:translate-y-1">expand_more</span>
+            <!-- "a little about me.txt" window: x:120 y:150 w:430 (Figma) -->
+            <div class="absolute left-[120px] top-[150px] w-[430px] z-10 reveal-item" data-delay="500">
+                <div class="group relative transition-transform duration-500 ease-out group-hover:scale-[1.02]">
+                    <div class="rounded-lg overflow-hidden shadow-md border border-black/10 bg-surface-window text-left">
+                        <!-- Window titlebar: traffic lights + filename -->
+                        <div class="flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light">
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                                <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                                <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            </div>
+                            <span class="flex-1 text-center text-xs opacity-50 truncate">a little about me.txt</span>
+                        </div>
+
+                        <!-- Content: eyebrow + headline + divider + context -->
+                        <div class="p-7 flex flex-col gap-5">
+                            <p class="text-[0.6rem] font-black uppercase tracking-[0.2em] opacity-40">HELLO, I'M NANDA.</p>
+                            <h1 class="text-2xl font-light leading-[1.3] tracking-tight">
+                                I turn <span class="font-bold"><span id="scramble-word">messy</span> ideas</span> into clean
+                                experiences that just <span class="font-bold relative inline-block">
+                        <span id="click-word" class="inline-block transition-transform duration-150">click.</span>
+                                    <!-- Cursor pointer: a literal click, synced to triggerClickAnimation() -->
+                                    <svg id="cursor-pointer" class="absolute -bottom-2 -right-3 w-3.5 h-3.5 pointer-events-none transition-transform duration-150 text-[#20211F]"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4 2L4 18L8.5 14.5L11 20L14 18.5L11.5 13L17 13L4 2Z"
+                                            fill="currentColor" stroke="white" stroke-width="1" stroke-linejoin="round"></path>
+                                    </svg>
+                                </span>
+                            </h1>
+                            <div class="h-px bg-black/10"></div>
+                            <p class="text-xs opacity-50 leading-snug">Currently making sense of chaos at Pelindo — 80+ port terminals, one TOS.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                                    <!-- Category folders: macOS-style desktop icons (DESKTOP ONLY) — x:744 y:220 w:500 (Figma) -->
+            <div class="hidden md:flex absolute left-[744px] top-[220px] w-[500px] reveal-item" data-delay="1000">
+                <div id="dockDesktop" class="flex gap-[34px]">
+
+                    <!-- Folder: UI/UX Design -->
+                    <button type="button" data-folder-trigger="uiux"
+                        class="group relative flex flex-col items-center gap-3 active:scale-95 focus-ring cursor-pointer">
+                        <svg class="w-24 h-24 drop-shadow-md transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 16C4 13.7909 5.79086 12 8 12H24.6863C25.7466 12 26.7647 12.4214 27.5147 13.1716L30.8284 16.4853C31.5786 17.2355 32.5968 17.6569 33.6569 17.6569H56C58.2091 17.6569 60 19.4477 60 21.6569V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V16Z" fill="#76C3FF"/>
+                            <path d="M4 22H60V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V22Z" fill="#244BFF"/>
+                        </svg>
+                        <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">UI/UX Design</span>
+                    </button>
+
+                    <!-- Folder: Packaging -->
+                    <button type="button" data-folder-trigger="packaging"
+                        class="group relative flex flex-col items-center gap-3 active:scale-95 focus-ring cursor-pointer">
+                        <svg class="w-24 h-24 drop-shadow-md transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 16C4 13.7909 5.79086 12 8 12H24.6863C25.7466 12 26.7647 12.4214 27.5147 13.1716L30.8284 16.4853C31.5786 17.2355 32.5968 17.6569 33.6569 17.6569H56C58.2091 17.6569 60 19.4477 60 21.6569V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V16Z" fill="#76C3FF"/>
+                            <path d="M4 22H60V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V22Z" fill="#244BFF"/>
+                        </svg>
+                        <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Packaging</span>
+                    </button>
+
+                    <!-- Folder: Social Media (empty) -->
+                    <button type="button" data-folder-trigger="social"
+                        class="group relative flex flex-col items-center gap-3 active:scale-95 focus-ring cursor-pointer">
+                        <svg class="w-24 h-24 drop-shadow-md transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 16C4 13.7909 5.79086 12 8 12H24.6863C25.7466 12 26.7647 12.4214 27.5147 13.1716L30.8284 16.4853C31.5786 17.2355 32.5968 17.6569 33.6569 17.6569H56C58.2091 17.6569 60 19.4477 60 21.6569V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V16Z" fill="#76C3FF"/>
+                            <path d="M4 22H60V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V22Z" fill="#244BFF"/>
+                        </svg>
+                        <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Social Media</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Folder windows: draggable, multi-window, bring-to-front on click -->
+            
+
+            <!-- Latest Work: "latest work window" — x:952 y:572 w:360 (Figma), DESKTOP ONLY -->
+            <div class="hidden md:block absolute left-[952px] top-[572px] w-[360px] reveal-item" data-delay="1200">
+                <button type="button" onclick="openIframeModal('/unreleased-tos')"
+                    class="group block w-full text-left rounded-lg overflow-hidden shadow-md border border-black/10 bg-surface-window transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98] focus-ring cursor-pointer">
+                    <!-- Window titlebar: traffic lights + label, matches headline window chrome -->
+                    <div class="flex items-center gap-2 px-3 h-[27px] bg-surface-titlebar">
+                        <div class="flex items-center gap-1 shrink-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        </div>
+                        <div class="flex-1 bg-surface-window rounded px-2 py-0.5 text-[0.6rem] opacity-50 text-center truncate">
+                            latest-work.png
+                        </div>
+                    </div>
+                    <!-- Window content: label + blurb + thumbnail -->
+                    <div class="p-3">
+                        <p class="text-[0.6rem] font-black uppercase tracking-[0.25em] opacity-40 mb-2">Latest Work</p>
+                        <p class="text-[0.7rem] opacity-60 leading-snug mb-3">Pelindo wanted to sell their TOS to other ports — outside their own ecosystem.</p>
+                        <span class="block rounded-md overflow-hidden border border-black/10">
+                            <img alt="Unreleased Terminal Operating System" src="/assets/Ops Plan Detail 1.webp"
+                                class="w-full aspect-[16/9] object-cover" loading="lazy" decoding="async">
+                        </span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Workspace colophon: "Workspace colophon" — x:54 y:958 w:1332 (Figma), DESKTOP ONLY -->
+            <div class="hidden md:flex absolute top-[958px] left-[54px] w-[1332px] items-center justify-between font-mono text-[10px] text-ink-secondary reveal-item" data-delay="1200">
+                <p>© 2026 Nanda Akbar</p>
+                <p>PERSONAL WORKSPACE</p>
+            </div>
+
+            <!-- Disciplines: "What I Do" list, not in the Figma spec but kept per request —
+                 positioned within the same 1440x1000 coordinate system as everything else. -->
+            <div class="hidden md:block absolute top-[150px] right-[54px] reveal-item text-right" data-delay="1200">
+                <p class="text-[0.65rem] font-black uppercase tracking-[0.3em] opacity-40 mb-2">What I Do</p>
+                <ul class="text-sm space-y-1 opacity-70">
+                    <li>01 — Social Media</li>
+                    <li>02 — UI/UX</li>
+                    <li>03 — Packaging</li>
+                </ul>
+            </div>
+            <!-- /Desktop stage -->
+            </div>
+            </div>
+
+
+
+            </section>
+
+        <!-- Tablet portrait: single-scroll page reusing the SAME window-chrome
+             components as desktop (folders, titlebar, filenames), just stacked
+             naturally instead of absolute-positioned on a scaled 1440x1000 canvas.
+             See Figma "Tablet — 01..07" frames. -->
+        <!-- Tablet portrait: "one page, no scroll" via a locked 100vh height,
+             but width is responsive (fills the real viewport) rather than a
+             scaled fixed-size canvas — content reflows to fit, with an internal
+             scroll fallback (overflow-y-auto on the content area) only if it
+             ever runs genuinely too tall. -->
+        <div id="tabletStageWrap" class="mode-tablet-portrait-only relative w-screen h-screen overflow-hidden">
+            <div id="tabletStage" class="w-full h-full flex flex-col bg-background-light">
+            <header class="px-6 py-4 flex items-baseline justify-between bg-background-light/90 backdrop-blur-sm border-b border-black/10 shrink-0">
+                <a class="text-base font-bold tracking-tight hover:opacity-70 active:opacity-50 transition-opacity focus-ring cursor-pointer" href="/">Nanda Akbar <span class="font-normal opacity-50">— UI/UX Designer</span></a>
+                <nav class="flex items-center gap-8 text-sm">
+                    <button type="button" onclick="openIframeModal('/about')" class="hover:opacity-60 active:opacity-40 transition-opacity focus-ring cursor-pointer">Resume</button>
+                    <button type="button" onclick="openFolderWindow('contact')" class="flex items-center gap-1 hover:opacity-60 active:opacity-40 transition-opacity focus-ring cursor-pointer">Contact<span class="material-symbols-outlined text-base">north_east</span></button>
+                </nav>
+            </header>
+
+            <div class="flex-1 min-h-0 overflow-y-auto px-6 py-6 flex flex-col gap-6">
+                <!-- Hero: portrait photo + "a little about me.txt", side by side (Figma Tablet-01) -->
+                <div class="grid grid-cols-2 gap-8 items-start">
+                    <div class="rounded-lg overflow-hidden shadow-md border border-black/10">
+                        <div class="flex items-center gap-1 px-2 h-[22px] bg-surface-control">
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        </div>
+                        <div class="aspect-[4/5] bg-[#244BFF]">
+                            <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover object-center" src="/assets/Main.webp" loading="lazy" decoding="async">
+                        </div>
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md border border-black/10 bg-surface-window">
+                        <div class="flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light">
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                                <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                                <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            </div>
+                            <span class="flex-1 text-center text-xs opacity-50 truncate">a little about me.txt</span>
+                        </div>
+                        <div class="p-6 flex flex-col gap-4">
+                            <p class="text-[0.6rem] font-black uppercase tracking-[0.2em] opacity-40">HELLO, I'M NANDA.</p>
+                            <h1 class="text-xl font-light leading-[1.3] tracking-tight">
+                                I turn <span class="font-bold">messy ideas</span> into clean experiences that just <span class="font-bold">click.</span>
+                            </h1>
+                            <div class="border-t border-black/10 pt-4">
+                                <p class="text-sm opacity-60 leading-relaxed">Currently making sense of chaos at Pelindo, designing the terminal operating system used daily across 80+ port sites nationwide.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Folder row: same 3 triggers as desktop (data-folder-trigger), same overlay windows -->
+                <div id="dockTablet" class="flex gap-10 justify-center py-4">
+                    <button type="button" data-folder-trigger="uiux" class="group relative flex flex-col items-center gap-3 active:scale-95 focus-ring cursor-pointer">
+                        <svg class="w-24 h-24 drop-shadow-md transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 16C4 13.7909 5.79086 12 8 12H24.6863C25.7466 12 26.7647 12.4214 27.5147 13.1716L30.8284 16.4853C31.5786 17.2355 32.5968 17.6569 33.6569 17.6569H56C58.2091 17.6569 60 19.4477 60 21.6569V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V16Z" fill="#76C3FF"/>
+                            <path d="M4 22H60V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V22Z" fill="#244BFF"/>
+                        </svg>
+                        <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">UI/UX Design</span>
+                    </button>
+                    <button type="button" data-folder-trigger="packaging" class="group relative flex flex-col items-center gap-3 active:scale-95 focus-ring cursor-pointer">
+                        <svg class="w-24 h-24 drop-shadow-md transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 16C4 13.7909 5.79086 12 8 12H24.6863C25.7466 12 26.7647 12.4214 27.5147 13.1716L30.8284 16.4853C31.5786 17.2355 32.5968 17.6569 33.6569 17.6569H56C58.2091 17.6569 60 19.4477 60 21.6569V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V16Z" fill="#76C3FF"/>
+                            <path d="M4 22H60V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V22Z" fill="#244BFF"/>
+                        </svg>
+                        <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Packaging</span>
+                    </button>
+                    <button type="button" data-folder-trigger="social" class="group relative flex flex-col items-center gap-3 active:scale-95 focus-ring cursor-pointer">
+                        <svg class="w-24 h-24 drop-shadow-md transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)]" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 16C4 13.7909 5.79086 12 8 12H24.6863C25.7466 12 26.7647 12.4214 27.5147 13.1716L30.8284 16.4853C31.5786 17.2355 32.5968 17.6569 33.6569 17.6569H56C58.2091 17.6569 60 19.4477 60 21.6569V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V16Z" fill="#76C3FF"/>
+                            <path d="M4 22H60V48C60 50.2091 58.2091 52 56 52H8C5.79086 52 4 50.2091 4 48V22Z" fill="#244BFF"/>
+                        </svg>
+                        <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Social Media</span>
+                    </button>
+                </div>
+
+                <!-- Latest Work window (same content/image as desktop) -->
+                <button type="button" onclick="openIframeModal('/unreleased-tos')"
+                    class="group block w-full max-w-md text-left rounded-lg overflow-hidden shadow-md border border-black/10 bg-surface-window transition-transform duration-300 hover:scale-[1.01] active:scale-[0.99] focus-ring cursor-pointer">
+                    <div class="flex items-center gap-2 px-3 h-[27px] bg-surface-titlebar">
+                        <div class="flex items-center gap-1 shrink-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        </div>
+                        <div class="flex-1 bg-surface-window rounded px-2 py-0.5 text-[0.6rem] opacity-50 text-center truncate">latest-work.png</div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-[0.6rem] font-black uppercase tracking-[0.25em] opacity-40 mb-2">Latest Work</p>
+                        <p class="text-[0.7rem] opacity-60 leading-snug mb-3">Pelindo wanted to sell their TOS to other ports — outside their own ecosystem.</p>
+                        <span class="block rounded-md overflow-hidden border border-black/10">
+                            <img alt="Unreleased Terminal Operating System" src="/assets/Ops Plan Detail 1.webp" class="w-full aspect-[16/9] object-cover" loading="lazy" decoding="async">
+                        </span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="px-6 py-4 flex items-center justify-between font-mono text-[10px] text-ink-secondary border-t border-black/10 shrink-0">
+                <p>© 2026 Nanda Akbar</p>
+                <p>PERSONAL WORKSPACE</p>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Folder windows: draggable, multi-window, bring-to-front on click.
+         Lives OUTSIDE desktopStage/desktopStageWrap (mode-desktop-only) so
+         it also works in tablet-portrait mode, which reuses this same
+         overlay system instead of a scaled 1440x1000 canvas. -->
+    <div id="folderWindowLayer" class="contents hidden">
+
+                <!-- UI/UX Design window -->
+                <div data-folder-window="uiux" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-2xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                    style="top: 12%; left: 50%; --tw-translate-x: -50%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+                    <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" onclick="closeFolderWindow('uiux')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close"><span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span></button>
+                            <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        </div>
+                        <span class="flex-1 text-center text-xs opacity-50 truncate">UI/UX Design</span>
+                    </div>
+                    <!-- Mobile: vertical list, navigates fullscreen (page = window) -->
+                    <ul class="md:hidden divide-y divide-black/5 py-1">
+                        <li><a href="/unreleased-tos" class="flex items-center gap-3 px-3 py-2.5 active:bg-black/5 focus-ring">
+                            <span class="w-16 h-12 rounded-md overflow-hidden border border-black/10 shrink-0"><img alt="" src="/assets/Ops Plan Detail 1.webp" class="w-full h-full object-cover"></span>
+                            <span class="flex flex-col min-w-0"><span class="text-sm font-medium truncate">Unreleased TOS</span><span class="text-xs opacity-50 truncate">Next-generation terminal operating system</span></span>
+                            <span class="material-symbols-outlined text-base opacity-30 ml-auto">chevron_right</span></a></li>
+                        <li><a href="/ptosm" class="flex items-center gap-3 px-3 py-2.5 active:bg-black/5 focus-ring">
+                            <span class="w-16 h-12 rounded-md overflow-hidden border border-black/10 shrink-0"><img alt="" src="/assets/mockup_ptosm.webp" class="w-full h-full object-cover"></span>
+                            <span class="flex flex-col min-w-0"><span class="text-sm font-medium truncate">PTOSM Redesign</span><span class="text-xs opacity-50 truncate">TOS dashboard, monitoring, unified UI</span></span>
+                            <span class="material-symbols-outlined text-base opacity-30 ml-auto">chevron_right</span></a></li>
+                        <li><a href="/ptos-sso" class="flex items-center gap-3 px-3 py-2.5 active:bg-black/5 focus-ring">
+                            <span class="w-16 h-12 rounded-md overflow-hidden border border-black/10 shrink-0"><img alt="" src="/assets/mockup_terminal.webp" class="w-full h-full object-cover"></span>
+                            <span class="flex flex-col min-w-0"><span class="text-sm font-medium truncate">PTOS-SSO</span><span class="text-xs opacity-50 truncate">Single sign-on for terminal systems</span></span>
+                            <span class="material-symbols-outlined text-base opacity-30 ml-auto">chevron_right</span></a></li>
+                        <li><a href="/ptosm-ui-lib" class="flex items-center gap-3 px-3 py-2.5 active:bg-black/5 focus-ring">
+                            <span class="w-16 h-12 rounded-md overflow-hidden border border-black/10 shrink-0"><img alt="" src="/assets/ds-thumb.svg" class="w-full h-full object-cover"></span>
+                            <span class="flex flex-col min-w-0"><span class="text-sm font-medium truncate">PTOS-M UI Library</span><span class="text-xs opacity-50 truncate">Tokens, navigation, form, table components</span></span>
+                            <span class="material-symbols-outlined text-base opacity-30 ml-auto">chevron_right</span></a></li>
+                        <li><a href="/bea-cukai" class="flex items-center gap-3 px-3 py-2.5 active:bg-black/5 focus-ring">
+                            <span class="w-16 h-12 rounded-md overflow-hidden border border-black/10 shrink-0"><img alt="" src="/assets/mockup_beacukai.webp" class="w-full h-full object-cover"></span>
+                            <span class="flex flex-col min-w-0"><span class="text-sm font-medium truncate">Bea Cukai Module</span><span class="text-xs opacity-50 truncate">Customs monitoring, before/after</span></span>
+                            <span class="material-symbols-outlined text-base opacity-30 ml-auto">chevron_right</span></a></li>
+                    </ul>
+                    <!-- Desktop: project list rows — Figma "UI/UX Design window" content area.
+                         Sidebar removed per request (Packaging/Social Media are their own
+                         separate folder windows, no need for a category switcher here). -->
+                    <!-- Desktop: project grid, icon+label (same grammar as Packaging/Social) -->
+                    <div class="hidden md:block">
+                        <div class="p-4 sm:p-6 md:p-8 grid grid-cols-3 gap-3 md:gap-6">
+                        <button type="button" onclick="openIframeModal('/unreleased-tos')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Unreleased TOS" src="/assets/Ops%20Plan%20Detail%201.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Unreleased TOS<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openIframeModal('/ptosm')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="PTOSM Redesign" src="/assets/mockup_ptosm.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">PTOSM Redesign<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openIframeModal('/ptos-sso')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="PTOS-SSO" src="/assets/mockup_terminal.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">PTOS-SSO<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openIframeModal('/ptosm-ui-lib')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="PTOS-M UI Library" src="/assets/ds-thumb.svg" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">UI Library<span class="opacity-50">.svg</span></span>
+                        </button>
+                        <button type="button" onclick="openIframeModal('/bea-cukai')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Bea Cukai Module" src="/assets/mockup_beacukai.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Bea Cukai<span class="opacity-50">.webp</span></span>
+                        </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Packaging window -->
+                <div data-folder-window="packaging" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-3xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                    style="top: 16%; left: 54%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+                    <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" onclick="closeFolderWindow('packaging')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close"><span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span></button>
+                            <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        </div>
+                        <span class="flex-1 text-center text-xs opacity-50 truncate">Packaging</span>
+                    </div>
+                    <div class="scroll-fade-container">
+<div class="scroll-fade-content p-4 sm:p-6 md:p-8 grid grid-cols-3 gap-3 md:gap-6 max-h-[485px] overflow-y-auto">
+                        <button type="button" onclick="openImageExpand('/assets/packaging/arjuna.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Arjuna" src="/assets/packaging/arjuna.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Arjuna<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/packaging/arjuna%20pm.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Arjuna PM" src="/assets/packaging/arjuna%20pm.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Arjuna PM<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/packaging/blue%20mountain.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Blue Mountain" src="/assets/packaging/blue%20mountain.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Blue Mountain<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/packaging/gayo%20red%20bourbon.jpg')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Gayo Red Bourbon" src="/assets/packaging/gayo%20red%20bourbon.jpg" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Gayo Red Bourbon<span class="opacity-50">.jpg</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/packaging/gayo%20red%20-%20%20kawi.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Gayo Red - Kawi" src="/assets/packaging/gayo%20red%20-%20%20kawi.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Gayo Red - Kawi<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/packaging/putuk%20gede%20-%20flores.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Putuk Gede - Flores" src="/assets/packaging/putuk%20gede%20-%20flores.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Putuk Gede - Flores<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/packaging/halu.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Halu" src="/assets/packaging/halu.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Halu<span class="opacity-50">.webp</span></span>
+                        </button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Social Media window: flat grid, no brand grouping (uniform with Packaging) -->
+                <div data-folder-window="social" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-3xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                    style="top: 20%; left: 46%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+                    <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" onclick="closeFolderWindow('social')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close"><span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span></button>
+                            <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        </div>
+                        <span class="flex-1 text-center text-xs opacity-50 truncate">Social Media</span>
+                    </div>
+                    <div class="scroll-fade-container">
+<div class="scroll-fade-content p-4 sm:p-6 md:p-8 grid grid-cols-3 gap-3 md:gap-6 max-h-[485px] overflow-y-auto">
+                        <button type="button" onclick="openImageExpand('/assets/social/cpopc%201.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="CPOPC 1" src="/assets/social/cpopc%201.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">CPOPC 1<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/cpopc%202.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="CPOPC 2" src="/assets/social/cpopc%202.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">CPOPC 2<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/cpopc%203.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="CPOPC 3" src="/assets/social/cpopc%203.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">CPOPC 3<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/fotofeeds%201.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="FotoFeeds 1" src="/assets/social/fotofeeds%201.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">FotoFeeds 1<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/fotofeeds%202.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="FotoFeeds 2" src="/assets/social/fotofeeds%202.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">FotoFeeds 2<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/fotofeeds%203.webp')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="FotoFeeds 3" src="/assets/social/fotofeeds%203.webp" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">FotoFeeds 3<span class="opacity-50">.webp</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/labq%201.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="LabQ 1" src="/assets/social/labq%201.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">LabQ 1<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/labq%202.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="LabQ 2" src="/assets/social/labq%202.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">LabQ 2<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/labq%203.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="LabQ 3" src="/assets/social/labq%203.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">LabQ 3<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/maro%201.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Maro 1" src="/assets/social/maro%201.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Maro 1<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/maro%202.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Maro 2" src="/assets/social/maro%202.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Maro 2<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/maro%203.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Maro 3" src="/assets/social/maro%203.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Maro 3<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%201.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Perumnas 1" src="/assets/social/perumnas%201.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Perumnas 1<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%202.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Perumnas 2" src="/assets/social/perumnas%202.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Perumnas 2<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%203.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Perumnas 3" src="/assets/social/perumnas%203.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Perumnas 3<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/perumnas%204.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Perumnas 4" src="/assets/social/perumnas%204.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Perumnas 4<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/shanas%201.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Shanas 1" src="/assets/social/shanas%201.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Shanas 1<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/shanas%202.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Shanas 2" src="/assets/social/shanas%202.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Shanas 2<span class="opacity-50">.png</span></span>
+                        </button>
+                        <button type="button" onclick="openImageExpand('/assets/social/shanas%203.png')" class="tilt-card group flex flex-col items-center gap-1.5 sm:gap-3 text-center active:scale-95 focus-ring cursor-pointer">
+                            <span class="w-full aspect-square md:w-36 md:h-36 rounded-lg md:rounded-xl overflow-hidden border border-black/10 shadow-md"><img alt="Shanas 3" src="/assets/social/shanas%203.png" class="w-full h-full object-cover" loading="lazy" decoding="async"></span>
+                            <span class="text-xs opacity-60 group-hover:opacity-100 transition-opacity">Shanas 3<span class="opacity-50">.png</span></span>
+                        </button>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+    <!-- Contact window: footer CTA turned into a draggable window-chrome -->
+    <div data-folder-window="contact" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-[690px] rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 z-40 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        style="top: 22%; left: 50%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+        <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="closeFolderWindow('contact')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span>
+                </button>
+                <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+            </div>
+            <span class="flex-1 text-center text-xs opacity-50 truncate">new_message.txt</span>
+        </div>
+        <div class="p-10 flex flex-col gap-6">
+            <p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#244BFF]">Contact</p>
+            <h2 class="text-3xl md:text-4xl font-bold leading-[1.2] tracking-tight">
+                drop a message,<br>
+                <span class="font-light opacity-60">and I'll take care of the rest.</span>
+            </h2>
+            <div class="flex flex-col divide-y divide-black/10 border-t border-black/10 mt-2">
+                <a href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21"
+                    class="flex items-center justify-between py-5 group hover:bg-black/[0.02] active:bg-black/[0.04] transition-colors focus-ring cursor-pointer -mx-2 px-2 rounded">
+                    <span>
+                        <span class="block text-[0.6rem] opacity-40 mb-1">Email</span>
+                        <span class="block text-base font-semibold">nandaakbar70@gmail.com</span>
+                    </span>
+                    <span class="material-symbols-outlined text-lg opacity-40 group-hover:opacity-70 transition-opacity">north_east</span>
+                </a>
+                <a href="https://www.linkedin.com/in/nandakbr"
+                    class="flex items-center justify-between py-5 group hover:bg-black/[0.02] active:bg-black/[0.04] transition-colors focus-ring cursor-pointer -mx-2 px-2 rounded">
+                    <span class="text-base font-semibold">LinkedIn</span>
+                    <span class="material-symbols-outlined text-lg opacity-40 group-hover:opacity-70 transition-opacity">north_east</span>
+                </a>
+                <a href="https://www.instagram.com/nandakbr_/"
+                    class="flex items-center justify-between py-5 group hover:bg-black/[0.02] active:bg-black/[0.04] transition-colors focus-ring cursor-pointer -mx-2 px-2 rounded">
+                    <span class="text-base font-semibold">Instagram</span>
+                    <span class="material-symbols-outlined text-lg opacity-40 group-hover:opacity-70 transition-opacity">north_east</span>
                 </a>
             </div>
-        </section>
-
-        <!-- About Me Section -->
-        <section class="mb-40 relative" id="about">
-            <div class="max-w-7xl mx-auto px-8 md:px-12 relative z-10">
-                <!-- Manifesto + Disciplines -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-                    <!-- Left: Manifesto -->
-                    <div class="lg:col-span-7 flex flex-col gap-8 reveal-item">
-                        <h3 class="text-3xl md:text-4xl lg:text-5xl font-medium leading-[1.15] tracking-tight">
-                            I don't design landing pages.<br />
-                            I design <span class="font-bold italic">port operations.</span>
-                        </h3>
-                        <p class="text-lg text-[#68706C] dark:text-[#A8B0AA] leading-relaxed max-w-xl">
-                            3 years deep in multipurpose terminal workflows — the messy, real kind.
-                            I design AND build the systems operators actually use (Vue.js, Figma, the works).
-                            Most designers don't know what a TOS is. I've built one.
-                        </p>
-                        <!-- CTA -->
-                <div class="mt-19 flex justify-left reveal-item">
-                    <a class="border-2 border-black dark:border-white px-12 py-5 rounded-full font-bold transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
-                        href="/about">
-                        Learn More About Me
-                    </a>
-                </div>
-                    </div>
-
-                    <!-- Right: Disciplines as Bento Cards -->
-                    <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <!-- Wide card: Social Media -->
-                        <div class="bento-card-container reveal-item sm:col-span-2">
-                            <div
-                                class="bento-card bento-tilt skill-card rounded-[2rem] p-8 flex items-center justify-between gap-6 group cursor-default">
-                                <div class="relative z-10">
-                                    <span
-                                        class="text-[0.6rem] font-black uppercase tracking-[0.3em] opacity-40 mb-2 block">Skill
-                                        01</span>
-                                    <h4 class="text-2xl font-bold tracking-tight">Social Media</h4>
-                                </div>
-                                <span class="skill-icon-base">
-                                    <span class="material-symbols-outlined">forum</span>
-                                </span>
-                                <div class="skill-scatter" aria-hidden="true">
-                                    <span class="skill-squircle"
-                                        style="top: 14%; right: 6%; --rot: -10deg;"><span
-                                            class="material-symbols-outlined">photo_camera</span></span>
-                                    <span class="skill-squircle"
-                                        style="top: 14%; right: 30%; --rot: 7deg;"><span
-                                            class="material-symbols-outlined">favorite</span></span>
-                                    <span class="skill-squircle"
-                                        style="bottom: 14%; right: 18%; --rot: -4deg;"><span
-                                            class="material-symbols-outlined">movie</span></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Stacked card: UI/UX -->
-                        <div class="bento-card-container reveal-item">
-                            <div
-                                class="bento-card bento-tilt skill-card rounded-[2rem] p-8 flex flex-col justify-between gap-6 group cursor-default h-full min-h-[180px]">
-                                <span class="skill-icon-base">
-                                    <span class="material-symbols-outlined">gesture</span>
-                                </span>
-                                <div class="relative z-10">
-                                    <span
-                                        class="text-[0.6rem] font-black uppercase tracking-[0.3em] opacity-40 mb-2 block">Skill
-                                        02</span>
-                                    <h4 class="text-2xl font-bold tracking-tight">UI/UX</h4>
-                                </div>
-                                <div class="skill-scatter" aria-hidden="true">
-                                    <span class="skill-squircle"
-                                        style="top: 8%; left: 14%; --rot: -8deg;"><span
-                                            class="material-symbols-outlined">dashboard</span></span>
-                                    <span class="skill-squircle"
-                                        style="top: 4%; right: 12%; --rot: 8deg;"><span
-                                            class="material-symbols-outlined">palette</span></span>
-                                    <span class="skill-squircle"
-                                        style="top: 36%; left: 42%; --rot: -3deg;"><span
-                                            class="material-symbols-outlined">touch_app</span></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Stacked card: Packaging -->
-                        <div class="bento-card-container reveal-item">
-                            <div
-                                class="bento-card bento-tilt skill-card rounded-[2rem] p-8 flex flex-col justify-between gap-6 group cursor-default h-full min-h-[180px]">
-                                <span class="skill-icon-base">
-                                    <span class="material-symbols-outlined">deployed_code</span>
-                                </span>
-                                <div class="relative z-10">
-                                    <span
-                                        class="text-[0.6rem] font-black uppercase tracking-[0.3em] opacity-40 mb-2 block">Skill
-                                        03</span>
-                                    <h4 class="text-2xl font-bold tracking-tight">Packaging</h4>
-                                </div>
-                                <div class="skill-scatter" aria-hidden="true">
-                                    <span class="skill-squircle"
-                                        style="top: 8%; left: 14%; --rot: -6deg;"><span
-                                            class="material-symbols-outlined">redeem</span></span>
-                                    <span class="skill-squircle"
-                                        style="top: 4%; right: 12%; --rot: 8deg;"><span
-                                            class="material-symbols-outlined">label</span></span>
-                                    <span class="skill-squircle"
-                                        style="top: 36%; left: 40%; --rot: -3deg;"><span
-                                            class="material-symbols-outlined">local_shipping</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-56 relative" id="work">
-            <!-- Subtle Background Text -->
-            <div class="absolute inset-0 overflow-hidden pointer-events-none z-0 flex flex-col justify-between py-32">
-                <div class="animate-selected">
-                    <div
-                        class="text-[22vw] font-black tracking-tighter leading-[0.8] opacity-[0.04] dark:opacity-[0.02] select-none text-black dark:text-white whitespace-nowrap">
-                        SELECTED
-                    </div>
-                </div>
-                <div class="animate-work self-end">
-                    <div
-                        class="text-[24vw] font-black tracking-tighter leading-[0.8] opacity-[0.04] dark:opacity-[0.02] select-none text-black dark:text-white whitespace-nowrap">
-                        WORK
-                    </div>
-                </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-8 md:px-12 relative z-10">
-                <div class="mb-24">
-                    <p class="text-xs font-black uppercase tracking-[0.3em] opacity-30 mb-3">Portfolio</p>
-                    <h2 class="text-5xl md:text-7xl font-bold tracking-tighter">Selected Works</h2>
-                </div>
-
-                <!-- Yan Hladchenko Style 3D Bento -->
-                <div
-                    class="work-grid md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-12 lg:grid-rows-[220px_220px_220px] lg:gap-8 md:items-stretch relative">
-
-                    <!-- Project 1: The Hero Feature (Top Right / Center) -->
-                    <div
-                        class="work-card bento-card-container reveal-item h-[420px] md:h-auto md:col-span-2 md:aspect-[16/9] lg:aspect-auto lg:col-start-5 lg:col-span-8 lg:row-start-1 lg:row-span-2 lg:z-[30]">
-                        <div class="bento-card bento-tilt rounded-[2rem] md:rounded-[2.5rem] lg:rounded-[3rem] h-full flex flex-col group cursor-pointer"
-                            onclick="openIframeModal('/unreleased-tos')">
-                            <div class="bento-image-container flex-grow !p-0 min-h-0">
-                                <img alt="Unreleased Terminal Operating System"
-                                    class="w-full h-full object-cover object-center rounded-none transition-transform duration-1000 group-hover:scale-105"
-                                    src="/assets/Ops Plan Detail 1.webp" loading="lazy" decoding="async" >
-                            </div>
-                            <div class="p-6 md:p-8 lg:p-10 shrink-0">
-                                <div class="flex justify-between items-end gap-4">
-                                    <div class="min-w-0">
-                                        <span
-                                            class="text-[0.6rem] font-black uppercase tracking-[0.3em] opacity-40 mb-2 block">UI/UX Design</span>
-                                        <h3 class="text-xl md:text-2xl font-bold tracking-tight">Unreleased TOS</h3>
-                                    </div>
-                                    <span
-                                        class="material-symbols-outlined opacity-20 group-hover:opacity-100 transition-opacity shrink-0">arrow_outward</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 2: The Side Portrait (Top Left) -->
-                    <div
-                        class="work-card bento-card-container reveal-item aspect-[4/5] md:aspect-square md:col-span-1 lg:aspect-auto lg:col-start-1 lg:col-span-4 lg:row-start-1 lg:row-span-1 lg:z-[20]">
-                        <div class="bento-card bento-tilt rounded-[2rem] md:rounded-[2.5rem] lg:rounded-[3rem] h-full flex flex-col group cursor-pointer"
-                            onclick="openImageExpand('/assets/package3.webp')">
-                            <div class="bento-image-container flex-grow !p-0 min-h-0 bg-stone-500/5 dark:bg-stone-500/10">
-                                <img alt="Packaging"
-                                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                    src="/assets/package3.webp" loading="lazy" decoding="async" >
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 3: The Small Feature (Bottom Left L-Shape) -->
-                    <div
-                        class="work-card bento-card-container reveal-item h-[460px] md:h-auto md:aspect-square md:col-span-1 lg:aspect-auto lg:col-start-1 lg:col-span-8 lg:row-start-2 lg:row-span-2 lg:z-[10]">
-                        <div
-                            class="bento-card bento-tilt rounded-[2rem] md:rounded-[2.5rem] lg:rounded-[3rem] h-full flex flex-col group cursor-pointer relative"
-                            onclick="openIframeModal('/ptos-sso')">
-                            <!-- Eraser Div for L-Shape Cutout (desktop only) -->
-                            <div
-                                class="eraser-cutout hidden lg:block absolute top-[-2px] right-[-2px] w-[calc(50%+1rem+2px)] h-[calc(50%+1rem+2px)] bg-background-light dark:bg-background-dark z-[2] rounded-bl-[3rem] pointer-events-none transition-colors duration-300">
-                            </div>
-
-                            <!-- Content Wrapper -->
-                            <div class="relative z-[1] h-full flex flex-col">
-                                <div class="bento-image-container flex-grow !p-0 min-h-0 relative overflow-hidden">
-                                    <img alt="PTOS-SSO"
-                                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                        src="/assets/mockup_sso.webp" loading="lazy" decoding="async" >
-                                </div>
-                                <div class="p-6 md:p-8 shrink-0">
-                                    <span
-                                        class="text-[0.6rem] font-black uppercase tracking-[0.3em] opacity-40 mb-2 block">UI/UX Design</span>
-                                    <h3 class="text-lg md:text-xl font-bold tracking-tight">PTOS-SSO</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Project 4: Packaging (Bottom Right) -->
-                    <div
-                        class="work-card bento-card-container reveal-item aspect-[16/10] md:aspect-[16/7] md:col-span-2 lg:aspect-auto lg:col-start-9 lg:col-span-4 lg:row-start-3 lg:row-span-1 lg:z-[20]">
-                        <div class="bento-card bento-tilt rounded-[2rem] md:rounded-[2.5rem] lg:rounded-[3rem] h-full flex flex-col group cursor-pointer"
-                            onclick="openImageExpand('/assets/package1.webp')">
-                            <div class="bento-image-container flex-grow !p-0 min-h-0 bg-red-500/5 dark:bg-red-500/10">
-                                <img alt="Packaging"
-                                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                    src="/assets/package1.webp" loading="lazy" decoding="async" >
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Mobile carousel dots (hidden at md+) -->
-                <div class="work-dots" aria-hidden="true"></div>
-
-                <div class="mt-40 flex justify-center reveal-item">
-                    <a class="border-2 border-black dark:border-white px-12 py-5 rounded-full font-bold transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
-                        href="/work">
-                        Full Archive
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer class="mt-24 pb-12" id="about">
-        <div class="max-w-7xl mx-auto px-8 md:px-12">
-            <div class="footer-cta-bg rounded-[4rem] p-16 md:p-28 flex flex-col gap-16">
-                <div class="relative z-10">
-                    <h2 class="text-white text-3xl md:text-4xl font-display leading-[1.1] tracking-tight">
-                        <span class="font-bold">drop a message,</span><br />
-                        <span class="font-light opacity-70">and I'll take care of the rest.</span>
-                    </h2>
-                </div>
-                <div class="flex flex-col md:flex-row justify-between items-end md:items-center relative z-10">
-                    <a class="bg-black text-white px-12 py-5 rounded-full font-semibold text-lg hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 transition-colors shadow-lg"
-                        href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">
-                        Let's Chat
-                    </a>
-                    <div class="flex gap-8 mt-12 md:mt-0">
-                        <a class="text-white hover:opacity-70 transition-opacity p-1"
-                            href="https://www.linkedin.com/in/nandakbr">
-                            <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
-                                <path
-                                    d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z">
-                                </path>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </a>
-                        <a class="text-white hover:opacity-70 transition-opacity p-1"
-                            href="https://www.instagram.com/nandakbr_/">
-                            <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
-                                <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
-                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
-                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-[#D7DCD8] dark:border-[#1A221D] font-medium">
-                © 2026 Nanda Akbar. Built with passion and precision.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Image Expand Modal -->
-    <div id="image-expand-modal"
-        class="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 cursor-zoom-out"
-        onclick="closeImageExpand()">
-        <button id="image-expand-close"
-            class="absolute top-6 right-6 text-white/70 hover:text-white z-10 transition-colors p-2 bg-black/50 rounded-full backdrop-blur-md"
-            onclick="event.stopPropagation(); closeImageExpand()">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-        <img id="image-expand-img" src="" alt="Expanded image"
-            class="max-w-full max-h-[90vh] object-contain scale-95 transition-transform duration-300 rounded-lg shadow-2xl cursor-default select-none"
-            onclick="event.stopPropagation()"  loading="lazy" decoding="async">
-    </div>
-
-    <!-- Iframe Lightbox Modal -->
-    <div id="iframe-modal"
-        class="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 cursor-zoom-out">
-        <button id="iframe-modal-close"
-            class="absolute top-6 right-6 text-white/70 hover:text-white z-10 transition-colors p-2 bg-black/50 rounded-full backdrop-blur-md">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-        <div class="relative w-full max-w-[85vw] h-[90vh] bg-background-light dark:bg-background-dark rounded-2xl overflow-hidden shadow-2xl"
-            onclick="event.stopPropagation()">
-            <iframe id="modal-iframe" src="" class="w-full h-full border-0"></iframe>
         </div>
     </div>
+
+    <!-- Image Expand Window: draggable window-chrome (same grammar as folder windows),
+         holds a single expanded packaging image. -->
+    <div id="image-expand-modal" class="contents hidden">
+        <div id="image-expand-window" class="folder-window pointer-events-auto fixed w-[calc(100%-2rem)] sm:w-full max-w-4xl md:max-w-[calc(100%-4rem)] lg:max-w-4xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 flex flex-col transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            style="top: 10%; left: 50%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+            <div class="image-expand-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button type="button" id="image-expand-close" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span>
+                    </button>
+                    <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                </div>
+                <span id="image-expand-label" class="flex-1 text-center text-xs opacity-50 truncate"></span>
+            </div>
+            <div class="p-6 bg-card-light flex flex-col gap-4">
+                <div class="relative group/nav">
+                    <img id="image-expand-img" src="" alt="Expanded packaging image"
+                        class="w-full max-h-[65vh] object-contain rounded select-none" loading="lazy" decoding="async">
+                    <button type="button" id="image-expand-prev" onclick="stepImageExpand(-1)" aria-label="Previous image"
+                        class="absolute left-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-surface-window/90 border border-black/10 shadow-md flex items-center justify-center opacity-70 md:opacity-0 md:group-hover/nav:opacity-100 active:scale-90 transition-all focus-ring cursor-pointer">
+                        <span class="material-symbols-outlined text-lg opacity-70">chevron_left</span>
+                    </button>
+                    <button type="button" id="image-expand-next" onclick="stepImageExpand(1)" aria-label="Next image"
+                        class="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-surface-window/90 border border-black/10 shadow-md flex items-center justify-center opacity-70 md:opacity-0 md:group-hover/nav:opacity-100 active:scale-90 transition-all focus-ring cursor-pointer">
+                        <span class="material-symbols-outlined text-lg opacity-70">chevron_right</span>
+                    </button>
+                    <span id="image-expand-counter" class="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-black/60 text-white text-[0.65rem] font-mono"></span>
+                </div>
+                <!-- Thumbnail strip: same series (Packaging or Social), scrollable, current item highlighted -->
+                <div id="image-expand-thumbs" class="flex gap-2 overflow-x-auto pb-1" style="scrollbar-width: thin;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Study Window: draggable window-chrome (same grammar as folder windows), holds the case-study iframe -->
+    <div id="iframe-modal" class="contents hidden">
+        <div id="iframe-window" class="folder-window pointer-events-auto fixed w-[calc(100%-2rem)] sm:w-full max-w-4xl md:max-w-[calc(100%-4rem)] lg:max-w-4xl h-[80vh] rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 flex flex-col transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            style="top: 8%; left: 50%; transform: translateX(-50%) scale(0.9); filter: blur(6px); max-width: min(72rem, calc(100% - 4rem));">
+            <div class="iframe-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button type="button" id="iframe-modal-close" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span>
+                        </button>
+                        <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                </div>
+                <div id="iframe-window-urlbar" class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate"></div>
+            </div>
+            <iframe id="modal-iframe" src="" class="w-full h-full border-0 flex-1"></iframe>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script>
+        // Single source of truth for "desktop window-system" mode, mirroring the
+        // CSS media queries in input.css (min-width:768px AND landscape). Tablet
+        // portrait (width>=768 but portrait) behaves like mobile here: no drag,
+        // no canvas-scaling, case-study links navigate instead of opening a window.
+        function isDesktopMode() {
+            return window.innerWidth >= 768 && window.innerWidth > window.innerHeight;
+        }
+
+        // Category folder windows: multi-window, draggable, bring-to-front
+        const folderLayer = document.getElementById('folderWindowLayer');
+        const folderTriggers = document.querySelectorAll('[data-folder-trigger]');
+        const folderWindows = Array.from(document.querySelectorAll('[data-folder-window]'));
+        let openFolderCount = 0;
+        let topZIndex = 55; // starts above the fixed header (z-50) and page widgets (z-10/z-30)
+
+        function bringToFront(win) {
+            topZIndex += 1;
+            win.style.zIndex = String(topZIndex);
+            setActiveWindow(win);
+        }
+
+        // Active vs. idle titlebar tint: only the frontmost window gets the
+        // warmer surface/titlebar color: Figma DS 05 "Window / Visual states".
+        function setActiveWindow(win) {
+            [...folderWindows, imageExpandWindow, iframeWindow].forEach((w) => {
+                if (w) w.classList.remove('is-active-window');
+            });
+            win.classList.add('is-active-window');
+        }
+
+        function openFolderWindow(key) {
+            const win = folderWindows.find((w) => w.dataset.folderWindow === key);
+            if (!win) return;
+
+            // Already open — just bring it to front, don't re-measure/reposition
+            // (re-running the position math while open caused a visible jump/drift).
+            if (win.classList.contains('is-open')) {
+                bringToFront(win);
+                return;
+            }
+
+            const wasClosed = !win.classList.contains('is-open');
+            folderLayer.classList.remove('hidden');
+            win.style.pointerEvents = 'auto';
+
+            // Only reset scale if the window hasn't been dragged into a custom
+            // left/top position yet (dragged windows keep transform: none).
+            if (win.dataset.dragged !== 'true') {
+                win.style.transform = win.style.transform.replace('scale(0.9)', 'scale(1)');
+            }
+            requestAnimationFrame(() => win.classList.add('is-open'));
+            bringToFront(win);
+            if (wasClosed) openFolderCount += 1;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFolderWindow(key) {
+            const win = folderWindows.find((w) => w.dataset.folderWindow === key);
+            if (win && win.classList.contains('is-open')) {
+                win.classList.remove('is-open');
+                win.style.pointerEvents = 'none';
+                if (win.dataset.dragged !== 'true') {
+                    win.style.transform = win.style.transform.replace('scale(1)', 'scale(0.9)');
+                }
+                openFolderCount = Math.max(0, openFolderCount - 1);
+            }
+            if (openFolderCount === 0) {
+                document.body.style.overflow = '';
+                folderLayer.classList.remove('pointer-events-auto');
+                setTimeout(() => {
+                    if (openFolderCount === 0) folderLayer.classList.add('hidden');
+                }, 320);
+            }
+        }
+
+        folderTriggers.forEach((trigger) => {
+            trigger.addEventListener('click', () => {
+                // Click feedback on the icon itself: a quick squash-and-pop
+                // so the folder visibly "reacts" before its window animates
+                // in — closes the gap between intent (click) and the window
+                // appearing a beat later.
+                const icon = trigger.querySelector('svg, img');
+                if (icon && window.gsap) {
+                    gsap.fromTo(icon,
+                        { scale: 0.82, rotate: -4 },
+                        { scale: 1, rotate: 0, duration: 0.55, ease: 'elastic.out(1, 0.5)' }
+                    );
+                }
+                openFolderWindow(trigger.dataset.folderTrigger);
+            });
+        });
+
+        // (sidebar category switch removed — Packaging/Social Media are their own windows)
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            const topWin = folderWindows
+                .filter((w) => !w.classList.contains('hidden'))
+                .sort((a, b) => (parseInt(b.style.zIndex, 10) || 0) - (parseInt(a.style.zIndex, 10) || 0))[0];
+            if (topWin) closeFolderWindow(topWin.dataset.folderWindow);
+        });
+
+        // Drag logic: pointerdown on titlebar, move the window, bring to front
+        // (reusable — called for folder windows AND the case-study iframe window)
+        function setupWindowDrag(win) {
+            const titlebar = win.querySelector('.folder-window-titlebar, .iframe-window-titlebar, .image-expand-window-titlebar');
+            if (!titlebar) return;
+
+            win.addEventListener('pointerdown', () => bringToFront(win));
+
+            titlebar.addEventListener('pointerdown', (e) => {
+                if (!isDesktopMode()) return; // fullscreen on mobile / un-scaled window-stack on tablet portrait — no drag
+                if (e.target.closest('button')) return; // don't drag when clicking the close dot
+                e.preventDefault(); // stop the browser's native text-selection drag
+                bringToFront(win);
+
+                const rect = win.getBoundingClientRect();
+                // Switch from centered (transform: translateX(-50%)) to absolute top/left
+                // so dragging math stays simple (no transform offset to account for).
+                win.style.left = `${rect.left}px`;
+                win.style.top = `${rect.top}px`;
+                win.style.transform = 'none';
+                win.dataset.dragged = 'true';
+                win.style.transition = 'none'; // disable the open/close transition while dragging
+
+                const startX = e.clientX;
+                const startY = e.clientY;
+                const startLeft = rect.left;
+                const startTop = rect.top;
+                titlebar.style.cursor = 'grabbing';
+                document.body.style.userSelect = 'none'; // prevent text selection while dragging
+
+                function onMove(moveEvent) {
+                    const dx = moveEvent.clientX - startX;
+                    const dy = moveEvent.clientY - startY;
+                    win.style.left = `${startLeft + dx}px`;
+                    win.style.top = `${startTop + dy}px`;
+                }
+
+                function onUp() {
+                    titlebar.style.cursor = 'grab';
+                    win.style.transition = ''; // re-enable transition for future open/close
+                    document.body.style.userSelect = '';
+                    document.removeEventListener('pointermove', onMove);
+                    document.removeEventListener('pointerup', onUp);
+                }
+
+                document.addEventListener('pointermove', onMove);
+                document.addEventListener('pointerup', onUp);
+            });
+        }
+
+        folderWindows.forEach(setupWindowDrag);
+
+        // Desktop stage: the Figma canvas is a fixed 1440x1000 design surface.
+        // Real viewports are rarely that exact size, so scale the whole stage
+        // down (never up) to fit — "one page, no scroll" actually holds instead
+        // of overflowing on any laptop smaller than 1440x1000.
+        function fitDesktopStage() {
+            const wrap = document.getElementById('desktopStageWrap');
+            const stage = document.getElementById('desktopStage');
+            if (!wrap || !stage || !isDesktopMode()) return;
+            const availW = wrap.clientWidth;
+            const availH = wrap.clientHeight;
+            const ratio = Math.min(1, availW / 1440, availH / 1000);
+            stage.style.transform = `translate(-50%, -50%) scale(${ratio})`;
+        }
+        window.addEventListener('resize', fitDesktopStage);
+        fitDesktopStage();
+
+        // Tablet portrait: responsive width (fills the real viewport, no
+        // scale-to-fit) but height stays locked to 100vh — orientationchange
+        // still needs to re-run fitDesktopStage() for the landscape case.
+        window.addEventListener('orientationchange', fitDesktopStage);
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
         const isReducedMotion = () => prefersReducedMotion.matches;
 
-        // Iframe Modal Logic
+        // Iframe Modal Logic (draggable window-chrome)
         const iframeModal = document.getElementById('iframe-modal');
+        const iframeWindow = document.getElementById('iframe-window');
         const modalIframe = document.getElementById('modal-iframe');
+        const iframeUrlbar = document.getElementById('iframe-window-urlbar');
         const closeModalBtn = document.getElementById('iframe-modal-close');
+
+        const caseStudyLabels = {
+            '/unreleased-tos': 'nandakbrportfolio.netlify.app/unreleased-tos',
+            '/ptosm': 'nandakbrportfolio.netlify.app/ptosm',
+            '/ptos-sso': 'nandakbrportfolio.netlify.app/ptos-sso',
+            '/ptosm-ui-lib': 'nandakbrportfolio.netlify.app/ptosm-ui-lib',
+            '/bea-cukai': 'nandakbrportfolio.netlify.app/bea-cukai',
+            '/about': 'nandakbrportfolio.netlify.app/about',
+        };
 
         // Image Expand Logic
         const imageExpandModal = document.getElementById('image-expand-modal');
+        const imageExpandWindow = document.getElementById('image-expand-window');
         const imageExpandImg = document.getElementById('image-expand-img');
+        const imageExpandLabel = document.getElementById('image-expand-label');
+
+        const imageExpandLabels = {
+            '/assets/packaging/arjuna.png': 'Arjuna',
+            '/assets/packaging/arjuna%20pm.png': 'Arjuna PM',
+            '/assets/packaging/blue%20mountain.webp': 'Blue Mountain',
+            '/assets/packaging/gayo%20red%20bourbon.jpg': 'Gayo Red Bourbon',
+            '/assets/packaging/gayo%20red%20-%20%20kawi.png': 'Gayo Red - Kawi',
+            '/assets/packaging/putuk%20gede%20-%20flores.png': 'Putuk Gede - Flores',
+            '/assets/packaging/halu.webp': 'Halu',
+            '/assets/social/cpopc%201.webp': 'CPOPC — CPOPC 1',
+            '/assets/social/cpopc%202.webp': 'CPOPC — CPOPC 2',
+            '/assets/social/cpopc%203.webp': 'CPOPC — CPOPC 3',
+            '/assets/social/fotofeeds%201.webp': 'FotoFeeds — FotoFeeds 1',
+            '/assets/social/fotofeeds%202.webp': 'FotoFeeds — FotoFeeds 2',
+            '/assets/social/fotofeeds%203.webp': 'FotoFeeds — FotoFeeds 3',
+            '/assets/social/labq%201.png': 'LabQ — LabQ 1',
+            '/assets/social/labq%202.png': 'LabQ — LabQ 2',
+            '/assets/social/labq%203.png': 'LabQ — LabQ 3',
+            '/assets/social/maro%201.png': 'Maro — Maro 1',
+            '/assets/social/maro%202.png': 'Maro — Maro 2',
+            '/assets/social/maro%203.png': 'Maro — Maro 3',
+            '/assets/social/perumnas%201.png': 'Perumnas — Perumnas 1',
+            '/assets/social/perumnas%202.png': 'Perumnas — Perumnas 2',
+            '/assets/social/perumnas%203.png': 'Perumnas — Perumnas 3',
+            '/assets/social/perumnas%204.png': 'Perumnas — Perumnas 4',
+            '/assets/social/shanas%201.png': 'Shanas — Shanas 1',
+            '/assets/social/shanas%202.png': 'Shanas — Shanas 2',
+            '/assets/social/shanas%203.png': 'Shanas — Shanas 3',
+        };
+
+        // Media controls (Packaging/Social lightbox): prev/next + thumbnail
+        // strip, scoped to whichever series (folder) the opened image belongs
+        // to — derived from imageExpandLabels' key order, so adding a new
+        // image to that object is the only edit needed to extend this.
+        const imageExpandPrevBtn = document.getElementById('image-expand-prev');
+        const imageExpandNextBtn = document.getElementById('image-expand-next');
+        const imageExpandCounter = document.getElementById('image-expand-counter');
+        const imageExpandThumbs = document.getElementById('image-expand-thumbs');
+        let currentImageSeries = [];
+        let currentImageSeriesIndex = -1;
+
+        function seriesKeyOf(src) {
+            const match = src.match(/^\/assets\/([^/]+)\//);
+            return match ? match[1] : null;
+        }
+
+        function renderImageExpandThumbs() {
+            imageExpandThumbs.innerHTML = '';
+            currentImageSeries.forEach((thumbSrc, i) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-colors focus-ring cursor-pointer ' + (i === currentImageSeriesIndex ? 'border-[#244BFF]' : 'border-black/10 opacity-60 hover:opacity-100');
+                btn.setAttribute('aria-label', imageExpandLabels[thumbSrc] || `Image ${i + 1}`);
+                btn.onclick = () => openImageExpand(thumbSrc);
+                const img = document.createElement('img');
+                img.src = thumbSrc;
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                img.alt = '';
+                img.className = 'w-full h-full object-cover';
+                btn.appendChild(img);
+                imageExpandThumbs.appendChild(btn);
+            });
+            const activeThumb = imageExpandThumbs.children[currentImageSeriesIndex];
+            if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+
+        function stepImageExpand(delta) {
+            if (!currentImageSeries.length) return;
+            const nextIndex = (currentImageSeriesIndex + delta + currentImageSeries.length) % currentImageSeries.length;
+            openImageExpand(currentImageSeries[nextIndex]);
+        }
 
         function openImageExpand(src) {
+            const key = seriesKeyOf(src);
+            currentImageSeries = key ? Object.keys(imageExpandLabels).filter((k) => seriesKeyOf(k) === key) : [src];
+            currentImageSeriesIndex = currentImageSeries.indexOf(src);
+
             imageExpandImg.src = src;
+            imageExpandLabel.textContent = imageExpandLabels[src] || '';
+            const hasMultiple = currentImageSeries.length > 1;
+            imageExpandPrevBtn.classList.toggle('hidden', !hasMultiple);
+            imageExpandNextBtn.classList.toggle('hidden', !hasMultiple);
+            imageExpandCounter.classList.toggle('hidden', !hasMultiple);
+            if (hasMultiple) {
+                imageExpandCounter.textContent = `${currentImageSeriesIndex + 1} / ${currentImageSeries.length}`;
+            }
+            renderImageExpandThumbs();
+
             imageExpandModal.classList.remove('hidden');
-            void imageExpandModal.offsetWidth;
-            imageExpandModal.classList.remove('opacity-0');
-            imageExpandImg.classList.remove('scale-95');
-            imageExpandImg.classList.add('scale-100');
+            imageExpandWindow.style.pointerEvents = 'auto';
+            if (imageExpandWindow.dataset.dragged !== 'true') {
+                imageExpandWindow.style.transform = imageExpandWindow.style.transform.replace('scale(0.9)', 'scale(1)');
+            }
+            requestAnimationFrame(() => imageExpandWindow.classList.add('is-open'));
+            bringToFront(imageExpandWindow);
             document.body.classList.add('overflow-hidden');
         }
 
         function closeImageExpand() {
-            imageExpandModal.classList.add('opacity-0');
-            imageExpandImg.classList.remove('scale-100');
-            imageExpandImg.classList.add('scale-95');
+            imageExpandWindow.classList.remove('is-open');
+            imageExpandWindow.style.pointerEvents = 'none';
+            if (imageExpandWindow.dataset.dragged !== 'true') {
+                imageExpandWindow.style.transform = imageExpandWindow.style.transform.replace('scale(1)', 'scale(0.9)');
+            }
             setTimeout(() => {
                 imageExpandModal.classList.add('hidden');
                 imageExpandImg.src = '';
                 document.body.classList.remove('overflow-hidden');
-            }, 300);
+            }, 320);
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !imageExpandModal.classList.contains('hidden')) {
-                closeImageExpand();
-            }
+            if (imageExpandModal.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeImageExpand();
+            if (e.key === 'ArrowLeft') stepImageExpand(-1);
+            if (e.key === 'ArrowRight') stepImageExpand(1);
         });
 
+        setupWindowDrag(imageExpandWindow);
+
+        document.getElementById('image-expand-close').addEventListener('click', closeImageExpand);
+
         function openIframeModal(url) {
+            // Mobile: every window is fullscreen — the page itself is the window.
+            if (window.innerWidth < 768) { window.location.href = url; return; }
             modalIframe.src = url;
+            iframeUrlbar.textContent = caseStudyLabels[url] || url;
             iframeModal.classList.remove('hidden');
-            void iframeModal.offsetWidth;
-            iframeModal.classList.remove('opacity-0');
+            iframeWindow.style.pointerEvents = 'auto';
+            if (iframeWindow.dataset.dragged !== 'true') {
+                iframeWindow.style.transform = iframeWindow.style.transform.replace('scale(0.9)', 'scale(1)');
+            }
+            requestAnimationFrame(() => iframeWindow.classList.add('is-open'));
+            bringToFront(iframeWindow);
             document.body.classList.add('overflow-hidden');
         }
 
         function closeIframeModal() {
-            iframeModal.classList.add('opacity-0');
+            iframeWindow.classList.remove('is-open');
+            iframeWindow.style.pointerEvents = 'none';
+            if (iframeWindow.dataset.dragged !== 'true') {
+                iframeWindow.style.transform = iframeWindow.style.transform.replace('scale(1)', 'scale(0.9)');
+            }
             setTimeout(() => {
                 iframeModal.classList.add('hidden');
                 modalIframe.src = '';
                 document.body.classList.remove('overflow-hidden');
-            }, 360);
+            }, 320);
         }
 
         closeModalBtn.addEventListener('click', closeIframeModal);
-        iframeModal.addEventListener('click', (e) => {
-            if (e.target === iframeModal) closeIframeModal();
-        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !iframeModal.classList.contains('hidden')) {
@@ -1172,21 +1273,13 @@
             }
         });
 
-        // Greeting Word Carousel
-        const wordCarousel = document.getElementById('word-carousel');
-        const wordsCount = wordCarousel ? wordCarousel.children.length : 0;
-        let currentWordIndex = 0;
+        // Register the case-study window into the same drag system as folder windows
+        setupWindowDrag(iframeWindow);
 
-        function rotateWords() {
-            if (!wordCarousel || wordsCount === 0) return;
-            currentWordIndex = (currentWordIndex + 1) % wordsCount;
-            const offset = currentWordIndex * -1.2;
-            wordCarousel.style.transform = `translateY(${offset}em)`;
-        }
+        // NOTE: click-outside-to-close was removed — on a real desktop OS,
+        // clicking empty space never closes a window (it only defocuses it).
+        // Windows now close only via their close dot or Escape.
 
-        if (!isReducedMotion()) {
-            setInterval(rotateWords, 2200);
-        }
 
         // Refined scramble animation for "messy"
         const scrambleWord = document.getElementById('scramble-word');
@@ -1194,13 +1287,17 @@
         const originalText = 'messy';
         const characters = 'yemss';
 
+        const cursorPointer = document.getElementById('cursor-pointer');
+
         function triggerClickAnimation() {
             if (!clickWord) return;
             clickWord.style.transform = 'scale(1)';
             setTimeout(() => {
                 clickWord.style.transform = 'scale(0.965)';
+                if (cursorPointer) cursorPointer.style.transform = 'scale(0.8) translate(2px, 2px)';
                 setTimeout(() => {
                     clickWord.style.transform = 'scale(1.015)';
+                    if (cursorPointer) cursorPointer.style.transform = 'scale(1)';
                     setTimeout(() => {
                         clickWord.style.transform = 'scale(1)';
                     }, 180);
@@ -1232,12 +1329,113 @@
         if (isReducedMotion()) {
             if (scrambleWord) scrambleWord.innerText = originalText;
             if (clickWord) clickWord.style.transform = 'none';
+            if (cursorPointer) cursorPointer.style.display = 'none';
         } else {
             scramble();
             setInterval(scramble, 4300);
         }
 
         // Cinematic reveal behavior
+        // Running head (mobile): the header's right label follows whichever
+        // [data-running] page is in view. Also drives the pill tab-bar active
+        // state and the "01 / 03" page indicator. Tapping a tab scroll-jumps
+        // to that page.
+        (() => {
+            const label = document.querySelector('[data-running-text]');
+            const blocks = Array.from(document.querySelectorAll('[data-running]'));
+            const root = document.getElementById('pageSnapContainer');
+            const tabs = Array.from(document.querySelectorAll('.page-tab'));
+            const indicator = document.getElementById('pageIndicator');
+            if (!root || !blocks.length) return;
+
+            let currentIndex = 0;
+            let isUserClicking = false;
+            let clickTimeout = null;
+
+            const swap = (text) => {
+                if (!label || !text || text === label.textContent) return;
+                label.parentElement?.classList.add('is-swapping');
+                setTimeout(() => {
+                    label.textContent = text;
+                    label.parentElement?.classList.remove('is-swapping');
+                }, 160);
+            };
+
+            const setActivePage = (index) => {
+                currentIndex = index;
+                tabs.forEach((tab, i) => {
+                    const active = i === index;
+                    tab.classList.toggle('bg-surface-window', active);
+                    tab.classList.toggle('shadow-sm', active);
+                    tab.classList.toggle('text-[#20211F]', active);
+                    tab.classList.toggle('opacity-50', !active);
+                });
+                if (indicator) {
+                    indicator.textContent = `0${index + 1} / 03`;
+                }
+            };
+
+            // Set initial state immediately
+            setActivePage(0);
+
+            // Click handling: instant UI feedback + rock-solid scrollTo
+            tabs.forEach((tab) => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const index = parseInt(tab.dataset.pageJump, 10);
+                    if (isNaN(index) || !blocks[index]) return;
+
+                    isUserClicking = true;
+                    clearTimeout(clickTimeout);
+                    clickTimeout = setTimeout(() => { isUserClicking = false; }, 600);
+
+                    setActivePage(index);
+                    if (blocks[index].dataset.running) {
+                        swap(blocks[index].dataset.running);
+                    }
+
+                    root.scrollTo({
+                        left: blocks[index].offsetLeft,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Swipe sync: tracks container scroll position in real time
+            root.addEventListener('scroll', () => {
+                if (isUserClicking) return;
+                const scrollLeft = root.scrollLeft;
+                const width = root.clientWidth || window.innerWidth;
+                if (!width) return;
+                const pageIndex = Math.round(scrollLeft / width);
+                const clampedIndex = Math.max(0, Math.min(blocks.length - 1, pageIndex));
+                if (clampedIndex !== currentIndex) {
+                    setActivePage(clampedIndex);
+                    if (blocks[clampedIndex] && blocks[clampedIndex].dataset.running) {
+                        swap(blocks[clampedIndex].dataset.running);
+                    }
+                }
+            }, { passive: true });
+
+            // IntersectionObserver as resilient fallback
+            if (window.IntersectionObserver) {
+                const io = new IntersectionObserver((entries) => {
+                    if (isUserClicking) return;
+                    const visible = entries.find((e) => e.isIntersecting && e.intersectionRatio >= 0.5);
+                    if (visible) {
+                        const idx = blocks.indexOf(visible.target);
+                        if (idx !== -1 && idx !== currentIndex) {
+                            setActivePage(idx);
+                            if (visible.target.dataset.running) {
+                                swap(visible.target.dataset.running);
+                            }
+                        }
+                    }
+                }, { root, threshold: 0.5 });
+                blocks.forEach((b) => io.observe(b));
+            }
+        })();
+
         const revealItems = document.querySelectorAll('.reveal-item');
 
         if (isReducedMotion()) {
@@ -1272,111 +1470,140 @@
             });
         }
 
-        // Hero parallax system
-        const heroSection = document.querySelector('main > section');
-        const parallaxLayers = Array.from(document.querySelectorAll('.parallax-layer[data-parallax-depth]'));
-
-        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-        function setParallaxOffsets(pointerX, pointerY, scrollFactor) {
-            parallaxLayers.forEach((layer) => {
-                const depth = Number(layer.dataset.parallaxDepth || 0);
-                const x = pointerX * depth;
-                const y = (pointerY * depth * 0.85) - (scrollFactor * depth * 0.9);
-                layer.style.setProperty('--px', `${x.toFixed(2)}px`);
-                layer.style.setProperty('--py', `${y.toFixed(2)}px`);
-            });
-        }
-
-        if (!isReducedMotion() && heroSection && parallaxLayers.length) {
-            let targetX = 0;
-            let targetY = 0;
-            let currentX = 0;
-            let currentY = 0;
-
-            heroSection.addEventListener('pointermove', (event) => {
-                const rect = heroSection.getBoundingClientRect();
-                if (!rect.width || !rect.height) return;
-                const nx = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-                const ny = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
-                targetX = clamp(nx, -1, 1);
-                targetY = clamp(ny, -1, 1);
-            });
-
-            heroSection.addEventListener('pointerleave', () => {
-                targetX = 0;
-                targetY = 0;
-            });
-
-            const animateParallax = () => {
-                const rect = heroSection.getBoundingClientRect();
-                const centerOffset = rect.top + rect.height / 2 - window.innerHeight / 2;
-                const scrollFactor = clamp(centerOffset / (window.innerHeight * 0.8), -1.2, 1.2);
-
-                currentX += (targetX - currentX) * 0.08;
-                currentY += (targetY - currentY) * 0.08;
-
-                setParallaxOffsets(currentX, currentY, scrollFactor);
-                requestAnimationFrame(animateParallax);
-            };
-
-            animateParallax();
-        } else {
-            setParallaxOffsets(0, 0, 0);
-        }
-
-        // Selected Works mobile snap carousel
-        const workGrid = document.querySelector('.work-grid');
-        const workCards = workGrid ? Array.from(workGrid.querySelectorAll('.work-card')) : [];
-        const workDotsContainer = document.querySelector('.work-dots');
-
-        if (workGrid && workCards.length && workDotsContainer) {
-            // Build dot indicators
-            workCards.forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.className = 'work-dot';
-                dot.type = 'button';
-                dot.setAttribute('aria-label', `Go to project ${i + 1}`);
-                dot.addEventListener('click', () => {
-                    workCards[i].scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'nearest',
-                        inline: 'start'
+        // Dock magnify — macOS-style: icon nearest the cursor scales up,
+        // falloff to neighbours, matching the desktop-OS metaphor the whole
+        // site is built on. Desktop/tablet only (needs a continuous pointer,
+        // not touch); skipped entirely on touch-only devices via matchMedia
+        // so mobile taps don't fight a half-applied transform.
+        (function setupDockMagnify() {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            [document.getElementById('dockDesktop'), document.getElementById('dockTablet')].forEach((dock) => {
+                if (!dock) return;
+                const icons = Array.from(dock.querySelectorAll('[data-folder-trigger] svg'));
+                const MAX_SCALE = 1.35;
+                const FALLOFF = 90; // px — distance at which influence reaches ~0
+                dock.addEventListener('mousemove', (e) => {
+                    icons.forEach((icon) => {
+                        const rect = icon.getBoundingClientRect();
+                        const center = rect.left + rect.width / 2;
+                        const dist = Math.abs(e.clientX - center);
+                        const influence = Math.max(0, 1 - dist / FALLOFF);
+                        const scale = 1 + (MAX_SCALE - 1) * influence;
+                        icon.style.transform = `scale(${scale.toFixed(3)}) translateY(${(-6 * influence).toFixed(1)}px)`;
                     });
                 });
-                workDotsContainer.appendChild(dot);
+                dock.addEventListener('mouseleave', () => {
+                    icons.forEach((icon) => { icon.style.transform = ''; });
+                });
             });
+        })();
 
-            const workDots = Array.from(workDotsContainer.querySelectorAll('.work-dot'));
+        // Cursor-tilt: project thumbnails (.tilt-card) tilt toward the
+        // pointer — the same 3D-perspective-on-hover pattern used by
+        // Linear/Stripe/Vercel marketing sites. Desktop/tablet only
+        // (needs a continuous pointer), capped to a small angle so it
+        // reads as "alive", not gimmicky.
+        (function setupCursorTilt() {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            const MAX_TILT = 8; // degrees
+            document.querySelectorAll('.tilt-card').forEach((card) => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const px = (e.clientX - rect.left) / rect.width - 0.5;
+                    const py = (e.clientY - rect.top) / rect.height - 0.5;
+                    card.style.transform = `perspective(600px) rotateY(${(px * MAX_TILT).toFixed(2)}deg) rotateX(${(-py * MAX_TILT).toFixed(2)}deg) scale(1.04)`;
+                });
+                card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+            });
+        })();
 
-            const setActiveCard = (idx) => {
-                workCards.forEach((c, i) => c.classList.toggle('work-card-active', i === idx));
-                workDots.forEach((d, i) => d.classList.toggle('work-dot-active', i === idx));
-            };
+        // Ambient desktop glow — follows the cursor across the canvas via
+        // CSS custom properties, cheap (no layout thrash) and fades out
+        // when the pointer leaves the canvas entirely.
+        (function setupDesktopGlow() {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            const wrap = document.getElementById('desktopStageWrap');
+            const glow = document.getElementById('desktopGlow');
+            if (!wrap || !glow) return;
+            wrap.addEventListener('mousemove', (e) => {
+                const rect = wrap.getBoundingClientRect();
+                glow.style.setProperty('--gx', `${e.clientX - rect.left}px`);
+                glow.style.setProperty('--gy', `${e.clientY - rect.top}px`);
+                glow.classList.remove('opacity-0');
+            });
+            wrap.addEventListener('mouseleave', () => glow.classList.add('opacity-0'));
+        })();
 
-            // Initial state
-            setActiveCard(0);
+        // Magnetic nav links: pull toward the cursor within a small radius,
+        // snap back on mouseleave — the "it wants to be clicked" feel used
+        // on agency sites (Resend, Linear's own marketing nav).
+        (function setupMagneticLinks() {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            const STRENGTH = 0.35;
+            document.querySelectorAll('.magnetic').forEach((el) => {
+                el.style.transition = 'transform 300ms var(--ease-apple-soft)';
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const relX = e.clientX - (rect.left + rect.width / 2);
+                    const relY = e.clientY - (rect.top + rect.height / 2);
+                    el.style.transform = `translate(${relX * STRENGTH}px, ${relY * STRENGTH}px)`;
+                });
+                el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+            });
+        })();
 
-            const carouselObserver = new IntersectionObserver((entries) => {
-                // Pick the entry with the highest intersection ratio
-                let best = null;
-                entries.forEach((entry) => {
-                    if (!best || entry.intersectionRatio > best.intersectionRatio) {
-                        best = entry;
+        // Mobile accordion: smooth GSAP height animation on native <details>,
+        // replacing the browser's instant snap-open/closed. Still a real
+        // <details>/<summary> element throughout (keyboard, screen readers,
+        // "name" exclusive-group behavior all stay native) — JS only
+        // intercepts the click to animate height, then syncs the `open`
+        // attribute to match so native semantics never drift from what's
+        // visually shown.
+        (function setupAccordionMotion() {
+            if (!window.gsap) return;
+            const entries = document.querySelectorAll('.index-entry');
+            if (!entries.length) return;
+            const reduced = isReducedMotion();
+
+            entries.forEach((details) => {
+                const summary = details.querySelector('summary');
+                const body = details.querySelector('.index-body');
+                if (!summary || !body) return;
+                let animating = false;
+
+                summary.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (animating || reduced) {
+                        details.open = !details.open;
+                        return;
+                    }
+                    animating = true;
+
+                    if (!details.open) {
+                        // Opening: close any other entry in the same exclusive
+                        // group first (native `name="work"` behavior), then
+                        // expand this one from 0 to its natural height.
+                        document.querySelectorAll('.index-entry[open]').forEach((other) => {
+                            if (other !== details) other.querySelector('summary')?.click();
+                        });
+                        details.open = true;
+                        const target = body.scrollHeight;
+                        gsap.fromTo(body,
+                            { height: 0, opacity: 0 },
+                            { height: target, opacity: 1, duration: 0.45, ease: 'power3.out',
+                              onComplete: () => { body.style.height = 'auto'; animating = false; } }
+                        );
+                    } else {
+                        gsap.to(body, {
+                            height: 0, opacity: 0, duration: 0.35, ease: 'power3.in',
+                            onComplete: () => { details.open = false; body.style.height = ''; animating = false; }
+                        });
                     }
                 });
-                if (best && best.isIntersecting && best.intersectionRatio >= 0.55) {
-                    const idx = workCards.indexOf(best.target);
-                    if (idx >= 0) setActiveCard(idx);
-                }
-            }, {
-                root: workGrid,
-                threshold: [0.55, 0.7, 0.85]
             });
+        })();
 
-            workCards.forEach((card) => carouselObserver.observe(card));
-        }
-    </script>
+        </script>
 
 </body>
 

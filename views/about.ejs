@@ -1,485 +1,170 @@
 <!DOCTYPE html>
-<html class="scroll-smooth dark" lang="en">
+<html class="scroll-smooth" lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta property="og:title" content="Nanda Akbar — About Me" />
-    <meta property="og:description" content="About Nanda Akbar — UI/UX Designer & Frontend Developer building terminal operating systems at Pelindo Solusi Digital." />
+    <meta property="og:title" content="Nanda Akbar — Resume" />
+    <meta property="og:description" content="Product Designer with hands-on experience designing enterprise software used daily by operators across 80+ physical sites." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://nandakbrportfolio.netlify.app/about" />
     <meta property="og:image" content="/assets/Profile.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Nanda Akbar — About Me" />
-    <meta name="twitter:description" content="About Nanda Akbar — UI/UX Designer & Frontend Developer building terminal operating systems at Pelindo Solusi Digital." />
+    <meta name="twitter:title" content="Nanda Akbar — Resume" />
+    <meta name="twitter:description" content="Product Designer with hands-on experience designing enterprise software used daily by operators across 80+ physical sites." />
     <meta name="twitter:image" content="/assets/Profile.webp" />
-    <title>
-        <%= title %>
-    </title>
+    <title><%= title %></title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Tinos:ital@1&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" media="print" onload="this.media='all'" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#000000",
-                        "primary-secondary": "#666666",
-                        "background-light": "#F9F9F9",
-                        "background-dark": "#050505",
-                        "background-elevated": "#111111",
-                        "cta-default": "#000000",
-                        "cta-hover": "#333333",
-                        "btn-default": "#000000",
-                        "btn-hover": "#333333",
-                        "border-color": "#E5E5E5",
-                    },
-                    fontFamily: {
-                        display: ["Outfit", "sans-serif"],
-                        body: ["Outfit", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.5rem",
-                        '4xl': '2rem',
-                    },
-                },
-            },
-        };
-    </script>
-    <style type="text/tailwindcss">
-        :root {
-            --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
-            --ease-apple-soft: cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal-init {
-            @apply opacity-0 translate-y-16 scale-[0.97];
-            filter: blur(10px);
-            transition:
-                opacity 1100ms var(--ease-apple),
-                transform 1100ms var(--ease-apple),
-                filter 900ms var(--ease-apple-soft);
-            will-change: transform, opacity, filter;
-        }
-
-        .reveal-active {
-            @apply opacity-100 translate-y-0 scale-100;
-            filter: blur(0);
-        }
-
-        section {
-            @apply relative z-10;
-        }
-
-        body,
-        h1,
-        h2,
-        h3,
-        .nav-link {
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .footer-cta-bg {
-            background: linear-gradient(135deg, #050505 0%, #111111 50%, #050505 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .footer-cta-bg::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -20%;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-            filter: blur(60px);
-            pointer-events: none;
-        }
-
-        .footer-cta-bg::after {
-            content: '';
-            position: absolute;
-            top: 20%;
-            right: -10%;
-            width: 80%;
-            height: 60%;
-            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05) 0%, transparent 80%);
-            transform: rotate(-15deg);
-            filter: blur(40px);
-            pointer-events: none;
-        }
-
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        .pill {
-            @apply bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-full text-sm font-medium;
-            transition: transform 700ms var(--ease-apple-soft), box-shadow 700ms var(--ease-apple-soft);
-        }
-
-        .pill:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
-        }
-
-        .work-row {
-            @apply flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b border-[#E5E5E5] dark:border-[#262626];
-            transition: transform 650ms var(--ease-apple-soft), background-color 650ms var(--ease-apple-soft);
-        }
-
-        .work-row:hover {
-            transform: translateX(8px);
-        }
-
-        .work-row-active {
-            @apply bg-black dark:bg-white text-white dark:text-black px-8 rounded-2xl shadow-xl;
-        }
-
-        .philosophy-card {
-            @apply relative overflow-hidden rounded-[2.5rem] p-10 cursor-default;
-            background-color: #F5F5F7;
-            transition:
-                transform 850ms var(--ease-apple),
-                box-shadow 850ms var(--ease-apple),
-                background-color 500ms var(--ease-apple-soft);
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset;
-        }
-
-        .philosophy-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.3) 48%, transparent 70%);
-            transform: translateX(-120%);
-            transition: transform 1100ms var(--ease-apple-soft);
-            pointer-events: none;
-        }
-
-        .philosophy-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 26px 60px rgba(0, 0, 0, 0.14);
-        }
-
-        .philosophy-card:hover::after {
-            transform: translateX(120%);
-        }
-
-        .dark .philosophy-card {
-            background-color: #1C1C1E;
-        }
-
-        .dark .philosophy-card:hover {
-            box-shadow: 0 26px 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .philosophy-number {
-            @apply text-[6rem] font-black leading-none opacity-[0.04] absolute -top-4 -left-2 select-none pointer-events-none;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-
-            .reveal-init {
-                opacity: 1 !important;
-                transform: none !important;
-                filter: none !important;
-            }
-
-            .philosophy-card,
-            .pill,
-            .work-row {
-                transform: none !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/output.css" />
 </head>
 
-<body
-    class="bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] transition-colors duration-300">
-    <header class="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-lg border-b border-white/5">
-        <nav class="max-w-7xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
-            <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
-            <div class="flex gap-10 items-center">
-                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/work">Work</a>
-                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/about">About</a>
-            </div>
-        </nav>
+<body class="bg-background-light text-[#20211F] transition-colors duration-300">
+    <!-- Mobile only: flat back bar (desktop opens this page inside the iframe window). -->
+    <header class="md:hidden sticky top-0 z-50 flex items-center justify-between px-6 py-2 bg-background-light/90 backdrop-blur border-b border-black/10">
+        <a href="/" class="flex items-center gap-1 text-sm py-2 focus-ring" aria-label="Back to index"><span class="material-symbols-outlined text-lg">arrow_back</span>Index</a>
+        <a href="/" class="text-xs opacity-50 py-2 focus-ring">Nanda Akbar</a>
     </header>
-
-    <main class="max-w-7xl mx-auto px-8 md:px-12 pt-48">
-
-        <!-- ═══════════════════════════════════════════
-             HERO: Photo + Manifesto
-        ════════════════════════════════════════════ -->
-        <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center mb-40">
-            <div class="lg:col-span-5 reveal-item">
-                <div class="aspect-square rounded-[4rem] overflow-hidden bg-sky-200 relative group">
-                    <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="/assets/Profile.webp" fetchpriority="high" decoding="async"  loading="lazy">
-                    <!-- subtle caption overlay -->
-                    <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <p class="text-white text-sm font-medium leading-snug opacity-90">Designing from Surabaya.<br/>Thinking in systems. Feeling in details.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="lg:col-span-7 flex flex-col gap-8">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.15] tracking-tight reveal-item">
-                    I don't just make interfaces <span class="font-bold italic">look</span> good.<br/>
-                    I make complex operations <span class="font-bold">feel effortless.</span>
-                </h1>
-                <p class="text-lg text-[#68706C] dark:text-[#A8B0AA] leading-relaxed max-w-2xl reveal-item">
-                    I design and build the systems port operators actually use — terminal operating systems, SSO platforms,
-                    and design systems deployed across 80+ branches. Most designers stop at screens. I go into the workflow,
-                    the friction, and the operational reality behind it.
-                </p>
-                <div class="flex flex-wrap gap-3">
-                    <span class="pill reveal-item">Social Media</span>
-                    <span class="pill reveal-item">UI/UX</span>
-                    <span class="pill reveal-item">Packaging</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- ═══════════════════════════════════════════
-             PHILOSOPHY: How I think (not what I use)
-        ════════════════════════════════════════════ -->
-        <section class="mb-40 reveal-item">
-            <div class="mb-16">
-                <p class="text-xs font-black uppercase tracking-[0.3em] opacity-30 mb-3">The Way I Think</p>
-                <h2 class="text-4xl font-bold tracking-tight">Design Philosophy</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Principle 1 -->
-                <div class="philosophy-card">
-                    <span class="philosophy-number">01</span>
-                    <div class="relative z-10">
-                        <h3 class="text-xl font-bold mb-4 tracking-tight">Clarity Before Decoration</h3>
-                        <p class="text-[#68706C] dark:text-[#A8B0AA] text-sm leading-relaxed">
-                            If an operator can't act in one glance, the design has failed — no matter how polished.
-                            The interface should disappear; the task should remain.
-                        </p>
-                    </div>
-                </div>
-                <!-- Principle 2 -->
-                <div class="philosophy-card">
-                    <span class="philosophy-number">02</span>
-                    <div class="relative z-10">
-                        <h3 class="text-xl font-bold mb-4 tracking-tight">Systems, Not Screens</h3>
-                        <p class="text-[#68706C] dark:text-[#A8B0AA] text-sm leading-relaxed">
-                            One-off pages don't scale. I build reusable design systems and components
-                            so consistency holds across every terminal, module, and workflow.
-                        </p>
-                    </div>
-                </div>
-                <!-- Principle 3 -->
-                <div class="philosophy-card">
-                    <span class="philosophy-number">03</span>
-                    <div class="relative z-10">
-                        <h3 class="text-xl font-bold mb-4 tracking-tight">Real Operations, Real Constraints</h3>
-                        <p class="text-[#68706C] dark:text-[#A8B0AA] text-sm leading-relaxed">
-                            I design inside the messy reality of port operations — 24/7 uptime, multiple terminals,
-                            and field conditions. The work has to hold up where it's actually used.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ═══════════════════════════════════════════
-             CAREER: Impact first, titles second
-        ════════════════════════════════════════════ -->
-        <section class="mb-40 reveal-item">
-            <div class="mb-16">
-                <p class="text-xs font-black uppercase tracking-[0.3em] opacity-30 mb-3">Where I've Been</p>
-                <h2 class="text-4xl font-bold tracking-tight">Work Experiences</h2>
-            </div>
-            <div class="flex flex-col gap-4">
-                <div class="work-row work-row-active">
-                    <div class="flex flex-col flex-1">
-                        <span class="font-semibold text-lg">UI/UX Designer &amp; Frontend Developer</span>
-                        <span class="font-bold">Pelindo Solusi Digital</span>
-                        <span class="text-sm font-medium opacity-60 mt-1">Designing PTOS-M across 80+ branches, a unified SSO platform, and a 300+ component design system used by port operators daily.</span>
-                    </div>
-                    <span class="opacity-80 mt-3 md:mt-0 shrink-0 ml-8">05/2025–Present</span>
-                </div>
-                <div class="work-row">
-                    <div class="flex flex-col flex-1">
-                        <span class="font-medium text-[#68706C] dark:text-[#A8B0AA]">System Implementor</span>
-                        <span class="font-semibold">Pelindo Solusi Digital</span>
-                        <span class="text-sm text-[#68706C] dark:text-[#A8B0AA] mt-1">Implemented and supported the PTOS-M system across operational terminals; built documentation and validated deployments.</span>
-                    </div>
-                    <span class="text-gray-500 mt-3 md:mt-0 shrink-0 ml-8">05/2023 – 05/2025</span>
-                </div>
-                <div class="work-row">
-                    <div class="flex flex-col flex-1">
-                        <span class="font-medium text-[#68706C] dark:text-[#A8B0AA]">Engineer Onsite</span>
-                        <span class="font-semibold">Pelindo Solusi Digital</span>
-                        <span class="text-sm text-[#68706C] dark:text-[#A8B0AA] mt-1">Monitored live systems, troubleshot operational errors, and supported STID users in a 24/7 uptime environment.</span>
-                    </div>
-                    <span class="text-gray-500 mt-3 md:mt-0 shrink-0 ml-8">07/2022 – 05/2023</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- ═══════════════════════════════════════════
-             TOOLS: Brief, positioned correctly
-        ════════════════════════════════════════════ -->
-        <section class="mb-48 reveal-item">
-            <div class="mb-16">
-                <p class="text-xs font-black uppercase tracking-[0.3em] opacity-30 mb-3">The Craft Side</p>
-                <h2 class="text-4xl font-bold tracking-tight">Used Tools</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div
-                    class="bg-black dark:bg-white text-white dark:text-black p-8 rounded-[2.5rem] flex flex-col gap-6 shadow-2xl relative overflow-hidden group">
-                    <div class="w-12 h-12 flex items-center justify-center relative z-10">
-                        <img alt="Figma" class="w-8 h-8" src="/assets/figma.png" loading="lazy" decoding="async" >
-                    </div>
-                    <div class="relative z-10">
-                        <h4 class="font-bold text-lg mb-2">Figma</h4>
-                        <p class="text-white/70 dark:text-black/70 text-sm leading-relaxed">
-                            for creating interfaces, prototypes, and collaborative design systems.
-                        </p>
-                    </div>
-                    <img alt=""
-                        class="absolute -bottom-12 -right-12 w-64 h-64 opacity-[0.15] dark:opacity-[0.12] grayscale invert dark:invert-0 pointer-events-none transform rotate-12 transition-opacity duration-500 group-hover:opacity-[0.25]"
-                        src="/assets/figma.png"  loading="lazy" decoding="async">
-                </div>
-                <div
-                    class="border-2 border-border-color p-8 rounded-[2.5rem] flex flex-col gap-6 hover:bg-black/5 dark:hover:bg-white/5 transition-colors relative overflow-hidden group">
-                    <div class="w-12 h-12 flex items-center justify-center relative z-10">
-                        <img alt="Illustrator" class="w-8 h-8" src="/assets/ai.png" loading="lazy" decoding="async" >
-                    </div>
-                    <div class="relative z-10">
-                        <h4 class="font-bold text-lg mb-2">Illustrator</h4>
-                        <p class="text-primary-secondary text-sm leading-relaxed">
-                            for creating scalable artwork and brand identities.
-                        </p>
-                    </div>
-                    <img alt=""
-                        class="absolute -bottom-12 -right-12 w-64 h-64 opacity-[0.12] dark:opacity-[0.1] grayscale pointer-events-none transform rotate-12 transition-opacity duration-500 group-hover:opacity-[0.2]"
-                        src="/assets/ai.png"  loading="lazy" decoding="async">
-                </div>
-                <div
-                    class="border-2 border-border-color p-8 rounded-[2.5rem] flex flex-col gap-6 hover:bg-black/5 dark:hover:bg-white/5 transition-colors relative overflow-hidden group">
-                    <div class="w-12 h-12 flex items-center justify-center relative z-10">
-                        <img alt="Photoshop" class="w-8 h-8" src="/assets/ps.png" loading="lazy" decoding="async" >
-                    </div>
-                    <div class="relative z-10">
-                        <h4 class="font-bold text-lg mb-2">Photoshop</h4>
-                        <p class="text-primary-secondary text-sm leading-relaxed">
-                            Essential for creating stunning visuals and mockups.
-                        </p>
-                    </div>
-                    <img alt=""
-                        class="absolute -bottom-12 -right-12 w-64 h-64 opacity-[0.12] dark:opacity-[0.1] grayscale pointer-events-none transform rotate-12 transition-opacity duration-500 group-hover:opacity-[0.2]"
-                        src="/assets/ps.png"  loading="lazy" decoding="async">
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="mt-24 pb-12" id="about">
-        <div class="max-w-7xl mx-auto px-8 md:px-12">
-            <div class="footer-cta-bg rounded-[4rem] p-16 md:p-24 flex flex-col gap-12">
-                <div class="relative z-10">
-                    <h2 class="text-white text-3xl md:text-4xl font-display leading-[1.1] tracking-tight">
-                        <span class="font-bold">drop a message,</span><br />
-                        <span class="font-light opacity-70">and I'll take care of the rest.</span>
-                    </h2>
-                </div>
-                <div class="flex flex-col md:flex-row justify-between items-end md:items-center relative z-10">
-                    <a class="bg-black text-white px-12 py-5 rounded-full font-semibold text-lg hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 transition-colors shadow-lg"
-                        href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">
-                        Let's Chat
-                    </a>
-                    <div class="flex gap-8 mt-12 md:mt-0">
-                        <a class="text-white hover:opacity-70 transition-opacity p-1"
-                            href="https://www.linkedin.com/in/nandakbr">
-                            <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
-                                <path
-                                    d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z">
-                                </path>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </a>
-                        <a class="text-white hover:opacity-70 transition-opacity p-1"
-                            href="https://www.instagram.com/nandakbr_/">
-                            <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24">
-                                <rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect>
-                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
-                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                            </svg>
+    <main class="max-w-3xl mx-auto px-6 md:px-0 pt-10 pb-16">
+        <!-- Resume as a window-chrome document: titlebar + printable-feel content -->
+        <div class="rounded-lg overflow-hidden shadow-lg border border-black/10 bg-surface-window reveal-item" data-delay="100">
+            <!-- Document content (no internal window chrome — this is always opened inside the
+                 homepage's draggable case-study window, which already provides that chrome) -->
+            <div class="p-8 md:p-14">
+                <!-- Identity -->
+                <div class="mb-10 pb-8 border-b border-black/10">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-[0.65rem] font-black uppercase tracking-[0.3em] text-[#244BFF]">Résumé</p>
+                        <a href="/assets/CV_Nanda_A.pdf" download
+                            class="shrink-0 flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-black/10 opacity-60 hover:opacity-100 active:opacity-40 transition-opacity focus-ring cursor-pointer">
+                            <span class="material-symbols-outlined text-base">download</span>
+                            PDF
                         </a>
                     </div>
+                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-1">Nanda A Akbar</h1>
+                    <p class="text-base opacity-60 mb-5">Product Designer</p>
+
+                    <!-- contact.txt: window-chrome card, consistent with the folder/case-study
+                         window identity used across the rest of the site. -->
+                    <div class="rounded-lg border border-black/10 overflow-hidden">
+                        <div class="flex items-center gap-[9px] px-[11px] h-[27px] bg-surface-titlebar-alt border-b border-black/10">
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="flex-1 text-center text-[0.65rem] opacity-50">contact.txt</span>
+                            <button type="button" onclick="navigator.clipboard.writeText('nandaakbar70@gmail.com')" aria-label="Copy email" class="text-xs opacity-40 hover:opacity-100 active:opacity-50 transition-opacity focus-ring cursor-pointer">
+                                <span class="material-symbols-outlined text-sm">content_copy</span>
+                            </button>
+                        </div>
+                        <div class="px-4 py-3.5 space-y-1.5 text-xs font-mono">
+                            <p><span class="opacity-40">EMAIL</span> &nbsp;nandaakbar70@gmail.com</p>
+                            <p><span class="opacity-40">PHONE</span> &nbsp;+62 822 4630 8605</p>
+                            <p><span class="opacity-40">LOCATION</span> &nbsp;Indonesia (Remote)</p>
+                            <p><span class="opacity-40">PORTFOLIO</span> &nbsp;<a href="https://nandakbrportfolio.netlify.app" class="text-[#244BFF] hover:underline focus-ring cursor-pointer">nandakbrportfolio.netlify.app</a></p>
+                            <p><span class="opacity-40">LINKEDIN</span> &nbsp;<a href="https://linkedin.com/in/nandaakbr" class="text-[#244BFF] hover:underline focus-ring cursor-pointer">linkedin.com/in/nandaakbr</a></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div
-                class="py-12 text-sm opacity-40 text-center md:text-left mt-24 border-t border-[#D7DCD8] dark:border-[#1A221D] font-medium">
-                © 2026 Nanda Akbar. Built with passion and precision.
+
+                <!-- Summary -->
+                <section class="mb-10">
+                    <p class="text-[0.65rem] font-black uppercase tracking-[0.3em] opacity-40 mb-3">Summary</p>
+                    <p class="text-sm leading-relaxed opacity-80">
+                        Product Designer with hands-on experience designing enterprise software used daily by operators across 80+ physical sites, backed by 2+ prior years working directly on the same system as an implementor and engineer. Also has working frontend ability (Vue.js, HTML/CSS) to prototype and ship close to production. Led end-to-end design for a terminal operating system and a unified authentication platform consolidating 3 separate systems into one, and rebuilt a 300+ component design system now shared across the product suite. Comfortable owning ambiguous, operationally complex workflows and collaborating async across distributed, cross-functional teams.
+                    </p>
+                </section>
+
+                <!-- Skills -->
+                <section class="mb-10">
+                    <p class="text-[0.65rem] font-black uppercase tracking-[0.3em] opacity-40 mb-3">Skills</p>
+                    <div class="flex flex-wrap gap-2">
+                        <% ["Product Design", "User Experience (UX)", "Interaction Design", "Design Systems", "Information Architecture", "Prototyping", "Usability Testing", "User Research", "User Flows", "Figma", "Vue.js", "HTML / CSS", "REST API Integration", "Adobe Illustrator"].forEach(skill => { %>
+                        <span class="text-xs px-3 py-1.5 rounded-full border border-black/10 opacity-70"><%= skill %></span>
+                        <% }) %>
+                    </div>
+                </section>
+
+                <!-- Experience -->
+                <section class="mb-10">
+                    <p class="text-[0.65rem] font-black uppercase tracking-[0.3em] opacity-40 mb-5">Experience</p>
+                    <div class="space-y-8">
+                        <div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
+                                <h3 class="text-base font-bold">Product Designer / Frontend Developer</h3>
+                                <span class="text-xs opacity-40 shrink-0">May 2025 – Current</span>
+                            </div>
+                            <p class="text-xs opacity-50 mb-3">Pelindo Solusi Digital — enterprise software for Indonesia's national port operator</p>
+                            <ul class="text-sm leading-relaxed opacity-80 space-y-1.5 list-disc list-outside ml-4">
+                                <li>Owned end-to-end product design for a terminal operating system live across 80+ operational sites nationwide, translating complex logistics workflows into enterprise interfaces for daily operator use.</li>
+                                <li>Designed a unified authentication platform consolidating 3 separate systems into a single secured sign-on flow, reducing operator login entry points from 3 to 1.</li>
+                                <li>Led UI/UX for a modular, white-label version of the core product for external customers, with configurable workflows and per-client branding.</li>
+                                <li>Rebuilt the design system and component library (300+ reusable components) now adopted as the shared standard across the full product suite.</li>
+                                <li>Implemented responsive interfaces (Vue.js, HTML/CSS) integrated with REST APIs, maintaining design fidelity from Figma through to production.</li>
+                                <li>Partnered with engineering, product, and operations stakeholders across discovery, implementation, and validation phases.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
+                                <h3 class="text-base font-bold">System Implementor</h3>
+                                <span class="text-xs opacity-40 shrink-0">May 2023 – May 2025</span>
+                            </div>
+                            <p class="text-xs opacity-50 mb-3">Pelindo Solusi Digital</p>
+                            <ul class="text-sm leading-relaxed opacity-80 space-y-1.5 list-disc list-outside ml-4">
+                                <li>Deployed and supported the core operating system across live operational terminals, working directly with end users to resolve real-world usability issues — direct input into later design decisions.</li>
+                                <li>Translated field feedback into functional requirements for the development team.</li>
+                                <li>Authored system documentation and conducted testing to verify correct operation before rollout.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
+                                <h3 class="text-base font-bold">Engineer Onsite</h3>
+                                <span class="text-xs opacity-40 shrink-0">Jul 2022 – May 2023</span>
+                            </div>
+                            <p class="text-xs opacity-50 mb-3">Pelindo Solusi Digital</p>
+                            <ul class="text-sm leading-relaxed opacity-80 space-y-1.5 list-disc list-outside ml-4">
+                                <li>Diagnosed user-reported issues through test scripts and root-cause analysis in a 24/7 uptime environment.</li>
+                                <li>Provided hands-on operational support across shifts spanning multiple time zones.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Education + Languages -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <section>
+                        <p class="text-[0.65rem] font-black uppercase tracking-[0.3em] opacity-40 mb-3">Education</p>
+                        <h3 class="text-sm font-bold">Brawijaya University</h3>
+                        <p class="text-xs opacity-50">Information Technology — Malang, East Java</p>
+                    </section>
+                    <section>
+                        <p class="text-[0.65rem] font-black uppercase tracking-[0.3em] opacity-40 mb-3">Languages</p>
+                        <p class="text-sm opacity-80">English (Professional Working Proficiency)</p>
+                        <p class="text-sm opacity-80">Indonesian (Native)</p>
+                    </section>
+                </div>
             </div>
         </div>
-    </footer>
+    </main>
 
     <script>
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        const isReducedMotion = () => prefersReducedMotion.matches;
-
         const revealItems = document.querySelectorAll('.reveal-item');
-
-        if (isReducedMotion()) {
-            revealItems.forEach((el) => {
-                el.classList.add('reveal-init', 'reveal-active');
+        revealItems.forEach((el) => {
+            el.classList.add('reveal-init');
+            requestAnimationFrame(() => {
+                setTimeout(() => el.classList.add('reveal-active'), 100);
             });
-        } else {
-            const observerOptions = {
-                threshold: 0.08,
-                rootMargin: '0px 0px -8% 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        const alreadyPlayed = entry.target.dataset.revealed === 'true';
-                        const delay = alreadyPlayed ? 0 : index * 110;
-                        setTimeout(() => {
-                            entry.target.classList.add('reveal-active');
-                            entry.target.dataset.revealed = 'true';
-                        }, delay);
-                    } else {
-                        entry.target.classList.remove('reveal-active');
-                    }
-                });
-            }, observerOptions);
-
-            revealItems.forEach((el) => {
-                el.classList.add('reveal-init');
-                observer.observe(el);
-            });
-        }
+        });
     </script>
-
 </body>
 
 </html>

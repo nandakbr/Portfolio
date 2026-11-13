@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth dark" lang="en">
+<html class="scroll-smooth" lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -19,193 +19,168 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Tinos:ital@1&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#000000",
-                        "primary-secondary": "#666666",
-                        "background-light": "#F9F9F9",
-                        "background-dark": "#050505",
-                        "background-elevated": "#111111",
-                        "cta-default": "#000000",
-                        "cta-hover": "#333333",
-                        "btn-default": "#000000",
-                        "btn-hover": "#333333",
-                        "border-color": "#E5E5E5",
-                        "card-light": "#EEEEEE",
-                        "card-dark": "#111111",
-                    },
-                    fontFamily: {
-                        display: ["Outfit", "sans-serif"],
-                        body: ["Inter", "sans-serif"],
-                    },
-                    borderRadius: {
-                        'xl': '1.5rem',
-                        '2xl': '2rem',
-                        DEFAULT: "0.5rem",
-                    },
-                },
-            },
-        };
-    </script>
-    <style type="text/tailwindcss">
-        :root {
-            --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
-            --ease-apple-soft: cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @layer base {
-            body {
-                @apply font-body bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] min-h-screen transition-colors duration-300;
-            }
-            h1, h2, h3, h4, h5, h6, .display-font, nav a {
-                @apply font-display;
-            }
-        }
-
-        .reveal-init {
-            @apply opacity-0 translate-y-16 scale-[0.97];
-            filter: blur(10px);
-            transition:
-                opacity 1100ms var(--ease-apple),
-                transform 1100ms var(--ease-apple),
-                filter 900ms var(--ease-apple-soft);
-            will-change: transform, opacity, filter;
-        }
-
-        .reveal-active {
-            @apply opacity-100 translate-y-0 scale-100;
-            filter: blur(0);
-        }
-
-        .carousel-thumb-btn.active {
-            @apply ring-2 ring-[#0B130F] dark:ring-white scale-95;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/output.css" />
 </head>
 
 <body>
-    <header class="max-w-7xl mx-auto px-8 md:px-12 py-10 flex justify-between items-center">
-        <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
-        <nav class="flex gap-8 items-center">
-            <!-- <a class="text-lg hover:opacity-70 transition-opacity" href="/work">Work</a>
-            <a class="text-lg hover:opacity-70 transition-opacity" href="/about">About</a> -->
+    <!-- Mobile only: redesigned to match desktop's macOS-window identity + the
+         Figma "detail page" spec (header/nav/title/hero-carousel/gallery). Desktop
+         still opens this page inside the draggable iframe window — unchanged. -->
+    <div class="md:hidden">
+        <!-- Header -->
+        <div class="px-6 pt-5 pb-3">
+            <div class="flex items-center justify-between">
+                <a href="/" class="text-sm font-bold tracking-tight focus-ring">Nanda Akbar</a>
+                <p class="text-[0.6rem] uppercase tracking-[0.15em] opacity-50">PORTFOLIO / WORK</p>
+            </div>
+            <div class="border-t border-black/10 mt-3"></div>
+        </div>
 
-        </nav>
-    </header>
-    <main class="max-w-7xl mx-auto px-8 md:px-12 pb-32">
-        <div class="mb-12 reveal-item">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
+        <!-- Nav row: back + category tag -->
+        <div class="px-6 pb-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-1.5 text-sm opacity-70 active:opacity-40 focus-ring" aria-label="Back to index">
+                <span class="material-symbols-outlined text-base">arrow_back</span>Index
+            </a>
+            <span class="text-[0.6rem] uppercase tracking-[0.1em] text-[#244BFF]">UI/UX DESIGN</span>
+        </div>
+
+        <!-- Title + description -->
+        <div class="px-6 pb-6">
+            <h1 class="text-3xl font-semibold leading-[1.05] tracking-tight">PTOS-SSO</h1>
+            <p class="text-sm opacity-60 leading-snug mt-3">A unified Single Sign-On interface for the Terminal Operating System, enhancing security and user efficiency across all modules.</p>
+        </div>
+
+        <!-- Hero carousel: window-chrome, matches desktop/folder-window identity -->
+        <div id="mobile-hero-wrap" class="px-6">
+            <div class="rounded-lg border border-black/10 shadow-sm overflow-hidden bg-surface-window">
+                <div class="flex items-center gap-[9px] px-[11px] h-[27px] bg-surface-titlebar-alt border-b border-black/10">
+                    <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                            <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
+                    <span class="flex-1 text-center text-[0.65rem] opacity-50">PTOS-SSO</span>
+                </div>
+                <div class="aspect-[4/3] bg-background-light">
+                    <img id="mobile-hero-image" alt="" class="w-full h-full object-cover" src="/assets/login sso.webp" loading="lazy" decoding="async">
+                </div>
+            </div>
+
+            <!-- Carousel controls: prev/dots/next -->
+            <div class="flex items-center justify-center gap-4 mt-4">
+                <button type="button" onclick="mobileCarouselStep(-1)" aria-label="Previous"
+                    class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center active:scale-90 transition-transform focus-ring">
+                    <span class="material-symbols-outlined text-base opacity-60">chevron_left</span>
+                </button>
+                <div id="mobile-carousel-dots" class="flex items-center gap-1.5"></div>
+                <button type="button" onclick="mobileCarouselStep(1)" aria-label="Next"
+                    class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center active:scale-90 transition-transform focus-ring">
+                    <span class="material-symbols-outlined text-base opacity-60">chevron_right</span>
+                </button>
+            </div>
+
+            <!-- Expand button -->
+            <button type="button" onclick="openLightbox(mobileCarouselIndex)"
+                class="w-full mt-4 py-2.5 rounded-full border border-black/10 text-xs text-[#244BFF] flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform focus-ring">
+                <span class="material-symbols-outlined text-sm">open_in_full</span>EXPAND
+            </button>
+        </div>
+
+        <!-- Gallery: caption grid, same source data as the carousel -->
+        <div class="px-6 pt-10 pb-10">
+            <div class="flex items-baseline justify-between mb-4">
+                <p class="text-xl font-semibold tracking-tight">Gallery</p>
+                <p class="text-[0.6rem] uppercase tracking-[0.1em] text-[#244BFF]" id="mobile-gallery-count">03 VIEWS</p>
+            </div>
+            <div id="mobile-gallery-grid" class="grid grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <main class="hidden md:block max-w-7xl mx-auto px-6 md:px-12 pt-8 md:pt-16 pb-32">
+        <!-- Project detail: metadata row + title + summary + hero (prev/next) + gallery
+             — Figma "Project detail" frame, 1:1 content mapping (see unreleased-tos.ejs
+             for the same pattern). -->
+        <div class="reveal-item">
+            <div class="flex items-center justify-between mb-5">
+                <p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#244BFF]">UI/UX Design</p>
+                <button type="button" onclick="openLightbox(currentIndex)" class="flex items-center gap-1.5 text-xs opacity-50 hover:opacity-100 active:opacity-40 transition-opacity focus-ring cursor-pointer">
+                    <span class="material-symbols-outlined text-base">open_in_full</span>Expand Image
+                </button>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-5">
                 PTOS-SSO
             </h1>
-            <p class="text-xl text-[#68706C] dark:text-[#A8B0AA] max-w-2xl leading-relaxed">
+            <p class="text-lg text-[#77796F] leading-relaxed max-w-3xl mb-10">
                 A unified Single Sign-On interface for the Terminal Operating System, enhancing security and user
                 efficiency across all modules.
             </p>
-        </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            <div class="lg:col-span-8 flex flex-col gap-8 reveal-item">
-                <div class="bg-card-light dark:bg-card-dark p-8 md:p-12 rounded-2xl shadow-sm aspect-[16/10] flex items-center justify-center overflow-hidden cursor-pointer group"
+            <!-- Hero + manual prev/next controls, counter -->
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-card-light rounded-2xl shadow-sm aspect-[16/9] flex items-center justify-center overflow-hidden cursor-pointer group"
                     onclick="openLightbox(currentIndex)">
-                    <div class="w-full h-full transition-all duration-300 opacity-100 relative" id="main-content-area">
-                        <img alt="Main Portfolio Showcase" class="w-full h-full object-cover rounded-xl shadow-2xl"
-                            id="main-carousel-image"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Djd9ErefSidRgZ6Gq1oroHbZCk8mJSFme8X_lDuu6lK96F_96Fyqq_8escOIf6K-NOQ-pNH5u3EzdybYOdCEBVWfaR7FQKEAc-PfHZz_1C35DKoHpvAp4rtRAF_kmgmxpks2c4orNVgTuPKsgtFLrVLJMxny_pREvnhBxMnN_TrBPzSqTGKUiL141ncEYoTbo2Cy7fwluN19nEnISMLBs1vmUzQBxQUC8pW4UcUd8lTK-t16FvSii6opsYHG7M2fiwlcn-Eqr2Q"  loading="lazy" decoding="async">
-                        <div
-                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 pointer-events-none">
-                            <div
-                                class="bg-white/90 dark:bg-black/90 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-lg backdrop-blur-sm">
-                                <span class="text-xs font-bold uppercase tracking-widest">View</span>
-                                <span class="material-symbols-outlined text-sm">zoom_in</span>
-                            </div>
-                        </div>
-                    </div>
+                    <img alt="Project view" class="w-full h-full object-cover transition-opacity duration-150" id="main-carousel-image"
+                        src="/assets/login sso.webp" loading="lazy" decoding="async">
                 </div>
-                <div class="grid grid-cols-3 md:grid-cols-5 gap-4">
-                    <button
-                        class="carousel-thumb-btn active bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
-                        onclick="updateCarousel(0)">
-                        <img alt="Thumbnail 1" class="w-full h-24 object-cover" src="/assets/login sso.webp"  loading="lazy" decoding="async">
+                <div class="flex items-center justify-center gap-6 mt-5">
+                    <button type="button" onclick="updateCarousel((currentIndex - 1 + projectData.length) % projectData.length)" aria-label="Previous"
+                        class="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 active:scale-90 transition-all focus-ring cursor-pointer">
+                        <span class="material-symbols-outlined opacity-60">chevron_left</span>
                     </button>
-                    <button
-                        class="carousel-thumb-btn bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
-                        onclick="updateCarousel(1)">
-                        <img alt="Thumbnail 2" class="w-full h-24 object-cover" src="/assets/main sso.webp"  loading="lazy" decoding="async">
-                    </button>
-                    <button
-                        class="carousel-thumb-btn bg-card-light dark:bg-card-dark rounded-xl hover:brightness-95 transition-all outline-none overflow-hidden"
-                        onclick="updateCarousel(2)">
-                        <img alt="Thumbnail 3" class="w-full h-24 object-cover" src="/assets/main expanded sso.webp"  loading="lazy" decoding="async">
+                    <span class="text-xs opacity-50 font-mono" id="desktop-carousel-counter">01 / 03</span>
+                    <button type="button" onclick="updateCarousel((currentIndex + 1) % projectData.length)" aria-label="Next"
+                        class="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 active:scale-90 transition-all focus-ring cursor-pointer">
+                        <span class="material-symbols-outlined opacity-60">chevron_right</span>
                     </button>
                 </div>
             </div>
-            <aside
-                class="lg:col-span-4 flex flex-col border-l border-[#0B130F]/10 dark:border-white/10 pl-0 lg:pl-12 pt-4 reveal-item">
-                <div class="flex-grow flex flex-col">
-                    <div class="mb-16" id="text-content">
-                        <span class="text-[11px] font-bold tracking-[0.3em] text-[#68706C] uppercase mb-5 block">Key
-                            Highlight</span>
-                        <h2 class="text-4xl font-bold mb-8 tracking-tight leading-tight" id="feature-title">Secure
-                            Single Sign-On</h2>
-                        <p class="text-lg text-[#68706C] dark:text-[#A8B0AA] leading-relaxed" id="feature-description">
-                            A unified login portal providing secure access across the entire Terminal Operating System
-                            ecosystem with a single set of credentials.
-                        </p>
-                    </div>
-                    <div class="mt-auto space-y-10 border-t border-[#0B130F]/10 dark:border-white/10 pt-12">
-                        <div class="grid grid-cols-2 gap-y-10">
-                            <div>
-                                <span
-                                    class="text-[10px] font-black tracking-[0.25em] text-[#68706C] uppercase block mb-3">Role</span>
-                                <p class="text-sm font-bold uppercase tracking-tight">UI/UX Designer</p>
-                            </div>
-                            <div>
-                                <span
-                                    class="text-[10px] font-black tracking-[0.25em] text-[#68706C] uppercase block mb-3">Timeline</span>
-                                <p class="text-sm font-bold uppercase tracking-tight">1 Month</p>
-                            </div>
-                            <div class="col-span-2">
-                                <span
-                                    class="text-[10px] font-black tracking-[0.25em] text-[#68706C] uppercase block mb-3">Tools</span>
-                                <p class="text-sm font-bold uppercase tracking-tight">Figma, Adobe Suite, Visual Studio
-                                    IDE</p>
-                            </div>
-                        </div>
-                    </div>
+
+            <!-- Gallery: 3-thumbnail grid, numbered, same projectData as hero -->
+            <div class="mt-16">
+                <div class="flex items-baseline justify-between mb-5">
+                    <p class="text-xl font-semibold tracking-tight">Gallery</p>
+                    <p class="text-[0.65rem] uppercase tracking-[0.15em] text-[#244BFF]">3 VIEWS</p>
                 </div>
-            </aside>
+                <div class="grid grid-cols-3 gap-4" id="desktop-gallery-grid">
+                    <button type="button" class="carousel-thumb-btn active group text-left" onclick="updateCarousel(0)">
+                        <span class="block aspect-square rounded-lg overflow-hidden border border-black/10"><img alt="Thumbnail 1" class="w-full h-full object-cover" src="/assets/login sso.webp" loading="lazy" decoding="async"></span>
+                        <span class="block text-xs mt-2 opacity-50">01</span>
+                    </button>
+                    <button type="button" class="carousel-thumb-btn group text-left" onclick="updateCarousel(1)">
+                        <span class="block aspect-square rounded-lg overflow-hidden border border-black/10"><img alt="Thumbnail 2" class="w-full h-full object-cover" src="/assets/main sso.webp" loading="lazy" decoding="async"></span>
+                        <span class="block text-xs mt-2 opacity-50">02</span>
+                    </button>
+                    <button type="button" class="carousel-thumb-btn group text-left" onclick="updateCarousel(2)">
+                        <span class="block aspect-square rounded-lg overflow-hidden border border-black/10"><img alt="Thumbnail 3" class="w-full h-full object-cover" src="/assets/main expanded sso.webp" loading="lazy" decoding="async"></span>
+                        <span class="block text-xs mt-2 opacity-50">03</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Case Studies Section -->
         <section class="mt-32 reveal-item">
             <div class="mb-16">
-                <span class="text-[11px] font-bold tracking-[0.3em] text-[#68706C] uppercase mb-4 block">Case Study</span>
+                <span class="text-[11px] font-bold tracking-[0.3em] text-[#77796F] uppercase mb-4 block">Case Study</span>
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Problem & Solution</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
                 <!-- The Problem -->
-                <div class="bg-card-light dark:bg-card-dark p-8 md:p-10 rounded-2xl shadow-sm">
+                <div class="bg-card-light p-8 md:p-10 rounded-2xl shadow-sm">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
                             <span class="material-symbols-outlined text-red-500 text-xl">warning</span>
                         </div>
                         <h3 class="text-xl font-bold">The Problem</h3>
                     </div>
-                    <p class="text-[#68706C] dark:text-[#A8B0AA] leading-relaxed mb-6">
-                        The multipurpose terminal operated <strong class="text-[#0B130F] dark:text-white">three isolated Terminal Operating Systems</strong> — one for Car handling, one for Passengers, and one for Multipurpose Cargo.
+                    <p class="text-[#77796F] leading-relaxed mb-6">
+                        The multipurpose terminal operated <strong class="text-[#20211F]">three isolated Terminal Operating Systems</strong> — one for Car handling, one for Passengers, and one for Multipurpose Cargo.
                     </p>
-                    <ul class="space-y-3 text-sm text-[#68706C] dark:text-[#A8B0AA]">
+                    <ul class="space-y-3 text-sm text-[#77796F]">
                         <li class="flex items-start gap-2">
                             <span class="material-symbols-outlined text-red-400 text-base mt-0.5">close</span>
                             <span>Users needed separate credentials for each system</span>
@@ -226,17 +201,17 @@
                 </div>
 
                 <!-- The Solution -->
-                <div class="bg-card-light dark:bg-card-dark p-8 md:p-10 rounded-2xl shadow-sm">
+                <div class="bg-card-light p-8 md:p-10 rounded-2xl shadow-sm">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
                             <span class="material-symbols-outlined text-green-500 text-xl">check_circle</span>
                         </div>
                         <h3 class="text-xl font-bold">The Solution: PTOS-SSO</h3>
                     </div>
-                    <p class="text-[#68706C] dark:text-[#A8B0AA] leading-relaxed mb-6">
-                        A <strong class="text-[#0B130F] dark:text-white">unified Single Sign-On portal</strong> that integrates all three TOS platforms into one cohesive ecosystem — one login, all systems accessible.
+                    <p class="text-[#77796F] leading-relaxed mb-6">
+                        A <strong class="text-[#20211F]">unified Single Sign-On portal</strong> that integrates all three TOS platforms into one cohesive ecosystem — one login, all systems accessible.
                     </p>
-                    <ul class="space-y-3 text-sm text-[#68706C] dark:text-[#A8B0AA]">
+                    <ul class="space-y-3 text-sm text-[#77796F]">
                         <li class="flex items-start gap-2">
                             <span class="material-symbols-outlined text-green-400 text-base mt-0.5">check</span>
                             <span>Single credentials for Car, Passenger & Cargo systems</span>
@@ -258,33 +233,33 @@
             </div>
 
             <!-- Key Features -->
-            <div class="bg-card-light dark:bg-card-dark p-8 md:p-12 rounded-2xl shadow-sm">
+            <div class="bg-card-light p-8 md:p-12 rounded-2xl shadow-sm">
                 <h3 class="text-2xl font-bold mb-8">Key Features Delivered</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="flex flex-col">
-                        <div class="w-12 h-12 rounded-xl bg-primary/5 dark:bg-white/5 flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center mb-4">
                             <span class="material-symbols-outlined text-2xl">swap_horiz</span>
                         </div>
                         <h4 class="font-bold mb-2">App Switching</h4>
-                        <p class="text-sm text-[#68706C] dark:text-[#A8B0AA] leading-relaxed">
+                        <p class="text-sm text-[#77796F] leading-relaxed">
                             Switch between Car, Passenger, and Cargo TOS modules instantly without logging in again. One click access to any system.
                         </p>
                     </div>
                     <div class="flex flex-col">
-                        <div class="w-12 h-12 rounded-xl bg-primary/5 dark:bg-white/5 flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center mb-4">
                             <span class="material-symbols-outlined text-2xl">dashboard</span>
                         </div>
                         <h4 class="font-bold mb-2">Unified Dashboard</h4>
-                        <p class="text-sm text-[#68706C] dark:text-[#A8B0AA] leading-relaxed">
+                        <p class="text-sm text-[#77796F] leading-relaxed">
                             Central command center showing real-time status across all terminal operations. Monitor everything from a single screen.
                         </p>
                     </div>
                     <div class="flex flex-col">
-                        <div class="w-12 h-12 rounded-xl bg-primary/5 dark:bg-white/5 flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center mb-4">
                             <span class="material-symbols-outlined text-2xl">analytics</span>
                         </div>
                         <h4 class="font-bold mb-2">Cross-System Reports</h4>
-                        <p class="text-sm text-[#68706C] dark:text-[#A8B0AA] leading-relaxed">
+                        <p class="text-sm text-[#77796F] leading-relaxed">
                             Generate consolidated reports spanning all three TOS platforms. Compare metrics and identify trends across the entire terminal.
                         </p>
                     </div>
@@ -310,20 +285,55 @@
                 image: "/assets/main expanded sso.webp"
             }
         ];
+        // Mobile: hero carousel (dots + prev/next) and gallery grid, built from
+        // the same projectData the desktop feature-carousel uses — single
+        // source of truth, no duplicated content.
+        let mobileCarouselIndex = 0;
+        function renderMobileCarousel() {
+            const heroImg = document.getElementById('mobile-hero-image');
+            const dotsWrap = document.getElementById('mobile-carousel-dots');
+            if (!heroImg || !dotsWrap) return;
+            heroImg.src = projectData[mobileCarouselIndex].image;
+            dotsWrap.innerHTML = '';
+            projectData.forEach((_, i) => {
+                const dot = document.createElement('span');
+                dot.className = `w-1.5 h-1.5 rounded-full transition-colors duration-200 ${i === mobileCarouselIndex ? 'bg-[#244BFF]' : 'bg-black/15'}`;
+                dotsWrap.appendChild(dot);
+            });
+        }
+        function mobileCarouselStep(delta) {
+            mobileCarouselIndex = (mobileCarouselIndex + delta + projectData.length) % projectData.length;
+            renderMobileCarousel();
+            renderMobileGallery();
+        }
+        function renderMobileGallery() {
+            const grid = document.getElementById('mobile-gallery-grid');
+            const count = document.getElementById('mobile-gallery-count');
+            if (!grid) return;
+            count.textContent = `0${projectData.length} VIEWS`;
+            grid.innerHTML = projectData.map((item, i) => `
+                <button type="button" onclick="mobileCarouselIndex = ${i}; renderMobileCarousel(); renderMobileGallery(); document.getElementById('mobile-hero-wrap').scrollIntoView({behavior:'smooth', block:'start'});" class="text-left active:opacity-60 focus-ring">
+                    <span class="block aspect-square overflow-hidden rounded-sm border ${i === mobileCarouselIndex ? 'border-[#244BFF]' : 'border-black/10'}"><img alt="${item.title}" loading="lazy" src="${item.image}" class="w-full h-full object-cover"></span>
+                    <span class="block text-xs mt-2 ${i === mobileCarouselIndex ? 'text-[#244BFF]' : 'opacity-50'}">0${i + 1}</span>
+                </button>
+            `).join('');
+        }
+        if (window.innerWidth < 768) {
+            renderMobileCarousel();
+            renderMobileGallery();
+        }
+
         let currentIndex = 0;
         function updateCarousel(index) {
             currentIndex = index;
             const content = projectData[index];
             const mainImg = document.getElementById('main-carousel-image');
-            const mainArea = document.getElementById('main-content-area');
-            const title = document.getElementById('feature-title');
-            const desc = document.getElementById('feature-description');
-            mainArea.style.opacity = '0';
+            const counter = document.getElementById('desktop-carousel-counter');
+            mainImg.style.opacity = '0';
             setTimeout(() => {
                 mainImg.src = content.image;
-                title.textContent = content.title;
-                desc.textContent = content.description;
-                mainArea.style.opacity = '1';
+                mainImg.style.opacity = '1';
+                if (counter) counter.textContent = `0${index + 1} / 0${projectData.length}`;
                 document.querySelectorAll('.carousel-thumb-btn').forEach((btn, i) => {
                     if (i === index) {
                         btn.classList.add('active');

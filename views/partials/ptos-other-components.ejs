@@ -1,0 +1,527 @@
+<%
+/* =====================================================================
+   OTHER COMPONENTS — rebuilt from the real Figma specimens
+   (file oqW1XKTaRi9iFpeQcR28uL, "Other Components"). Every number below
+   (dot coordinates, bar heights, colors, copy, heatmap cells) was read
+   from the Figma nodes, not estimated from a screenshot.
+   ===================================================================== */
+const MO = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+const LINES = [
+  ['Effective Time %','#34d399',[[32,161.5],[75.8,158],[119.6,165.1],[163.5,154.4],[207.3,143.7],[251.1,133],[294.9,115.2],[338.7,111.7],[382.5,104.6],[426.4,101],[470.2,97.4],[514,93.9]]],
+  ['Capaian TGH %','#3b82f6',[[32,108.1],[75.8,97.4],[119.6,90.3],[163.5,83.2],[207.3,76.1],[251.1,65.4],[294.9,51.2],[338.7,44],[382.5,40.5],[426.4,36.9],[470.2,33.4],[514,29.8]]],
+  ['Capaian TSH %','#f97316',[[32,83.2],[75.8,72.5],[119.6,65.4],[163.5,58.3],[207.3,51.2],[251.1,40.5],[294.9,33.4],[338.7,29.8],[382.5,29.8],[426.4,26.2],[470.2,26.2],[514,22.7]]]
+];
+const DONUT = [['Cuaca',34,'#3b82f6'],['Pergantian Shift',26,'#1e40af'],['Alat Rusak',18,'#f97316'],['Menunggu Truck',15,'#ef4444'],['Lainnya',7,'#cad0d8']];
+const DR = 86, DC = 2 * Math.PI * DR;
+let dAcc = 0;
+const ARCS = DONUT.map(function (d) { const len = d[1] / 100 * DC; const o = { c: d[2], len: Math.max(len - 3, 1), off: -dAcc }; dAcc += len; return o; });
+const KEM = [['Curah Kering', 149.3], ['Curah Cair', 144.3], ['General Cargo', 165.8], ['Bag Cargo', 124.4], ['Lainnya', 107.8]];
+const SHIFT = [['Shift I', '(08-16)', 73, 181.6, '#0f2444'], ['Shift II', '(16-00)', 69, 171.6, '#3b82f6'], ['Shift III', '(00-08)', 53, 131.8, '#f97316']];
+const NOTES = 'Lorem ipsum dolor sit amet, ut nulla in nostrud aliqua in in. Minim incididunt magna enim aliqua laborum est incididunt. Sunt fugiat et adipiscing laboris esse enim duis non. Duis voluptate culpa proident veniam dolore cillum irure qui adipiscing ad proident.';
+const LOC_TABS = [['bc', 'BC 2.0'], ['od', 'On Demand'], ['npe', 'NPE'], ['pm', 'Pabean  Manual'], ['kn', 'Konfirmasi NPE']];
+const IMP = 'JL. SURYA UTAMA KAV. I-22A KAWASAN INDUSTRI SURYACIPTA KARAWANG 41363 JAWA BARAT INDONESIA';
+const LOC = {
+  bc: { title: 'Penarikan BC 2.0', btn: 'Ambil Data', icon: 'refresh-cw', rows: [
+    [{ dd: 1, l: 'Pilih Jenis Penarikan', v: 'Penarikan Per Nomor SPPB', o: ['Penarikan Per Nomor SPPB', 'Penarikan Per Nomor SPPB (Container)'] }],
+    [{ l: 'NPWP Importir', v: '0018692137055000000000' }, { l: 'Nama Importir', v: 'PT. SUPER STEEL KARAWANG', d: 1 }],
+    [{ l: 'Alamat Importir', v: IMP, d: 1 }, { l: 'No SPPB', p: 'Enter value...' }, { l: 'Tgl SPPB', p: 'DD/MM/YYYY' }]] },
+  od: { title: 'Penarikan On Demand', btn: 'Ambil Data', icon: 'refresh-cw', rows: [
+    [{ dd: 1, l: 'Dokumen Pabean', v: 'Dokumen Pabean On Demand', o: ['Dokumen Pabean On Demand', 'Dokumen Pabean Manual'] }],
+    [{ dd: 1, l: 'Jenis Dokumen', p: 'Pilih Jenis Dokumen', o: ['Dokumen Pabean On Demand', 'Dokumen Pabean Manual'] }, { l: 'Kode Dokumen', v: '001280120', d: 1 }],
+    [{ l: 'No Dokumen', p: 'Enter value...' }, { l: 'Tgl Dokumen', p: 'DD/MM/YYYY' }]] },
+  npe: { title: 'Penarikan Per Nomor NPE', btn: 'Ambil Data', icon: 'refresh-cw', rows: [
+    [{ l: 'NPWP Eksportir', v: '0018692137055000000000' }, { l: 'Nama Eksportir', v: 'PT. SUPER STEEL KARAWANG', d: 1 }],
+    [{ l: 'Alamat Eksportir', v: 'JL. SURYA UTAMA KAV. I-22A KAWASAN ', d: 1 }, { l: 'No NPE', p: 'Enter Value...' }]] },
+  pm: { title: 'Pabean Manual', btn: 'Simpan Pabean', rows: [
+    [{ dd: 1, l: 'Kegiatan', p: 'Select Option...', o: ['Select Option...'] }, { dd: 1, l: 'Tipe', p: 'Select Option...', o: ['Select Option...'] }, { l: 'No PEB/PIB', p: 'Enter value...' }],
+    [{ l: 'Tanggal PEB/PiB', p: 'DD/MM/YYYY' }, { l: 'No Pabean', p: 'Enter Value...' }, { l: 'Tanggal Pabean', p: 'DD/MM/YYYY' }],
+    [{ l: 'NPWP Importir/Eksportir', p: 'Enter Value...' }, { l: 'Nama Importir/Eksportir', p: 'Enter Value...' }, { l: 'Alamat Importir/Eksportir', p: 'Enter value...' }],
+    [{ l: 'Nama Angkut', p: 'Enter Value...' }, { l: 'No Voy Flight', p: 'Enter Value...' }, { l: 'Brutto', p: 'Enter value...' }],
+    [{ l: 'Netto', p: 'Enter Value...' }, { l: 'Jumlah Kemasan TPS', p: 'Enter Value...' }, { dd: 1, l: 'Kode Kemasan TPS', p: 'Select option...', o: ['Select option...'] }],
+    [{ l: 'Kode KPBC', p: 'Enter Value...' }, { l: 'Gudang', p: 'Enter Value...' }]] },
+  kn: { title: 'Data NPE', btn: 'Simpan Data', rows: [
+    [{ l: 'No Form 3D', v: 'DP0403002026080710240010', d: 1 }, { l: 'Tanggal Form 3D', v: '07/08/2026', d: 1 }, { l: 'No Manifest', v: 'MF61990209410826', d: 1 }],
+    [{ l: 'No NPE', p: 'Enter value...' }, { l: 'Tanggal NPE', p: 'DD/MM/YYYY' }]] }
+};
+const STREAM = [['ENERGI RATE', '21.961', 'MMBTU/Jam'], ['FLOWRATE', '20.69', 'MMSCFD'], ['PRESSURE', '74.88', 'Psia'], ['DIFF. PRESSURE', '101.7', 'inH2O'], ['TEMPERATURE', '80.9', '°F'], ['HEATING VALUE', '1090', 'Btu/Scf']];
+const STREAM_T = [['ENERGI KUMULATIF', '9.493', 'MMBTU'], ['VOLUME KUMULATIF', '8.905', 'MSCF']];
+const KP = [['Petikemas', '#8b7bff', 115.7], ['General Cargo', '#ff8f8a', 16.6], ['Bag Cargo', '#3ec3e0', 54.3], ['Box', '#ffaa47', 69.3]];
+const PM = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const PROD = [
+  ['LAIN', '#94a3b8', [406000,416500,427000,413000,434000,418894,441658,429058,437500,448000,430500,423500]],
+  ['CURAH KRG', '#3b82f6', [92800,95200,97600,94400,99200,95747,100950,98070,100000,102400,98400,96800]],
+  ['GEN CARGO', '#34d399', [40600,41650,42700,41300,43400,41889,44166,42906,43750,44800,43050,42350]],
+  ['CURAH CAIR', '#fbbf24', [20300,20825,21350,20650,21700,20945,22083,21453,21875,22400,21525,21175]],
+  ['PETIKEMAS', '#f97316', [12760,13090,13420,12980,13640,13165,13881,13485,13750,14080,13530,13310]],
+  ['JUMBO BAG', '#a855f7', [7540,7735,7930,7670,8060,7779,8202,7968,8125,8320,7995,7865]]
+];
+const PTOT = [580000,595000,610000,590000,620000,598420,630940,612940,625000,640000,615000,605000];
+const PLBL = ['580k','595k','610k','590k','620k','598k','631k','613k','625k','640k','615k','605k'];
+const HM_ROWS = ['Jamrud Utara', 'Jamrud Selatan', 'Nilam Timur', 'Nilam Barat', 'Mirah'];
+const HM = {
+  sor: { desc: 'Rasio volume gudang atau TPS yang terisi terhadap kapasitasnya.', d: [
+    [35,51,67,44,null,47,60,60,48,42,54,37,50,34,37,56,49,44,51,52,46,55,62,58,49,46,65,42,59,60],
+    [81,60,80,58,60,69,93,62,74,105,59,66,81,62,76,79,68,75,71,55,66,76,71,61,65,68,66,72,73,68],
+    [54,63,65,53,55,65,69,64,64,51,56,54,57,73,53,73,70,62,60,53,107,71,60,58,54,65,70,67,65,73],
+    [32,46,47,50,35,57,32,49,30,31,43,31,46,39,48,null,29,41,30,47,52,33,57,50,51,54,38,53,34,41],
+    [24,46,22,51,38,45,50,44,38,27,39,29,46,44,36,47,37,46,50,53,41,52,50,51,37,null,52,25,28,37]] },
+  yor: { desc: 'Rasio luas lapangan yang terisi terhadap kapasitasnya.', d: [
+    [77,78,73,91,46,62,57,49,75,73,71,52,79,65,107,47,54,58,68,78,55,59,77,57,52,51,53,77,79,73],
+    [72,65,49,54,72,57,56,71,69,65,57,75,55,60,70,52,48,47,60,75,57,73,111,68,51,69,67,70,57,61],
+    [50,58,49,50,44,null,57,56,66,40,67,46,70,59,65,63,56,57,62,51,65,66,35,35,37,65,63,40,68,62],
+    [37,45,43,52,49,54,49,35,51,47,40,40,39,53,26,40,45,44,null,38,50,40,36,42,34,33,53,29,42,52],
+    [33,61,68,67,52,65,58,59,54,43,91,52,43,61,64,38,60,60,56,58,41,55,49,43,41,45,52,null,61,38]] }
+};
+const hmClass = function (v) { return v === null ? 'na' : v > 100 ? 'over' : v >= 90 ? 'crit' : v >= 75 ? 'warn' : v >= 55 ? 'busy' : v >= 35 ? 'norm' : 'low'; };
+const WD = ['Jum','Sab','Min','Sen','Sel','Rab','Kam'];
+const HM_LEG = [['Lengang','low'],['Normal','norm'],['Padat','busy'],['Siaga','warn'],['Kritis','crit'],['Melebihi kapasitas','over'],['Belum disetel','na']];
+%>
+<style>
+    /* ===== Other Components — scoped with .ptw- ===== */
+    .ptw-spec { margin-bottom: 40px; }
+    .ptw-spec [hidden] { display: none !important; }
+    .ptw-spec-label { font-size: 12px; font-weight: 600; color: var(--neutral-500); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .ptw-spec-label span { font-weight: 400; color: var(--neutral-400); }
+    .ptw-scroll { overflow-x: auto; padding-bottom: 4px; }
+    .ptw { background: #fff; border: 1px solid #dfe5ed; border-radius: 16px; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; min-width: 860px; font-family: 'Inter', sans-serif; }
+    .ptw-card { background: #fff; border: 1px solid #dfe5ed; border-radius: 12px; padding: 20px 20px 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+    .ptw-h { font-size: 16px; font-weight: 700; color: #0f2444; line-height: 1.2; }
+    .ptw-sub { font-size: 11px; color: #64748b; margin-top: 3px; line-height: 1.35; }
+    .ptw-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .ptw-badge { font-size: 10px; font-weight: 600; border-radius: 999px; padding: 4px 10px; white-space: nowrap; }
+    .ptw-tabbar { display: flex; border-bottom: 1px solid #dfe5ed; }
+    .ptw-tab { padding: 10px 20px; font-size: 14px; font-weight: 500; color: #666; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color 120ms ease; background: none; border-top: 0; border-left: 0; border-right: 0; }
+    .ptw-tab:hover { color: #0f2444; }
+    .ptw-tab.is-active { color: #038fde; font-weight: 600; border-bottom-color: #038fde; }
+    .ptw-row { display: flex; gap: 16px; align-items: stretch; }
+    .ptw-legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 10px; color: #64748b; }
+    .ptw-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+    .ptw-donut-body { display: flex; align-items: center; gap: 24px; flex: 1; }
+    .ptw-donut-legend { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 150px; }
+    .ptw-donut-legend div { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #64748b; }
+    .ptw-donut-legend i { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .ptw-donut-legend b { margin-left: auto; font-size: 12px; color: #0f2444; }
+    .ptw-foot { font-size: 10px; color: #94a3b8; }
+    .ptw-chart { position: relative; }
+    .ptw-chart .gl { position: absolute; height: 1px; background: #dfe5ed; }
+    .ptw-chart .yt { position: absolute; font-size: 11px; color: #64748b; line-height: 12px; }
+    .ptw-chart .bar { position: absolute; }
+    .ptw-chart .xt { position: absolute; font-size: 11px; color: #64748b; text-align: center; line-height: 13px; }
+    .ptw-chart .vt { position: absolute; font-size: 12px; font-weight: 700; color: #0f2444; text-align: center; }
+
+    /* Location sidebar */
+    .ptw-loc { flex-direction: row; gap: 23px; padding: 24px; min-width: 860px; }
+    .ptw-loc-list { width: 205px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px; }
+    .ptw-loc-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 49px; padding: 0 16px; border: 1px solid #dfe5ed; background: #fff; border-radius: 12px; font-size: 14px; font-weight: 600; color: #0f2444; cursor: pointer; transition: background-color 120ms ease; text-align: left; }
+    .ptw-loc-item span { display: flex; align-items: center; gap: 8px; }
+    .ptw-loc-item:hover { background: #f8fafc; }
+    .ptw-loc-item.is-active { background: #02284f; color: #fff; border-color: #02284f; }
+    .ptw-loc-card { flex: 1; min-width: 0; border: 1px solid #dfe5ed; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+    .ptw-loc-title { font-size: 18px; font-weight: 700; color: #02284f; }
+    .ptw-frow { display: grid; gap: 20px; }
+    .ptw-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .ptw-field > label { font-size: 11px; color: #666; }
+    .ptw-input { height: 40px; width: 100%; padding: 0 12px; border-radius: 8px; border: 1px solid #8692a1; background: rgba(255,255,255,.65); font-size: 14px; color: #0f2444; }
+    .ptw-input::placeholder { color: #8692a1; }
+    .ptw-input:focus { outline: none; border-color: #038fdd; border-width: 1.5px; }
+    .ptw-input:disabled { background: #f1f3f6; border-color: #dfe5ed; color: #94a3b8; text-overflow: ellipsis; }
+    .ptw-field .ptos-dropdown-trigger { border-color: #8692a1; }
+    .ptw-btn { height: 40px; width: 100%; margin-top: 4px; border: 0; border-radius: 12px; background: #0f2444; color: #fff; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background-color 120ms ease; }
+    .ptw-btn:hover { background: #038fdd; }
+    .ptw-notes { background: rgba(3,143,221,.05); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .ptw-notes b { font-size: 12px; color: #0f2444; }
+    .ptw-notes p { font-size: 12px; color: #0f2444; line-height: 1.5; }
+
+    /* Detail stream */
+    .ptw-ds { padding: 29px 35px; border-radius: 15px; gap: 28px; min-width: 900px; }
+    .ptw-ds-title { display: flex; align-items: center; gap: 14px; font-size: 20px; font-weight: 600; color: #02284f; }
+    .ptw-ds-title i { width: 24px; height: 24px; border-radius: 6px; background: #02284f; display: flex; align-items: center; justify-content: center; color: #fff; }
+    .ptw-ds-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 27px; }
+    .ptw-stream { border: 1px solid #02284f; border-radius: 20px; overflow: hidden; background: #fff; }
+    .ptw-stream-h { height: 43px; background: #02284f; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+    .ptw-stream-h b { font-size: 14px; color: #fff; }
+    .ptw-stream-h em { font-style: normal; font-size: 10px; font-weight: 700; color: #27b45e; display: flex; align-items: center; gap: 5px; }
+    .ptw-stream-h em::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #27b45e; }
+    .ptw-sg { display: grid; }
+    .ptw-sc { border: 1px solid rgba(2,40,79,.13); margin: 0 -1px -1px 0; padding: 12px; background: #fff; display: flex; flex-direction: column; gap: 2px; min-height: 80px; }
+    .ptw-sc span { font-size: 9px; font-weight: 600; color: #02284f; }
+    .ptw-sc strong { font-size: 22px; font-weight: 700; color: #02284f; line-height: 1.2; }
+    .ptw-sc small { font-size: 9px; color: #02284f; }
+    .ptw-sc.tot { min-height: 68px; }
+    .ptw-sc.tot strong { font-size: 24px; }
+    .ptw-sc.tot p { display: flex; align-items: baseline; gap: 6px; }
+    .ptw-sc.tot small { font-size: 11px; font-weight: 600; }
+    .ptw-nodata { text-align: center; font-size: 14px; color: #64748b; padding: 28px 0; }
+
+    /* Chart per kemasan */
+    .ptw-kp { background: #b2c5dc; border-radius: 30px; padding: 20px 18px 18px; width: 590px; display: flex; flex-direction: column; gap: 12px; }
+    .ptw-kp-title { font-size: 13px; font-weight: 500; color: #02284f; }
+    .ptw-kp-ctl { display: flex; justify-content: space-between; align-items: center; }
+    .ptw-kp-tabs { display: flex; gap: 8px; }
+    .ptw-kp-tab { height: 27px; padding: 0 16px; border-radius: 8px; border: 1.5px solid #02284f; background: transparent; color: #02284f; font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color 120ms ease; }
+    .ptw-kp-tab.is-active { background: #02284f; color: #f5f5f5; }
+    .ptw-kp-pill { height: 27px; padding: 0 14px; border-radius: 8px; background: #02284f; color: #fff; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+    .ptw-kp-panel { background: #02284f; border-radius: 18px; padding: 32px 16px 14px; color: rgba(255,255,255,.8); font-size: 12px; }
+    .ptw-kp-plot { position: relative; width: 463px; height: 148px; margin-left: 38px; }
+    .ptw-kp-plot .ln { position: absolute; left: 0; width: 461px; border-top: 1px dashed rgba(217,217,255,.25); }
+    .ptw-kp-plot .vl { position: absolute; top: 6px; height: 135px; border-left: 1px dashed rgba(217,217,255,.2); }
+    .ptw-kp-plot .yl { position: absolute; left: -38px; width: 30px; text-align: right; line-height: 12px; }
+    .ptw-kp-plot .bg { position: absolute; top: 6px; height: 135px; width: 68px; background: rgba(214,219,237,.08); }
+    .ptw-kp-plot .sb { position: absolute; width: 68px; border-radius: 16px 16px 0 0; transition: filter 120ms ease; }
+    .ptw-kp-plot .sb:hover { filter: brightness(1.12); }
+    .ptw-kp-xl { text-align: center; margin-top: 8px; }
+    .ptw-kp-leg { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
+    .ptw-kp-leg span { display: flex; align-items: center; gap: 7px; }
+    .ptw-kp-leg i { width: 12px; height: 12px; border-radius: 3px; }
+
+    /* Produksi */
+    .ptw-pr { gap: 14px; padding: 20px 20px 16px; border-radius: 16px; }
+    .ptw-pr-head { display: flex; align-items: center; gap: 12px; }
+    .ptw-pr-num { font-size: 22px; font-weight: 700; color: #0f2444; }
+    .ptw-pr-num small { font-size: 12px; font-weight: 400; color: #64748b; margin-left: 4px; }
+    .ptw-pr-delta { font-size: 11px; color: #22c55e; margin-left: auto; }
+    .ptw-seg { display: inline-flex; background: #f8fafc; border: 1px solid #dfe5ed; border-radius: 8px; padding: 2px; }
+    .ptw-seg button { padding: 6px 14px; border-radius: 6px; font-size: 12px; color: #64748b; background: none; border: 0; cursor: pointer; transition: all 120ms ease; }
+    .ptw-seg button.is-active { background: #fff; color: #0f2444; font-weight: 600; box-shadow: 0 1px 2px rgba(15,36,68,.08); }
+    .ptw-pr svg text { font-family: 'Inter', sans-serif; }
+    .ptw-pt { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .ptw-pt th { background: #f9fafc; color: #02284f; font-weight: 500; padding: 14px 10px; text-align: right; white-space: nowrap; }
+    .ptw-pt th:first-child, .ptw-pt td:first-child { text-align: left; }
+    .ptw-pt td { padding: 14px 10px; text-align: right; color: #0f2444; border-bottom: 1px solid #eef2f6; white-space: nowrap; }
+    .ptw-pt td:first-child { font-weight: 500; }
+    .ptw-pt td:last-child, .ptw-pt th:last-child { font-weight: 700; }
+    .ptw-pt tr.tot td { font-weight: 700; background: #f9fafc; }
+
+    /* Heatmap */
+    .ptw-hm { width: 726px; padding: 24px 28px 20px; gap: 16px; border-radius: 16px; min-width: 0; }
+    .ptw-hm-head { display: flex; align-items: center; justify-content: space-between; }
+    .ptw-hm-head b { font-size: 18px; font-weight: 700; color: #0f2444; }
+    .ptw-hm-badge { background: #eff6ff; color: #1682c5; font-size: 11px; font-weight: 600; border-radius: 999px; padding: 6px 12px; }
+    .ptw-hm-view { overflow-x: auto; overflow-y: hidden; padding-bottom: 10px; border-radius: 12px; scrollbar-width: thin; scrollbar-color: #7a7a7a #e8e8e8; }
+    .ptw-hm-view::-webkit-scrollbar { height: 8px; width: 8px; }
+    .ptw-hm-view::-webkit-scrollbar-track { background: #e8e8e8; border-radius: 999px; }
+    .ptw-hm-view::-webkit-scrollbar-thumb { background: #7a7a7a; border-radius: 999px; }
+    .ptw-hm-grid { display: grid; grid-template-columns: 112px repeat(30, 56px); gap: 4px; width: max-content; }
+    .ptw-hm-grid .lb { position: sticky; left: 0; background: #fff; z-index: 1; display: flex; align-items: center; font-size: 12px; font-weight: 500; color: #0f2444; padding-right: 8px; }
+    .ptw-hm-grid .dh { text-align: center; font-size: 9px; color: #64748b; line-height: 1.2; }
+    .ptw-hm-grid .dh b { display: block; font-size: 11px; color: #0f2444; }
+    .ptw-hm-grid .c { height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #0f2444; }
+    .ptw-hm .low, .ptw-hm-sw.low { background: #e6f2fb; }
+    .ptw-hm .norm, .ptw-hm-sw.norm { background: #b3d9f2; }
+    .ptw-hm .busy, .ptw-hm-sw.busy { background: #66a9db; }
+    .ptw-hm .warn, .ptw-hm-sw.warn { background: #1682c5; color: #fff !important; }
+    .ptw-hm .crit, .ptw-hm-sw.crit { background: #ef4444; color: #fff !important; }
+    .ptw-hm .over, .ptw-hm-sw.over { background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c !important; }
+    .ptw-hm .na, .ptw-hm-sw.na { background: #f8fafc; border: 1px dashed #94a3b8; color: #94a3b8 !important; }
+    .ptw-hm-leg { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11px; color: #64748b; }
+    .ptw-hm-leg span { display: flex; align-items: center; gap: 5px; }
+    .ptw-hm-sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+    .ptw-hm-foot { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #64748b; }
+    .ptw-hm-foot div { display: flex; gap: 12px; }
+    .ptw-hm-foot button { width: 28px; height: 28px; border-radius: 8px; border: 1px solid #dfe5ed; background: #fff; color: #64748b; font-size: 14px; cursor: not-allowed; opacity: .6; }
+
+    /* Accordion */
+    .ptw-acc { width: 896px; max-width: 100%; border: 1px solid #c8c5cb; border-radius: 10px; background: #fff; overflow: hidden; margin-bottom: 14px; }
+    .ptw-acc-h { width: 100%; height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: #fff; border: 0; cursor: pointer; font-size: 16px; font-weight: 500; color: #292930; text-align: left; }
+    .ptw-acc-h svg { color: #5d5e66; transition: transform 150ms ease; }
+    .ptw-acc.is-open .ptw-acc-h svg { transform: rotate(180deg); }
+    .ptw-acc ul { list-style: none; padding: 0 28px 16px; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+    .ptw-acc li { display: flex; gap: 8px; font-size: 16px; color: #47464b; line-height: 1.45; }
+    .ptw-acc li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #292930; margin-top: 10px; flex-shrink: 0; }
+</style>
+
+<!-- ========== 1. Tab-Widget (Trend / Kinerja) ========== -->
+<div class="ptw-spec">
+    <p class="ptw-spec-label">Tab-Widget <span>— Trend · Kinerja (click the tabs)</span></p>
+    <div class="ptw-scroll">
+    <div class="ptw" data-ptw-tabwidget>
+        <div class="ptw-tabbar">
+            <button type="button" class="ptw-tab is-active" data-ptw-tab="trend">Trend</button>
+            <button type="button" class="ptw-tab" data-ptw-tab="kinerja">Kinerja</button>
+        </div>
+
+        <div class="ptw-row" data-ptw-pane="trend">
+            <div class="ptw-card" style="flex:575">
+                <div class="ptw-head">
+                    <div><p class="ptw-h">Trend Sepanjang Tahun 2026</p><p class="ptw-sub">Capaian TGH, TSH, dan Effective Time (%) Jan–Des 2026 · bulan terpilih ditandai pada grafik</p></div>
+                    <span class="ptw-badge" style="background:#e0f2fe;color:#038fde">TAHUNAN</span>
+                </div>
+                <svg viewBox="0 0 534 214" width="100%" role="img" aria-label="Trend capaian per bulan">
+                    <% [50,60,70,80,90,100].forEach(function (t, i) { var y = 191 - i * 35.6; %>
+                    <line x1="26" x2="534" y1="<%= y %>" y2="<%= y %>" stroke="#dfe5ed" stroke-width="1" />
+                    <text x="18" y="<%= y + 3 %>" text-anchor="end" font-size="9" fill="#64748b"><%= t %></text>
+                    <% }) %>
+                    <% LINES.forEach(function (s) { %>
+                    <polyline points="<%= s[2].map(function (p) { return p[0] + ',' + p[1]; }).join(' ') %>" fill="none" stroke="<%= s[1] %>" stroke-width="2" stroke-linejoin="round" />
+                    <% s[2].forEach(function (p, i) { %><circle cx="<%= p[0] %>" cy="<%= p[1] %>" r="<%= i === 6 ? 4.5 : 3 %>" fill="<%= s[1] %>" <%- i === 6 ? 'stroke="#fff" stroke-width="2"' : '' %> /><% }) %>
+                    <% }) %>
+                    <% MO.forEach(function (m, i) { %>
+                    <text x="<%= 32 + i * 43.8 %>" y="209" text-anchor="middle" font-size="9" fill="<%= i === 6 ? '#0f2444' : '#64748b' %>" <%- i === 6 ? 'font-weight="700"' : '' %>><%= m %></text>
+                    <% }) %>
+                </svg>
+                <div class="ptw-legend"><% LINES.forEach(function (s) { %><span><i style="background:<%= s[1] %>"></i><%= s[0] %></span><% }) %></div>
+            </div>
+            <div class="ptw-card" style="flex:435">
+                <div class="ptw-head">
+                    <div><p class="ptw-h">Penyebab Idle Time</p><p class="ptw-sub">% dari total durasi IT bulan ini</p></div>
+                    <span class="ptw-badge" style="background:#ffedd5;color:#c26a0d">BULANAN · JUL 2026</span>
+                </div>
+                <div class="ptw-donut-body">
+                    <svg viewBox="0 0 200 200" width="170" height="170" style="flex-shrink:0" role="img" aria-label="Penyebab idle time">
+                        <g transform="rotate(-90 100 100)">
+                        <% ARCS.forEach(function (a) { %><circle cx="100" cy="100" r="<%= DR %>" fill="none" stroke="<%= a.c %>" stroke-width="28" stroke-dasharray="<%= a.len.toFixed(2) %> <%= (DC - a.len).toFixed(2) %>" stroke-dashoffset="<%= a.off.toFixed(2) %>" /><% }) %>
+                        </g>
+                    </svg>
+                    <div class="ptw-donut-legend"><% DONUT.forEach(function (d) { %><div><i style="background:<%= d[2] %>"></i><%= d[0] %><b><%= d[1] %>%</b></div><% }) %></div>
+                </div>
+                <p class="ptw-foot">Total = 100% dari seluruh waktu IT tercatat</p>
+            </div>
+        </div>
+
+        <div class="ptw-row" data-ptw-pane="kinerja" hidden>
+            <div class="ptw-card" style="flex:572">
+                <div><p class="ptw-h">Kinerja per Jenis Kemasan</p><p class="ptw-sub">Rata-rata TGH realisasi vs target, dikelompokkan per jenis kemasan barang</p></div>
+                <div class="ptw-chart" style="width:532px;max-width:100%;height:232px">
+                    <% for (var k = 0; k <= 6; k++) { var y = 205 - k * 33.17; %>
+                    <div class="gl" style="left:28px;width:496px;top:<%= y.toFixed(1) %>px"></div>
+                    <div class="yt" style="left:0;top:<%= (y - 6).toFixed(1) %>px"><%= k * 20 %></div>
+                    <% } %>
+                    <% KEM.forEach(function (b, i) { var x = 44.8 + 99.2 * i; %>
+                    <div class="bar" style="left:<%= x.toFixed(1) %>px;top:<%= (205 - b[1]).toFixed(1) %>px;width:29.8px;height:<%= b[1] %>px;background:#0f2444"></div>
+                    <div class="bar" style="left:<%= (x + 35.8).toFixed(1) %>px;top:39.2px;width:29.8px;height:165.8px;background:#bfdbfe"></div>
+                    <div class="xt" style="left:<%= (28 + 99.2 * i).toFixed(1) %>px;top:213px;width:99.2px"><%= b[0] %></div>
+                    <% }) %>
+                </div>
+                <div class="ptw-legend"><span><i style="background:#0f2444"></i>Realisasi TGH</span><span><i style="background:#bfdbfe"></i>Target TGH</span></div>
+            </div>
+            <div class="ptw-card" style="flex:434">
+                <div><p class="ptw-h">Kinerja per Shift</p><p class="ptw-sub">Rata-rata Effective Time (%) dibanding shift kerja</p></div>
+                <div class="ptw-chart" style="width:394px;max-width:100%;height:232px">
+                    <% for (var q = 0; q <= 8; q++) { var y2 = 205 - q * 24.88; %>
+                    <div class="gl" style="left:36px;width:358px;top:<%= y2.toFixed(1) %>px"></div>
+                    <div class="yt" style="left:0;top:<%= (y2 - 6).toFixed(1) %>px"><%= q * 10 %>%</div>
+                    <% } %>
+                    <% SHIFT.forEach(function (s, i) { var cx = 36 + 119.3 * (i + 0.5); %>
+                    <div class="bar" style="left:<%= (cx - 28).toFixed(1) %>px;top:<%= (205 - s[3]).toFixed(1) %>px;width:56px;height:<%= s[3] %>px;background:<%= s[4] %>;border-radius:6px 6px 0 0"></div>
+                    <div class="vt" style="left:<%= (cx - 28).toFixed(1) %>px;top:<%= (205 - s[3] - 18).toFixed(1) %>px;width:56px"><%= s[2] %>%</div>
+                    <div class="xt" style="left:<%= (cx - 40).toFixed(1) %>px;top:211px;width:80px"><%= s[0] %><br><%= s[1] %></div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- ========== 2. Location Sidebar ========== -->
+<div class="ptw-spec">
+    <p class="ptw-spec-label">Location Sidebar <span>— BC 2.0 · On Demand · NPE · Pabean Manual · Konfirmasi NPE (click the list)</span></p>
+    <div class="ptw-scroll">
+    <div class="ptw ptw-loc" data-ptw-loc>
+        <div class="ptw-loc-list">
+            <% LOC_TABS.forEach(function (t, i) { %>
+            <button type="button" class="ptw-loc-item<%= i === 0 ? ' is-active' : '' %>" data-ptw-loc-tab="<%= t[0] %>">
+                <span><i data-lucide="file-text" style="width:18px;height:18px"></i><%= t[1] %></span>
+                <i data-lucide="arrow-right" style="width:18px;height:18px"></i>
+            </button>
+            <% }) %>
+        </div>
+        <% LOC_TABS.forEach(function (t, i) { var f = LOC[t[0]]; %>
+        <div class="ptw-loc-card" data-ptw-loc-pane="<%= t[0] %>" <%- i === 0 ? '' : 'hidden' %>>
+            <p class="ptw-loc-title"><%= f.title %></p>
+            <% f.rows.forEach(function (row) { %>
+            <div class="ptw-frow" style="grid-template-columns:repeat(<%= row.length === 1 ? 1 : row.length %>,1fr)">
+                <% row.forEach(function (c) { %>
+                <div class="ptw-field">
+                    <label><%= c.l %></label>
+                    <% if (c.dd) { %>
+                    <div class="ptos-dropdown" data-ptos-dropdown>
+                        <button type="button" class="ptos-dropdown-trigger" aria-expanded="false"><span class="label"><%= c.v || c.p %></span><i data-lucide="chevron-down" class="chev"></i></button>
+                        <div class="ptos-dropdown-menu hidden"><% c.o.forEach(function (o) { %><div class="ptos-dropdown-item"><%= o %></div><% }) %></div>
+                    </div>
+                    <% } else { %>
+                    <input class="ptw-input" <%- c.v ? 'value="' + c.v + '"' : 'placeholder="' + c.p + '"' %> <%- c.d ? 'disabled' : '' %>>
+                    <% } %>
+                </div>
+                <% }) %>
+            </div>
+            <% }) %>
+            <button type="button" class="ptw-btn"><%= f.btn %><% if (f.icon) { %><i data-lucide="<%= f.icon %>" style="width:18px;height:18px"></i><% } %></button>
+            <div class="ptw-notes"><b>*Notes</b><p><%= NOTES %></p></div>
+        </div>
+        <% }) %>
+    </div>
+    </div>
+</div>
+
+<!-- ========== 3. Detail Stream ========== -->
+<div class="ptw-spec">
+    <p class="ptw-spec-label">Detail Stream <span>— 3 Data · No Data</span></p>
+    <div class="ptw-scroll">
+    <div class="ptw ptw-ds">
+        <p class="ptw-ds-title"><i><i data-lucide="app-window" style="width:14px;height:14px"></i></i>Detail Per Stream</p>
+        <div class="ptw-ds-grid">
+            <% for (var si = 0; si < 3; si++) { %>
+            <div class="ptw-stream">
+                <div class="ptw-stream-h"><b>STREAM M-001A</b><em>ONLINE</em></div>
+                <div class="ptw-sg" style="grid-template-columns:repeat(3,1fr)"><% STREAM.forEach(function (c) { %><div class="ptw-sc"><span><%= c[0] %></span><strong><%= c[1] %></strong><small><%= c[2] %></small></div><% }) %></div>
+                <div class="ptw-sg" style="grid-template-columns:repeat(2,1fr)"><% STREAM_T.forEach(function (c) { %><div class="ptw-sc tot"><span><%= c[0] %></span><p><strong><%= c[1] %></strong><small><%= c[2] %></small></p></div><% }) %></div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    </div>
+    <div class="ptw-scroll" style="margin-top:12px">
+    <div class="ptw ptw-ds" style="gap:0">
+        <p class="ptw-ds-title"><i><i data-lucide="app-window" style="width:14px;height:14px"></i></i>Detail Per Stream</p>
+        <p class="ptw-nodata">-- No Data --</p>
+    </div>
+    </div>
+</div>
+
+<!-- ========== 4. Chart per Kemasan ========== -->
+<div class="ptw-spec">
+    <p class="ptw-spec-label">Chart per Kemasan</p>
+    <div class="ptw-scroll">
+    <div class="ptw-kp">
+        <p class="ptw-kp-title">Data Per Kemasan</p>
+        <div class="ptw-kp-ctl">
+            <div class="ptw-kp-tabs" data-ptw-kp-tabs>
+                <button type="button" class="ptw-kp-tab is-active">Arus</button>
+                <button type="button" class="ptw-kp-tab">Produksi</button>
+                <button type="button" class="ptw-kp-tab">Pendapatan</button>
+            </div>
+            <span class="ptw-kp-pill"><i data-lucide="calendar" style="width:16px;height:16px"></i>35 Days</span>
+        </div>
+        <div class="ptw-kp-panel">
+            <div class="ptw-kp-plot">
+                <% [7000,5750,4500,3250,2000].forEach(function (v, i) { var y = 6 + i * 33.25; %>
+                <div class="ln" style="top:<%= y %>px"></div>
+                <div class="yl" style="top:<%= y - 6 %>px"><%= v %></div>
+                <% }) %>
+                <% [0,93,162.8,232.5,302.3,370.1,461].forEach(function (x) { %><div class="vl" style="left:<%= x %>px"></div><% }) %>
+                <% KP.forEach(function (b, i) { var x = 93 + 69.8 * i; %>
+                <div class="bg" style="left:<%= x %>px"></div>
+                <div class="sb" style="left:<%= x %>px;top:<%= 141 - b[2] %>px;height:<%= b[2] %>px;background:<%= b[1] %>" title="<%= b[0] %>"></div>
+                <% }) %>
+            </div>
+            <p class="ptw-kp-xl">Kemasan</p>
+            <div class="ptw-kp-leg"><% KP.forEach(function (b) { %><span><i style="background:<%= b[1] %>"></i><%= b[0] %></span><% }) %></div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- ========== 5. Produksi Chart ========== -->
+<div class="ptw-spec">
+    <p class="ptw-spec-label">Produksi Chart <span>— Chart view · Table view (click the toggle)</span></p>
+    <div class="ptw-scroll">
+    <div class="ptw ptw-pr" data-ptw-prod style="min-width:900px">
+        <div class="ptw-pr-head">
+            <p class="ptw-pr-num">7.322.300<small>ton</small></p>
+            <span class="ptw-pr-delta">▲ 2,4% vs Jan–Des 2025</span>
+            <div class="ptw-seg"><button type="button" class="is-active" data-ptw-prod-tab="chart">Chart</button><button type="button" data-ptw-prod-tab="table">Table</button></div>
+        </div>
+        <div data-ptw-prod-pane="chart">
+            <svg viewBox="0 0 1044 262" width="100%" role="img" aria-label="Produksi per bulan per kemasan">
+                <% [700,525,350,175,0].forEach(function (v, i) { var y = 22 + i * 54.5; %>
+                <line x1="40" x2="1044" y1="<%= y %>" y2="<%= y %>" stroke="#dfe5ed" stroke-width="1" />
+                <text x="0" y="<%= y + 3 %>" font-size="9" fill="#64748b"><%= v === 0 ? '0' : v + ' rb' %></text>
+                <% }) %>
+                <% PTOT.forEach(function (t, m) {
+                    var cx = 40 + 42 + 84 * m, bw = 60, scale = 218 / 700000, base = 240, run = 0, segs = [];
+                    for (var s = PROD.length - 1; s >= 0; s--) { var h = PROD[s][2][m] * scale; run += h; segs.push({ c: PROD[s][1], y: base - run, h: h, top: s === 0 }); }
+                    segs.sort(function (a, b) { return a.y - b.y; });
+                %>
+                <% segs.forEach(function (g) { %><rect x="<%= cx - bw / 2 %>" y="<%= g.y.toFixed(2) %>" width="<%= bw %>" height="<%= (g.h + (g.top ? 6 : 0)).toFixed(2) %>" rx="<%= g.top ? 6 : 0 %>" fill="<%= g.c %>" /><% }) %>
+                <% var tp = 240 - PROD.reduce(function (a, r) { return a + r[2][m]; }, 0) * scale; %>
+                <text x="<%= cx %>" y="<%= (tp - 6).toFixed(1) %>" text-anchor="middle" font-size="9" font-weight="600" fill="#0f2444"><%= PLBL[m] %></text>
+                <text x="<%= cx %>" y="258" text-anchor="middle" font-size="10" fill="#64748b"><%= PM[m] %></text>
+                <% }) %>
+            </svg>
+            <div class="ptw-legend"><% PROD.forEach(function (r) { %><span><i style="background:<%= r[1] %>"></i><%= r[0] %></span><% }) %></div>
+        </div>
+        <div data-ptw-prod-pane="table" hidden style="overflow-x:auto">
+            <table class="ptw-pt">
+                <thead><tr><th>Kemasan</th><% PM.forEach(function (m) { %><th><%= m %></th><% }) %><th>Total</th></tr></thead>
+                <tbody>
+                    <% PROD.forEach(function (r) { %><tr><td><%= r[0] %></td><% r[2].forEach(function (v) { %><td><%= v %></td><% }) %><td><%= r[2].reduce(function (a, b) { return a + b; }, 0) %></td></tr><% }) %>
+                    <tr class="tot"><td>Total</td><% PTOT.forEach(function (v) { %><td><%= v %></td><% }) %><td><%= PTOT.reduce(function (a, b) { return a + b; }, 0) %></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- ========== 6. Storage Occupancy Heatmap ========== -->
+<div class="ptw-spec">
+    <p class="ptw-spec-label">Storage Occupancy Heatmap <span>— SOR · YOR (click the toggle, scroll the grid)</span></p>
+    <div class="ptw-scroll">
+    <div class="ptw ptw-hm" data-ptw-hm>
+        <div class="ptw-hm-head"><b>Yard/Storage Occupancy</b><span class="ptw-hm-badge">178 sel belum disetel</span></div>
+        <div class="ptw-seg" style="align-self:flex-start"><button type="button" data-ptw-hm-tab="yor">YOR</button><button type="button" class="is-active" data-ptw-hm-tab="sor">SOR</button></div>
+        <% ['sor','yor'].forEach(function (k, ki) { %>
+        <div data-ptw-hm-pane="<%= k %>" <%- ki === 0 ? '' : 'hidden' %> style="display:<%= ki === 0 ? 'flex' : 'none' %>;flex-direction:column;gap:16px">
+            <p class="ptw-sub" style="margin:0;font-size:12px"><%= HM[k].desc %></p>
+            <div class="ptw-hm-view">
+                <div class="ptw-hm-grid">
+                    <div></div><% for (var d = 0; d < 30; d++) { %><div class="dh"><b><%= (d < 9 ? '0' : '') + (d + 1) %></b><%= WD[d % 7] %></div><% } %>
+                    <% HM_ROWS.forEach(function (rn, ri) { %><div class="lb"><%= rn %></div><% HM[k].d[ri].forEach(function (v) { %><div class="c <%= hmClass(v) %>"><%= v === null ? '—' : v + '%' %></div><% }) %><% }) %>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+        <div class="ptw-hm-leg"><% HM_LEG.forEach(function (l) { %><span><i class="ptw-hm-sw <%= l[1] %>"></i><%= l[0] %></span><% }) %></div>
+        <div class="ptw-hm-foot"><span>Terminal 1–5 dari 6</span><div><button type="button" disabled aria-label="Sebelumnya">‹</button><button type="button" disabled aria-label="Berikutnya">›</button></div></div>
+    </div>
+    </div>
+</div>
+
+<!-- ========== 7. Changelog Accordion ========== -->
+<div class="ptw-spec">
+    <p class="ptw-spec-label">Changelog Accordion <span>— Collapse · Expanded (click the header)</span></p>
+    <div class="ptw-acc" data-ptw-acc>
+        <button type="button" class="ptw-acc-h"><span>Ini isi Anuannya yakk (2)</span><svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 1.5l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <ul hidden><li>Add an install IDE button if Antigravity IDE is not installed.</li><li>Add an open IDE button if Antigravity IDE is installed which allows you to open the current project in Antigravity IDE.</li></ul>
+    </div>
+    <div class="ptw-acc is-open" data-ptw-acc>
+        <button type="button" class="ptw-acc-h"><span>Taro anuannya disini (2)</span><svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 1.5l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <ul><li>Add an install IDE button if Antigravity IDE is not installed.</li><li>Add an open IDE button if Antigravity IDE is installed which allows you to open the current project in Antigravity IDE.</li></ul>
+    </div>
+</div>
+
+<script>
+(function () {
+    function q(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+    // Generic "one pane visible per group" switcher
+    function wire(rootSel, tabAttr, paneAttr, activeCls, showDisplay) {
+        q(rootSel).forEach(function (root) {
+            var tabs = q('[' + tabAttr + ']', root), panes = q('[' + paneAttr + ']', root);
+            tabs.forEach(function (t) {
+                t.addEventListener('click', function () {
+                    var key = t.getAttribute(tabAttr);
+                    tabs.forEach(function (x) { x.classList.toggle(activeCls, x === t); });
+                    panes.forEach(function (p) {
+                        var on = p.getAttribute(paneAttr) === key;
+                        p.hidden = !on;
+                        if (showDisplay) p.style.display = on ? showDisplay : 'none';
+                    });
+                });
+            });
+        });
+    }
+    wire('[data-ptw-tabwidget]', 'data-ptw-tab', 'data-ptw-pane', 'is-active');
+    wire('[data-ptw-loc]', 'data-ptw-loc-tab', 'data-ptw-loc-pane', 'is-active');
+    wire('[data-ptw-prod]', 'data-ptw-prod-tab', 'data-ptw-prod-pane', 'is-active');
+    wire('[data-ptw-hm]', 'data-ptw-hm-tab', 'data-ptw-hm-pane', 'is-active', 'flex');
+    q('[data-ptw-kp-tabs]').forEach(function (g) {
+        var tabs = q('.ptw-kp-tab', g);
+        tabs.forEach(function (t) { t.addEventListener('click', function () { tabs.forEach(function (x) { x.classList.toggle('is-active', x === t); }); }); });
+    });
+    q('[data-ptw-acc]').forEach(function (a) {
+        var h = a.querySelector('.ptw-acc-h'), ul = a.querySelector('ul');
+        h.addEventListener('click', function () { var open = ul.hidden; ul.hidden = !open; a.classList.toggle('is-open', open); });
+    });
+})();
+</script>

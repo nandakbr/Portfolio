@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta property="og:title" content="Nanda Akbar | Bea Cukai Module" />
+    <meta property="og:description" content="Redesigning PTOS-M's Customs (Bea Cukai) module — from a 13-tab, 20+ column legacy screen to a monitoring-first flow." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nandakbr.com/bea-cukai" />
+    <meta property="og:image" content="/assets/mockup_beacukai.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nanda Akbar | Bea Cukai Module" />
+    <meta name="twitter:description" content="Redesigning PTOS-M's Customs (Bea Cukai) module — from a 13-tab, 20+ column legacy screen to a monitoring-first flow." />
+    <meta name="twitter:image" content="/assets/mockup_beacukai.webp" />
+    <title>Nanda Akbar | Bea Cukai Module</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Tinos:ital@1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/css/output.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+        /* Before/after compare — hover-to-reveal on desktop (no drag
+           instruction needed, hover is the natural first move), tap-to-toggle
+           on touch devices via .is-revealed. "Before" stays the resting
+           state; "After" crossfades in. */
+        .compare-wrap { position: relative; aspect-ratio: 16/10; overflow: hidden; border-radius: 1rem; cursor: pointer; user-select: none; }
+        .compare-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .compare-before { transform: scale(1); }
+        .compare-wrap:hover .compare-before,
+        .compare-wrap.is-revealed .compare-before { transform: scale(1.04); }
+        .compare-after { opacity: 0; transform: scale(1.06); transition: opacity 320ms ease, transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .compare-wrap:hover .compare-after,
+        .compare-wrap.is-revealed .compare-after { opacity: 1; transform: scale(1); }
+        .compare-tag { position: absolute; top: 12px; z-index: 5; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 99px; backdrop-filter: blur(6px); transition: opacity 320ms ease; }
+        .compare-tag.before-tag { left: 12px; background: rgba(20,20,20,0.55); color: #fff; }
+        .compare-tag.after-tag { left: 12px; background: rgba(36,75,255,0.9); color: #fff; opacity: 0; }
+        .compare-wrap:hover .compare-tag.before-tag,
+        .compare-wrap.is-revealed .compare-tag.before-tag { opacity: 0; }
+        .compare-wrap:hover .compare-tag.after-tag,
+        .compare-wrap.is-revealed .compare-tag.after-tag { opacity: 1; }
+        .compare-hint { position: absolute; bottom: 12px; right: 12px; z-index: 5; font-size: 0.65rem; font-weight: 600; color: rgba(255,255,255,0.85); background: rgba(20,20,20,0.5); padding: 4px 10px; border-radius: 99px; backdrop-filter: blur(6px); transition: opacity 250ms ease; display: flex; align-items: center; gap: 4px; }
+        .compare-wrap:hover .compare-hint,
+        .compare-wrap.is-revealed .compare-hint { opacity: 0; }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile header/nav — same identity as ptosm.ejs/ptos-sso.ejs -->
+    <div class="md:hidden">
+        <div class="px-6 pt-5 pb-3">
+            <div class="flex items-center justify-between">
+                <a href="/" class="text-sm font-bold tracking-tight focus-ring">Nanda Akbar</a>
+                <p class="text-[0.6rem] uppercase tracking-[0.15em] opacity-50">PORTFOLIO / WORK</p>
+            </div>
+            <div class="border-t border-black/10 mt-3"></div>
+        </div>
+        <div class="px-6 pb-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-1.5 text-sm opacity-70 active:opacity-40 focus-ring" aria-label="Back to index">
+                <span class="material-symbols-outlined text-base">arrow_back</span>Index
+            </a>
+            <span class="text-[0.6rem] uppercase tracking-[0.1em] text-[#244BFF]">UI/UX DESIGN</span>
+        </div>
+        <div class="px-6 pb-6">
+            <h1 class="text-3xl font-semibold leading-[1.05] tracking-tight">Bea Cukai Module</h1>
+            <p class="text-sm opacity-60 leading-snug mt-3">PTOS-M's customs module handles its own universe of operational data — redesigned from a 13-tab, column-overloaded legacy screen into a monitoring-first flow.</p>
+        </div>
+
+        <!-- Mobile: before/after compare — Monitoring BC + Atensi P2, same pair as desktop -->
+        <div class="px-6 space-y-6">
+            <div>
+                <div class="compare-wrap bg-background-light" data-compare id="compare-m-0">
+                    <span class="compare-tag before-tag">Before</span>
+                    <span class="compare-tag after-tag">After</span>
+                    <span class="compare-hint"><span class="material-symbols-outlined text-xs">touch_app</span>Tap to reveal</span>
+                    <img src="/assets/bc_before_1.webp" alt="Before" class="compare-before">
+                    <img src="/assets/bc_after_monitoring.webp" alt="After" class="compare-after">
+                </div>
+                <p class="text-xs opacity-45 mt-2.5"><strong class="text-[#20211F] opacity-70">Monitoring BC.</strong> 13-tab legacy row with a dense 10,271-entry table — redesign leads with status first.</p>
+            </div>
+            <div>
+                <div class="compare-wrap bg-background-light" data-compare id="compare-m-1">
+                    <span class="compare-tag before-tag">Before</span>
+                    <span class="compare-tag after-tag">After</span>
+                    <span class="compare-hint"><span class="material-symbols-outlined text-xs">touch_app</span>Tap to reveal</span>
+                    <img src="/assets/bc_before_5.webp" alt="Before" class="compare-before">
+                    <img src="/assets/bc_after_atensi_p2.webp" alt="After" class="compare-after">
+                </div>
+                <p class="text-xs opacity-45 mt-2.5"><strong class="text-[#20211F] opacity-70">Atensi P2.</strong> 22,725 entries, 3 permanently empty columns, no priority signal.</p>
+            </div>
+        </div>
+
+        <div class="px-6 pt-10 pb-6">
+            <div class="flex items-baseline justify-between mb-4">
+                <p class="text-xl font-semibold tracking-tight">Gallery</p>
+                <p class="text-[0.6rem] uppercase tracking-[0.1em] text-[#244BFF]">13 VIEWS</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3" id="gallery-grid-m">
+                <% previewGallery.forEach(function(item){ %>
+                <button type="button" onclick="openLightbox(<%= item.i %>)" class="text-left active:opacity-60 focus-ring">
+                    <span class="block aspect-square overflow-hidden rounded-sm border border-black/10 relative">
+                        <img alt="<%= item.title %>" loading="lazy" src="<%= item.image %>" class="w-full h-full object-cover">
+                        <span class="absolute top-1.5 left-1.5 text-[0.5rem] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full <%= item.tag === 'After' ? 'bg-[#244BFF] text-white' : 'bg-black/60 text-white' %>"><%= item.tag %></span>
+                    </span>
+                    <span class="block text-xs mt-2 opacity-50 truncate"><%= item.title %></span>
+                </button>
+                <% }) %>
+                <% restGallery.forEach(function(item){ %>
+                <button type="button" onclick="openLightbox(<%= item.i %>)" class="gallery-rest-item hidden text-left active:opacity-60 focus-ring">
+                    <span class="block aspect-square overflow-hidden rounded-sm border border-black/10 relative">
+                        <img alt="<%= item.title %>" loading="lazy" src="<%= item.image %>" class="w-full h-full object-cover">
+                        <span class="absolute top-1.5 left-1.5 text-[0.5rem] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full <%= item.tag === 'After' ? 'bg-[#244BFF] text-white' : 'bg-black/60 text-white' %>"><%= item.tag %></span>
+                    </span>
+                    <span class="block text-xs mt-2 opacity-50 truncate"><%= item.title %></span>
+                </button>
+                <% }) %>
+            </div>
+            <button type="button" data-gallery-toggle class="w-full mt-4 py-2.5 rounded-full border border-black/10 text-xs flex items-center justify-center gap-1.5 active:scale-[0.98] transition-transform focus-ring">
+                <span data-gallery-toggle-label>View All 13</span>
+                <span class="material-symbols-outlined text-sm" data-gallery-toggle-icon>expand_more</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Case Study: Problem & Solution — mobile-compact version (stacked,
+         same content as the desktop section further below). -->
+    <div class="md:hidden px-6 pt-4 pb-16">
+        <section class="border-t border-black/10 pt-10">
+            <span class="text-[11px] font-bold tracking-[0.3em] text-[#77796F] uppercase mb-3 block">Case Study</span>
+            <h2 class="text-2xl font-bold tracking-tight mb-8">The Problem & Solution</h2>
+
+            <div class="bg-card-light p-6 rounded-2xl shadow-sm mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-9 h-9 rounded-full bg-red-500/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-500 text-lg">warning</span>
+                    </div>
+                    <h3 class="text-lg font-bold">The Problem</h3>
+                </div>
+                <p class="text-sm text-[#77796F] leading-relaxed mb-4">
+                    The legacy screen crammed <strong class="text-[#20211F]">13 tabs and 20+ table columns</strong> into one view, with no distinction between data that needs action and data that's just history.
+                </p>
+                <ul class="space-y-2.5 text-xs text-[#77796F]">
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-red-400 text-sm mt-0.5">close</span>
+                        <span>13 near-identical tab names — hard to tell apart at a glance</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-red-400 text-sm mt-0.5">close</span>
+                        <span>Table cells stacking 5-8 sub-fields each, heavy scanning cost</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-red-400 text-sm mt-0.5">close</span>
+                        <span>Columns empty on every row still occupy space</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-red-400 text-sm mt-0.5">close</span>
+                        <span>No visual priority between "needs attention" and plain history</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-card-light p-6 rounded-2xl shadow-sm mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-9 h-9 rounded-full bg-green-500/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+                    </div>
+                    <h3 class="text-lg font-bold">The Solution: Monitoring-First</h3>
+                </div>
+                <p class="text-sm text-[#77796F] leading-relaxed mb-4">
+                    Reorganized around <strong class="text-[#20211F]">what the operator needs to act on</strong> — status surfaces first, raw records stay one layer deep.
+                </p>
+                <ul class="space-y-2.5 text-xs text-[#77796F]">
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-green-400 text-sm mt-0.5">check</span>
+                        <span>Customs-module-header standardized once, reused across sub-screens</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-green-400 text-sm mt-0.5">check</span>
+                        <span>Tonase and capture detail split into dedicated screens</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-green-400 text-sm mt-0.5">check</span>
+                        <span>Atensi P2 flagged shipments visually distinct from routine records</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="material-symbols-outlined text-green-400 text-sm mt-0.5">check</span>
+                        <span>Consistent PTOS-M navy/blue tokens, not legacy ad-hoc badge colors</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-card-light p-6 rounded-2xl shadow-sm">
+                <h3 class="text-base font-bold mb-2">Status</h3>
+                <p class="text-sm text-[#77796F] leading-relaxed">
+                    First pass covers <strong class="text-[#20211F]">Monitoring, Monitoring-Tonase, Monitoring-Capture, Transaksi, Transaksi-Capture, and Atensi P2</strong>. More sub-flows (Sinkron Data, Truck Onterminal, Pabean Manual, Report BC) are still on the legacy UI — redesigned incrementally.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <main class="hidden md:block max-w-7xl mx-auto px-6 md:px-12 pt-8 md:pt-16 pb-32">
+        <div class="reveal-item">
+            <div class="flex items-center justify-between mb-5">
+                <p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#244BFF]">UI/UX Design</p>
+                <a href="/" class="flex items-center gap-1.5 text-xs opacity-50 hover:opacity-100 active:opacity-40 transition-opacity focus-ring cursor-pointer">
+                    <span class="material-symbols-outlined text-base">arrow_back</span>Back to Index
+                </a>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-5">
+                Bea Cukai Module
+            </h1>
+            <p class="text-lg text-[#77796F] leading-relaxed max-w-3xl mb-12">
+                The customs (Bea Cukai) module tracks import/export clearance for everything moving through the terminal —
+                SPPB, NPE, truck gate activity, vessel documents. It's effectively its own operating system nested inside
+                PTOS-M. This is the first redesign pass: unifying 13 crammed tabs into a monitoring-first structure.
+            </p>
+
+            <!-- Before/After compare sliders — real drag interaction, not static side-by-side -->
+            <div class="max-w-4xl mx-auto space-y-10">
+                <div>
+                    <div class="compare-wrap bg-background-light shadow-sm" data-compare id="compare-d-0">
+                        <span class="compare-tag before-tag">Before</span>
+                        <span class="compare-tag after-tag">After</span>
+                        <span class="compare-hint"><span class="material-symbols-outlined text-xs">touch_app</span>Hover to reveal</span>
+                        <img src="/assets/bc_before_1.webp" alt="Before" class="compare-before">
+                        <img src="/assets/bc_after_monitoring.webp" alt="After" class="compare-after">
+                    </div>
+                    <p class="text-xs opacity-45 mt-3"><strong class="text-[#20211F] opacity-70">Monitoring BC.</strong> The legacy screen opened straight into a 13-tab row with a dense 10,271-entry table. The redesign leads with status first — what needs attention right now — before the raw table.</p>
+                </div>
+                <div>
+                    <div class="compare-wrap bg-background-light shadow-sm" data-compare id="compare-d-1">
+                        <span class="compare-tag before-tag">Before</span>
+                        <span class="compare-tag after-tag">After</span>
+                        <span class="compare-hint"><span class="material-symbols-outlined text-xs">touch_app</span>Hover to reveal</span>
+                        <img src="/assets/bc_before_5.webp" alt="Before" class="compare-before">
+                        <img src="/assets/bc_after_atensi_p2.webp" alt="After" class="compare-after">
+                    </div>
+                    <p class="text-xs opacity-45 mt-3"><strong class="text-[#20211F] opacity-70">Atensi P2.</strong> 22,725 entries, three columns permanently empty on every row, no way to tell what actually needs attention versus what's already resolved.</p>
+                </div>
+            </div>
+
+            <!-- Gallery: before + after mixed, numbered, preview + expand -->
+            <div class="mt-20">
+                <div class="flex items-baseline justify-between mb-5">
+                    <p class="text-xl font-semibold tracking-tight">Gallery</p>
+                    <p class="text-[0.65rem] uppercase tracking-[0.15em] text-[#244BFF]">13 VIEWS</p>
+                </div>
+                <div class="grid grid-cols-5 gap-4" id="desktop-gallery-grid">
+                    <% previewGallery.forEach(function(item){ %>
+                    <button type="button" class="text-left group" onclick="openLightbox(<%= item.i %>)">
+                        <span class="block aspect-square rounded-lg overflow-hidden border border-black/10 relative">
+                            <img alt="<%= item.title %>" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" src="<%= item.image %>" loading="lazy" decoding="async">
+                            <span class="absolute top-2 left-2 text-[0.55rem] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full <%= item.tag === 'After' ? 'bg-[#244BFF] text-white' : 'bg-black/60 text-white' %>"><%= item.tag %></span>
+                        </span>
+                        <span class="block text-xs mt-2 opacity-50 truncate"><%= item.title %></span>
+                    </button>
+                    <% }) %>
+                    <% restGallery.forEach(function(item){ %>
+                    <button type="button" class="gallery-rest-item hidden text-left group" onclick="openLightbox(<%= item.i %>)">
+                        <span class="block aspect-square rounded-lg overflow-hidden border border-black/10 relative">
+                            <img alt="<%= item.title %>" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" src="<%= item.image %>" loading="lazy" decoding="async">
+                            <span class="absolute top-2 left-2 text-[0.55rem] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full <%= item.tag === 'After' ? 'bg-[#244BFF] text-white' : 'bg-black/60 text-white' %>"><%= item.tag %></span>
+                        </span>
+                        <span class="block text-xs mt-2 opacity-50 truncate"><%= item.title %></span>
+                    </button>
+                    <% }) %>
+                </div>
+                <button type="button" data-gallery-toggle class="mx-auto mt-6 px-5 py-2.5 rounded-full border border-black/10 text-xs flex items-center justify-center gap-1.5 hover:bg-black/5 active:scale-[0.98] transition-all focus-ring cursor-pointer">
+                    <span data-gallery-toggle-label>View All 13</span>
+                    <span class="material-symbols-outlined text-sm" data-gallery-toggle-icon>expand_more</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Case Study: Problem & Solution — same grammar as ptosm.ejs -->
+        <section class="mt-32 reveal-item">
+            <div class="mb-16">
+                <span class="text-[11px] font-bold tracking-[0.3em] text-[#77796F] uppercase mb-4 block">Case Study</span>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Problem & Solution</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                <div class="bg-card-light p-8 md:p-10 rounded-2xl shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-red-500 text-xl">warning</span>
+                        </div>
+                        <h3 class="text-xl font-bold">The Problem</h3>
+                    </div>
+                    <p class="text-[#77796F] leading-relaxed mb-6">
+                        The customs module's legacy screen crammed <strong class="text-[#20211F]">13 tabs and 20+ table columns</strong>
+                        into a single view, with no distinction between data that needs action and data that's just history.
+                    </p>
+                    <ul class="space-y-3 text-sm text-[#77796F]">
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-red-400 text-base mt-0.5">close</span>
+                            <span>13 tabs with near-identical names (Inventory BL vs. Inventori Operasional vs. Data Pabean) — hard to tell apart at a glance</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-red-400 text-base mt-0.5">close</span>
+                            <span>Table cells stacking 5-8 sub-fields each, producing inconsistent row heights and heavy scanning cost</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-red-400 text-base mt-0.5">close</span>
+                            <span>Columns that are empty on every single row still occupy space (e.g. "Dokumen InOut" on Atensi P2)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-red-400 text-base mt-0.5">close</span>
+                            <span>No visual priority between "needs attention now" and plain historical records</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-card-light p-8 md:p-10 rounded-2xl shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-500 text-xl">check_circle</span>
+                        </div>
+                        <h3 class="text-xl font-bold">The Solution: Monitoring-First Structure</h3>
+                    </div>
+                    <p class="text-[#77796F] leading-relaxed mb-6">
+                        Reorganized around <strong class="text-[#20211F]">what the operator needs to act on, not the document taxonomy</strong>
+                        — status surfaces first, raw records stay one layer deep.
+                    </p>
+                    <ul class="space-y-3 text-sm text-[#77796F]">
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-400 text-base mt-0.5">check</span>
+                            <span>Customs-module-header component standardized once, reused across every sub-screen (TPS/Ijin Pabean metadata)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-400 text-base mt-0.5">check</span>
+                            <span>Tonase and capture detail split into dedicated screens instead of overloading one table</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-400 text-base mt-0.5">check</span>
+                            <span>Atensi P2 reworked so flagged shipments are visually distinct from routine "RELEASE" records</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-green-400 text-base mt-0.5">check</span>
+                            <span>Consistent PTOS-M design tokens applied (navy/blue status system, not the legacy ad-hoc color badges)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-card-light p-8 md:p-12 rounded-2xl shadow-sm">
+                <h3 class="text-2xl font-bold mb-2">Status</h3>
+                <p class="text-[#77796F] leading-relaxed max-w-2xl">
+                    First pass covers <strong class="text-[#20211F]">Monitoring, Monitoring-Tonase, Monitoring-Capture, Transaksi,
+                    Transaksi-Capture, and Atensi P2</strong>. The customs module has more sub-flows (Sinkron Data, Truck
+                    Onterminal, Pabean Manual, Report BC) still running the legacy UI — redesigned incrementally as each
+                    gets its turn.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Image Lightbox Modal — prev/next nav + thumbnail strip, same
+         pattern as ptosm.ejs/ptos-sso.ejs, driven by galleryData (the same
+         array backing the desktop/mobile gallery grids below). -->
+    <div id="image-lightbox"
+        class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 flex flex-col items-center justify-center p-4 cursor-zoom-out">
+        <button id="lightbox-prev"
+            class="absolute left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 transition-colors p-3 bg-black/20 rounded-full backdrop-blur-md">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button id="lightbox-next"
+            class="absolute right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 transition-colors p-3 bg-black/20 rounded-full backdrop-blur-md">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+        <div class="relative w-full max-w-7xl flex-1 flex items-center justify-center min-h-0">
+            <div class="relative inline-block">
+                <img id="lightbox-image" src="" alt="Expanded view"
+                    class="max-w-full max-h-[85vh] object-contain scale-95 transition-transform duration-300 rounded-lg shadow-2xl cursor-default select-none"
+                    onclick="event.stopPropagation()" loading="lazy" decoding="async">
+                <button id="lightbox-close"
+                    class="absolute top-4 right-4 text-white/80 hover:text-white z-20 transition-colors p-2 bg-black/50 rounded-full backdrop-blur-md"
+                    onclick="event.stopPropagation()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <p id="lightbox-caption" class="text-white/70 text-xs mt-2" onclick="event.stopPropagation()"></p>
+        <!-- Thumbnail Gallery Strip -->
+        <div id="lightbox-gallery-strip"
+            class="w-fit max-w-4xl h-20 mt-3 flex items-center justify-start gap-4 overflow-x-auto px-4 pb-2 z-10"
+            onclick="event.stopPropagation()">
+        </div>
+    </div>
+
+    <script>
+        // Single source of truth for the lightbox — mirrors what the server
+        // rendered into the gallery grids, so clicking any thumbnail (before
+        // OR after, mobile OR desktop) opens the same prev/next-able set.
+        const galleryData = <%- JSON.stringify(allGallery) %>;
+    </script>
+
+    <script>
+        // Gallery "View All" — accordion expand in place (no new page/modal),
+        // animated with GSAP: items pop in with a staggered scale+fade
+        // (elastic snap, same vocabulary as the homepage's dock-magnify),
+        // the toggle button itself gets a tactile press-pop, and the chevron
+        // flips via rotation instead of a hard icon swap.
+        document.querySelectorAll('[data-gallery-toggle]').forEach((btn) => {
+            const grid = btn.previousElementSibling; // the grid immediately above this button
+            const restItems = Array.from(grid.querySelectorAll('.gallery-rest-item'));
+            const label = btn.querySelector('[data-gallery-toggle-label]');
+            const icon = btn.querySelector('[data-gallery-toggle-icon]');
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let expanded = false;
+
+            btn.addEventListener('click', () => {
+                expanded = !expanded;
+                label.textContent = expanded ? 'Show Less' : 'View All 13';
+
+                if (window.gsap && !reduced) {
+                    gsap.fromTo(btn, { scale: 1 }, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+                    gsap.to(icon, { rotate: expanded ? 180 : 0, duration: 0.35, ease: 'back.out(2)' });
+                } else {
+                    icon.textContent = expanded ? 'expand_less' : 'expand_more';
+                }
+
+                if (expanded) {
+                    restItems.forEach((item) => item.classList.remove('hidden'));
+                    if (window.gsap && !reduced) {
+                        gsap.fromTo(restItems,
+                            { opacity: 0, scale: 0.85, y: 14 },
+                            { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(1.6)', stagger: 0.045 }
+                        );
+                    }
+                } else {
+                    if (window.gsap && !reduced) {
+                        gsap.to(restItems, {
+                            opacity: 0, scale: 0.9, duration: 0.18, ease: 'power1.in', stagger: 0.015,
+                            onComplete: () => restItems.forEach((item) => item.classList.add('hidden')),
+                        });
+                    } else {
+                        restItems.forEach((item) => item.classList.add('hidden'));
+                    }
+                    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Before/after compare — hover reveals on desktop via pure CSS
+        // (:hover). Touch devices have no hover, so tap toggles a sticky
+        // .is-revealed state instead — tap again to go back to "before".
+        document.querySelectorAll('[data-compare]').forEach((wrap) => {
+            wrap.addEventListener('click', () => {
+                if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+                wrap.classList.toggle('is-revealed');
+            });
+        });
+
+        // Lightbox: full prev/next + thumbnail-strip navigation over
+        // galleryData (same pattern as ptosm.ejs's projectData carousel).
+        const lightbox = document.getElementById('image-lightbox');
+        const lightboxImg = document.getElementById('lightbox-image');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxCloseBtn = document.getElementById('lightbox-close');
+        const lightboxPrevBtn = document.getElementById('lightbox-prev');
+        const lightboxNextBtn = document.getElementById('lightbox-next');
+        const lightboxGalleryStrip = document.getElementById('lightbox-gallery-strip');
+        let lightboxIndex = 0;
+
+        function updateLightboxImage() {
+            const item = galleryData[lightboxIndex];
+            lightboxImg.src = item.image;
+            lightboxCaption.textContent = `${item.title} — ${item.tag}`;
+
+            lightboxGalleryStrip.innerHTML = '';
+            galleryData.forEach((g, i) => {
+                const thumbBtn = document.createElement('button');
+                thumbBtn.className = `w-16 h-16 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${i === lightboxIndex ? 'border-white opacity-100 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`;
+                const thumbImg = document.createElement('img');
+                thumbImg.src = g.image;
+                thumbImg.className = 'w-full h-full object-cover';
+                thumbBtn.appendChild(thumbImg);
+                thumbBtn.onclick = () => {
+                    lightboxIndex = i;
+                    lightboxImg.classList.add('opacity-50');
+                    setTimeout(() => { updateLightboxImage(); lightboxImg.classList.remove('opacity-50'); }, 150);
+                };
+                lightboxGalleryStrip.appendChild(thumbBtn);
+            });
+            // Keep the active thumbnail in view as index changes via arrows/keys
+            const activeThumb = lightboxGalleryStrip.children[lightboxIndex];
+            if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        function openLightbox(index) {
+            lightboxIndex = index;
+            updateLightboxImage();
+            lightbox.classList.remove('hidden');
+            void lightbox.offsetWidth;
+            lightbox.classList.remove('opacity-0');
+            lightboxImg.classList.remove('scale-95');
+            lightboxImg.classList.add('scale-100');
+            document.body.classList.add('overflow-hidden');
+        }
+        function closeLightbox() {
+            lightbox.classList.add('opacity-0');
+            lightboxImg.classList.remove('scale-100');
+            lightboxImg.classList.add('scale-95');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }, 300);
+        }
+        function lightboxPrev() {
+            lightboxIndex = (lightboxIndex - 1 + galleryData.length) % galleryData.length;
+            lightboxImg.classList.add('opacity-50');
+            setTimeout(() => { updateLightboxImage(); lightboxImg.classList.remove('opacity-50'); }, 150);
+        }
+        function lightboxNext() {
+            lightboxIndex = (lightboxIndex + 1) % galleryData.length;
+            lightboxImg.classList.add('opacity-50');
+            setTimeout(() => { updateLightboxImage(); lightboxImg.classList.remove('opacity-50'); }, 150);
+        }
+        lightboxCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+        lightboxPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); lightboxPrev(); });
+        lightboxNextBtn.addEventListener('click', (e) => { e.stopPropagation(); lightboxNext(); });
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') lightboxPrev();
+            if (e.key === 'ArrowRight') lightboxNext();
+        });
+    </script>
+
+    <script>
+        // Reveal animation — same pattern as ptosm.ejs/ptos-sso.ejs
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const isReducedMotion = () => prefersReducedMotion.matches;
+        const revealItems = document.querySelectorAll('.reveal-item');
+        if (isReducedMotion()) {
+            revealItems.forEach((el) => el.classList.add('reveal-init', 'reveal-active'));
+        } else {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        const alreadyPlayed = entry.target.dataset.revealed === 'true';
+                        const delay = alreadyPlayed ? 0 : index * 110;
+                        setTimeout(() => {
+                            entry.target.classList.add('reveal-active');
+                            entry.target.dataset.revealed = 'true';
+                        }, delay);
+                    } else {
+                        entry.target.classList.remove('reveal-active');
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+            revealItems.forEach((el) => { el.classList.add('reveal-init'); observer.observe(el); });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth dark" lang="en">
+<html class="scroll-smooth" lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -21,60 +21,19 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Tinos:ital@1&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#000000",
-                        "primary-secondary": "#666666",
-                        "background-light": "#F9F9F9",
-                        "background-dark": "#050505",
-                        "background-elevated": "#111111",
-                        "cta-default": "#000000",
-                        "cta-hover": "#333333",
-                        "btn-default": "#000000",
-                        "btn-hover": "#333333",
-                        "border-color": "#E5E5E5",
-                    },
-                    fontFamily: {
-                        display: ["Outfit", "sans-serif"],
-                        body: ["Inter", "sans-serif"],
-                    },
-                    borderRadius: {
-                        'xl': '1.5rem',
-                        '2xl': '2rem',
-                        DEFAULT: "0.5rem",
-                    },
-                },
-            },
-        };
-    </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            body {
-                @apply font-body bg-background-light dark:bg-background-dark text-[#0B130F] dark:text-[#EEF3EE] min-h-screen transition-colors duration-300;
-            }
-            h1, h2, h3, h4, h5, h6, .display-font, nav a {
-                @apply font-display;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/css/output.css" />
 </head>
 
 <body>
-    <header class="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-lg border-b border-white/5">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-lg border-b border-border-subtle/40">
         <nav class="max-w-7xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
             <a class="text-xl font-bold tracking-tight" href="/">Nanda Akbar</a>
             <div class="flex gap-10 items-center">
-                <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/work">Work</a>
                 <a class="nav-link text-lg hover:opacity-60 transition-opacity font-medium" href="/about">About</a>
 
             </div>
@@ -87,7 +46,7 @@
         </div>
         <div class="max-w-xl">
             <h2 class="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Oops! Page not found.</h2>
-            <p class="text-xl text-[#68706C] dark:text-[#A8B0AA] mb-12 leading-relaxed">
+            <p class="text-xl text-[#77796F] mb-12 leading-relaxed">
                 The page you're looking for doesn't exist or has been moved. Let's get you back to the main stage.
             </p>
             <a class="inline-flex items-center gap-3 bg-cta-default text-white px-10 py-5 rounded-full font-semibold text-lg hover:bg-cta-hover transition-all hover:scale-105 shadow-lg shadow-cta-default/20"
@@ -101,7 +60,7 @@
     <footer class="mt-24 pb-12">
         <div class="max-w-7xl mx-auto px-8 md:px-12">
             <div
-                class="py-12 text-sm opacity-40 text-center md:text-left border-t border-[#0B130F]/10 dark:border-white/10 font-medium">
+                class="py-12 text-sm opacity-40 text-center md:text-left border-t border-[#20211F]/10 font-medium">
                 © 2026 Nanda Akbar. Built with passion and precision.
             </div>
         </div>

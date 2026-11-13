@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta property="og:title" content="Nanda Akbar | PTOS-M Design System" />
+    <meta property="og:description" content="Component library and design tokens for the PTOS-M terminal operating system — color, typography, navigation, forms, cards, buttons, tabs, and tables." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nandakbr.com/ptosm-design-system" />
+    <meta property="og:image" content="/assets/Profile.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nanda Akbar | PTOS-M Design System" />
+    <meta name="twitter:description" content="Component library and design tokens for the PTOS-M terminal operating system." />
+    <meta name="twitter:image" content="/assets/Profile.webp" />
+    <title>Nanda Akbar | PTOS-M Design System</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Tinos:ital@1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="/css/output.css" />
+    <style>
+        /* PTOS-M design-system tokens, lifted 1:1 from the Figma reference
+           doc (fileKey oqW1XKTaRi9iFpeQcR28uL, node 6136:29615). Scoped under
+           .ptos-ds so they never leak into the rest of the portfolio's own
+           design language. Font maps Geist -> Inter (same geometric-sans
+           family the live PTOS-M app would ship if Geist weren't used) to
+           stay inside the portfolio's existing Inter/IBM Plex Mono system. -->
+        .ptos-ds {
+            --navy-900: #02284F;
+            --navy-800: #0F2444;
+            --navy-700: #172144;
+            --navy-600: #3B4256;
+            --blue-500: #038FDD;
+            --blue-300: #79D4FE;
+            --neutral-50: #F9FAFC;
+            --neutral-100: #F1F3F6;
+            --neutral-200: #DFE5ED;
+            --neutral-300: #AFB7C1;
+            --neutral-400: #8692A1;
+            --neutral-500: #666666;
+            --neutral-600: #2C2C2C;
+            --success: #27B45E;
+            --error: #CC443B;
+            --warning: #FA8C16;
+            font-family: 'Inter', sans-serif;
+            color: var(--navy-800);
+        }
+        .ptos-ds * { font-family: 'Inter', sans-serif; }
+        .ptos-ds-chip {
+            background: var(--blue-500);
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        /* Button System — states driven by real :hover/:active/:disabled,
+           not separate screenshots per state (per spec: components must
+           act like the thing they name). */
+        .ptos-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+            cursor: pointer;
+            border: none;
+        }
+        .ptos-btn-primary { background: var(--navy-800); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .ptos-btn-primary:hover { background: var(--blue-500); }
+        .ptos-btn-primary:active { background: var(--navy-900); }
+        .ptos-btn-primary:disabled { background: var(--neutral-100); color: var(--neutral-300); cursor: not-allowed; }
+        .ptos-btn-secondary { background: rgba(255,255,255,0.65); color: var(--navy-800); border: 1px solid var(--neutral-200); box-shadow: 0 2px 8px rgba(0,0,0,0.05); font-weight: 500; }
+        .ptos-btn-secondary:hover { background: #fff; border-color: var(--neutral-300); }
+        .ptos-btn-secondary:active { background: var(--neutral-100); }
+        .ptos-btn-secondary:disabled { background: var(--neutral-100); color: var(--neutral-300); border-color: var(--neutral-200); cursor: not-allowed; }
+        .ptos-btn-ghost { background: transparent; color: var(--navy-800); }
+        .ptos-btn-ghost:hover { background: var(--neutral-100); }
+        .ptos-btn-ghost:active { background: var(--neutral-200); }
+        .ptos-btn-ghost:disabled { color: var(--neutral-300); cursor: not-allowed; }
+        .ptos-btn-danger { background: var(--error); color: #fff; }
+        .ptos-btn-danger:hover { background: #b23a32; }
+        .ptos-btn-danger:active { background: #962f28; }
+        .ptos-btn-danger:disabled { background: var(--neutral-100); color: var(--neutral-300); cursor: not-allowed; }
+
+        /* Form components — real focus/invalid/disabled states */
+        .ptos-input {
+            height: 40px;
+            padding: 0 12px;
+            border-radius: 8px;
+            border: 1px solid var(--neutral-400);
+            background: rgba(255,255,255,0.65);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            font-size: 14px;
+            color: var(--navy-800);
+            width: 100%;
+            transition: border-color 120ms ease, background-color 120ms ease;
+        }
+        .ptos-input:focus { outline: none; border: 1.5px solid var(--navy-800); background: rgba(255,255,255,0.85); }
+        .ptos-input.is-invalid { border: 1.5px solid var(--error); color: var(--error); }
+        .ptos-input:disabled { background: var(--neutral-100); border-color: var(--neutral-200); color: var(--neutral-300); cursor: not-allowed; }
+        .ptos-input::placeholder { color: var(--neutral-300); }
+
+        .ptos-checkbox {
+            width: 18px; height: 18px; border-radius: 4px;
+            border: 1px solid var(--neutral-400);
+            background: rgba(255,255,255,0.65);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            appearance: none; cursor: pointer; display: inline-grid; place-content: center;
+            transition: background-color 120ms ease, border-color 120ms ease;
+        }
+        .ptos-checkbox:checked { background: var(--navy-800); border-color: var(--navy-800); }
+        .ptos-checkbox:checked::after {
+            content: ""; width: 8px; height: 6px;
+            border-left: 2px solid #fff; border-bottom: 2px solid #fff;
+            transform: rotate(-45deg) translate(1px, -1px);
+        }
+        .ptos-radio {
+            width: 18px; height: 18px; border-radius: 50%;
+            border: 1px solid var(--neutral-400);
+            background: rgba(255,255,255,0.65);
+            appearance: none; cursor: pointer; display: inline-grid; place-content: center;
+            transition: border-color 120ms ease;
+        }
+        .ptos-radio:checked { border: 5px solid var(--navy-800); }
+
+        .ptos-toggle {
+            width: 40px; height: 22px; border-radius: 11px;
+            background: var(--neutral-300);
+            position: relative; cursor: pointer; appearance: none;
+            transition: background-color 150ms ease;
+        }
+        .ptos-toggle::after {
+            content: ""; position: absolute; top: 2px; left: 2px;
+            width: 18px; height: 18px; border-radius: 50%; background: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: transform 150ms ease;
+        }
+        .ptos-toggle:checked { background: var(--blue-500); }
+        .ptos-toggle:checked::after { transform: translateX(18px); }
+
+        .ptos-dropdown-trigger {
+            height: 40px; padding: 0 12px; border-radius: 8px;
+            border: 1px solid var(--neutral-400);
+            background: rgba(255,255,255,0.65);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            font-size: 14px; color: var(--navy-800);
+            width: 100%; display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; transition: border-color 120ms ease;
+        }
+        .ptos-dropdown-trigger[aria-expanded="true"] { border: 1.5px solid var(--navy-800); }
+        .ptos-dropdown-trigger .chev { transition: transform 150ms ease; }
+        .ptos-dropdown-trigger[aria-expanded="true"] .chev { transform: rotate(180deg); }
+        .ptos-dropdown-menu {
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(2,40,79,0.12);
+            background: #fff;
+            overflow: hidden;
+        }
+        .ptos-dropdown-item {
+            padding: 10px 12px; font-size: 14px; color: var(--navy-800);
+            cursor: pointer; transition: background-color 100ms ease;
+        }
+        .ptos-dropdown-item:hover { background: var(--neutral-50); }
+
+        /* Sidebar nav item — 1:1 from Figma's Menu-Dashboard instance:
+           active bg is a 13% navy-blue tint (not solid navy), rounded-12,
+           chevron hides on the active row since it's already "here". */
+        .ptos-sidebar-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px; border-radius: 12px; font-size: 14px; font-weight: 500;
+            color: #3B4256; cursor: pointer; transition: background-color 120ms ease, color 120ms ease;
+        }
+        .ptos-sidebar-item:hover:not(.is-active) { background: var(--neutral-100); }
+        .ptos-sidebar-item.is-active { background: rgba(3,143,221,0.13); color: #0F2444; font-weight: 600; }
+        .ptos-sidebar-item .sidebar-chevron { color: #AFB7C1; transition: transform 150ms ease; }
+        .ptos-sidebar-item.is-active .sidebar-chevron { display: none; }
+
+        /* Expandable "Permohonan" item — 1:1 from Figma's Light/Expanded
+           sidebar instance (node I4860:7861;4812:26415): tinted-blue parent
+           row when open, chevron rotates > to v, 5 bulleted sub-items with
+           a 29px row rhythm. Collapsed by default via max-height:0. */
+        [data-ptos-submenu].is-open .ptos-sidebar-item { background: rgba(3,143,221,0.13); color: #0F2444; font-weight: 600; }
+        [data-ptos-submenu].is-open .sidebar-chevron { transform: rotate(90deg); }
+        .ptos-submenu-panel {
+            max-height: 0; overflow: hidden;
+            transition: max-height 200ms ease;
+        }
+        [data-ptos-submenu].is-open .ptos-submenu-panel { max-height: 220px; }
+        .ptos-submenu-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 8px 16px 8px 48px; font-size: 13px; color: #666;
+            cursor: pointer; transition: color 100ms ease;
+        }
+        .ptos-submenu-item:hover { color: var(--navy-800); }
+        .ptos-submenu-bullet { width: 4px; height: 4px; border-radius: 50%; background: #AFB7C1; flex-shrink: 0; }
+
+        /* Tab bar — underline style, 1:1 from Figma PTOS Tab Bar component
+           (border-bottom indicator, not a filled pill). */
+        .ptos-tab-underline {
+            padding: 14px 20px; font-size: 14px; font-weight: 500;
+            color: #666; cursor: pointer; border-bottom: 2px solid transparent;
+            transition: color 120ms ease, border-color 120ms ease;
+        }
+        .ptos-tab-underline.is-active { color: #038FDE; font-weight: 600; border-bottom-color: #038FDE; }
+        .ptos-tab-underline:hover:not(.is-active) { color: var(--navy-800); }
+
+        /* Pill tab — from Figma PTOS Pill Tab (Subtle default / Filled active) */
+        .ptos-pill-tab {
+            padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 500;
+            background: #F5F7F9; color: var(--navy-600); cursor: pointer;
+            transition: all 120ms ease;
+        }
+        .ptos-pill-tab.is-active { background: var(--blue-500); color: #fff; border-color: var(--blue-500); }
+
+        /* Card */
+        .ptos-card {
+            background: #fff; border: 1px solid var(--neutral-200); border-radius: 12px;
+            padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: box-shadow 150ms ease, border-color 150ms ease;
+        }
+        .ptos-card:hover { box-shadow: 0 8px 20px rgba(2,40,79,0.08); border-color: var(--neutral-300); }
+        .ptos-card.is-selected { border: 1.5px solid var(--blue-500); box-shadow: 0 0 0 3px rgba(3,143,221,0.12); }
+        .ptos-card-dark { background: var(--navy-900); color: #fff; }
+
+        /* Table */
+        .ptos-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        /* Header cell — bg #F9FAFC, text #02284F 13px Medium, from
+           Figma's Table Cell (Header/Plain) variant. */
+        .ptos-table th { text-align: left; font-weight: 500; color: #02284F; padding: 14px 16px; background: #F9FAFC; font-size: 13px; }
+        .ptos-table td { padding: 16px; border-bottom: 1px solid #E2E8F0; color: var(--navy-800); font-size: 13px; }
+        .ptos-table tr { transition: background-color 100ms ease; cursor: default; }
+        .ptos-table tbody tr:hover { background: var(--neutral-50); }
+
+        /* Table badge — 1:1 from Figma Table Cell (Body/Badge) component,
+           which uses Tailwind-stock green/red/amber, not the brand token
+           success/error/warning used in the Foundations chapter above. */
+        .ptos-badge { display: inline-flex; align-items: center; border-radius: 12px; padding: 4px 12px; font-size: 12px; font-weight: 500; }
+        .ptos-badge-success { background: #DCFCE7; color: #16A34A; }
+        .ptos-badge-error { background: #FEE2E2; color: #DC2626; }
+        .ptos-badge-warning { background: #FEF3C7; color: #D97706; }
+        .ptos-badge-neutral { background: var(--neutral-100); color: var(--neutral-500); }
+
+        .ptos-chapter-nav a { display: block; padding: 8px 12px; border-radius: 8px; font-size: 13px; color: var(--neutral-500); transition: background-color 120ms ease, color 120ms ease; }
+        .ptos-chapter-nav a:hover, .ptos-chapter-nav a.is-active { background: var(--neutral-100); color: var(--navy-800); font-weight: 600; }
+        .ptos-chapter { scroll-margin-top: 100px; }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile/tablet-portrait: simple scroll page, same header/back pattern
+         as every other case-study detail page, but the body below is docs
+         grid instead of hero-carousel+gallery (this page documents a
+         component library, not a single screen flow). -->
+    <div class="md:hidden ptos-ds">
+        <div class="px-6 pt-5 pb-3">
+            <div class="flex items-center justify-between">
+                <a href="/" class="text-sm font-bold tracking-tight focus-ring" style="color:inherit">Nanda Akbar</a>
+                <p class="text-[0.6rem] uppercase tracking-[0.15em] opacity-50">PORTFOLIO / WORK</p>
+            </div>
+            <div class="border-t border-black/10 mt-3"></div>
+        </div>
+        <div class="px-6 pb-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-1.5 text-sm opacity-70 active:opacity-40 focus-ring" style="color:inherit" aria-label="Back to index">
+                <span class="material-symbols-outlined text-base">arrow_back</span>Index
+            </a>
+            <span class="text-[0.6rem] uppercase tracking-[0.1em] text-[#244BFF]">UI/UX DESIGN</span>
+        </div>
+        <div class="px-6 pb-6">
+            <h1 class="text-3xl font-semibold leading-[1.05] tracking-tight">PTOS-M Design System</h1>
+            <p class="text-sm opacity-60 leading-snug mt-3">Color, typography, and the component library behind every PTOS-M screen — navigation, forms, cards, buttons, tabs, and tables, each one live and interactive.</p>
+        </div>
+        <div class="px-6 pb-20">
+            <%- include('partials/ptosm-ds-body', { scope: 'mobile' }) %>
+        </div>
+    </div>
+
+    <main class="hidden md:block ptos-ds max-w-7xl mx-auto px-6 md:px-12 pt-8 md:pt-16 pb-32">
+        <div class="flex items-center justify-between mb-5">
+            <p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#244BFF]">UI/UX Design</p>
+            <a href="/" class="flex items-center gap-1.5 text-sm opacity-70 hover:opacity-100 transition-opacity focus-ring" style="color:inherit">
+                <span class="material-symbols-outlined text-base">arrow_back</span>Back to Index
+            </a>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-5" style="color:var(--navy-900)">PTOS-M Design System</h1>
+        <p class="text-lg leading-relaxed max-w-3xl mb-14" style="color:var(--neutral-500)">
+            The component library and token set behind every PTOS-M screen — color, typography, spacing, and nine chapters of live, interactive components. Not screenshots: hover a button, open a dropdown, flip a toggle.
+        </p>
+
+        <div class="flex gap-12">
+            <!-- Sticky chapter nav, desktop only -->
+            <aside class="w-56 shrink-0 hidden lg:block">
+                <nav class="ptos-chapter-nav sticky top-24 flex flex-col gap-1">
+                    <a href="#ds-01">01 · Foundations</a>
+                    <a href="#ds-02">02 · Top Navigation</a>
+                    <a href="#ds-03">03 · Sidebar Navigation</a>
+                    <a href="#ds-04">04 · Form Components</a>
+                    <a href="#ds-05">05 · Card Components</a>
+                    <a href="#ds-06">06 · Icon Set</a>
+                    <a href="#ds-07">07 · Button System</a>
+                    <a href="#ds-08">08 · Tab Navigation</a>
+                    <a href="#ds-09">09 · Table Components</a>
+                    <a href="#ds-10">10 · Chart &amp; Widget</a>
+                </nav>
+            </aside>
+            <div class="flex-1 min-w-0">
+                <%- include('partials/ptosm-ds-body', { scope: 'desktop' }) %>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        // Render every <i data-lucide="..."> in the design-system body
+        // (both the mobile and desktop copies) as a real SVG — this is what
+        // makes the icon set 1:1 with Figma's Lucide-based icon components
+        // instead of an approximation using Material Symbols.
+        if (window.lucide) { lucide.createIcons(); }
+    </script>
+    <script>
+        // Scroll-spy for the sticky chapter nav
+        (function () {
+            const links = document.querySelectorAll('.ptos-chapter-nav a');
+            if (!links.length) return;
+            const sections = Array.from(links).map((l) => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    links.forEach((l) => l.classList.remove('is-active'));
+                    const match = document.querySelector(`.ptos-chapter-nav a[href="#${entry.target.id}"]`);
+                    if (match) match.classList.add('is-active');
+                });
+            }, { rootMargin: '-20% 0px -70% 0px' });
+            sections.forEach((s) => io.observe(s));
+        })();
+
+        // Dropdown: real open/close, click-outside-to-close
+        document.querySelectorAll('[data-ptos-dropdown]').forEach((wrap) => {
+            const trigger = wrap.querySelector('.ptos-dropdown-trigger');
+            const menu = wrap.querySelector('.ptos-dropdown-menu');
+            if (!trigger || !menu) return;
+            const close = () => { trigger.setAttribute('aria-expanded', 'false'); menu.classList.add('hidden'); };
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = trigger.getAttribute('aria-expanded') === 'true';
+                document.querySelectorAll('.ptos-dropdown-trigger[aria-expanded="true"]').forEach((t) => { t.setAttribute('aria-expanded', 'false'); t.closest('[data-ptos-dropdown]').querySelector('.ptos-dropdown-menu').classList.add('hidden'); });
+                trigger.setAttribute('aria-expanded', open ? 'false' : 'true');
+                menu.classList.toggle('hidden', open);
+            });
+            menu.querySelectorAll('.ptos-dropdown-item').forEach((item) => {
+                item.addEventListener('click', () => {
+                    trigger.querySelector('.label').textContent = item.textContent;
+                    close();
+                });
+            });
+        });
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.ptos-dropdown-trigger[aria-expanded="true"]').forEach((t) => { t.setAttribute('aria-expanded', 'false'); t.closest('[data-ptos-dropdown]').querySelector('.ptos-dropdown-menu').classList.add('hidden'); });
+        });
+
+        // Tab bar / pill tab: real switching
+        document.querySelectorAll('[data-ptos-tabs]').forEach((group) => {
+            const tabs = group.querySelectorAll('[data-ptos-tab]');
+            tabs.forEach((tab) => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach((t) => t.classList.remove('is-active'));
+                    tab.classList.add('is-active');
+                });
+            });
+        });
+
+        // Sidebar item: real selected-state highlight (skips the
+        // "Permohonan" trigger, which toggles a submenu instead — see below).
+        document.querySelectorAll('[data-ptos-sidebar]').forEach((group) => {
+            const items = Array.from(group.querySelectorAll('.ptos-sidebar-item')).filter((el) => !el.hasAttribute('data-submenu-trigger'));
+            items.forEach((item) => {
+                item.addEventListener('click', () => {
+                    items.forEach((i) => i.classList.remove('is-active'));
+                    item.classList.add('is-active');
+                    group.querySelectorAll('[data-ptos-submenu].is-open').forEach((s) => s.classList.remove('is-open'));
+                });
+            });
+        });
+
+        // Expandable "Permohonan" submenu — matches Figma's Light/Expanded
+        // instance: click the row to reveal/hide its 5 bulleted sub-items.
+        document.querySelectorAll('[data-ptos-submenu]').forEach((wrap) => {
+            const trigger = wrap.querySelector('[data-submenu-trigger]');
+            if (!trigger) return;
+            trigger.addEventListener('click', () => {
+                const group = wrap.closest('[data-ptos-sidebar]');
+                if (group) group.querySelectorAll('.ptos-sidebar-item.is-active').forEach((i) => i.classList.remove('is-active'));
+                wrap.classList.toggle('is-open');
+            });
+        });
+
+        // Card selection
+        document.querySelectorAll('[data-ptos-card]').forEach((card) => {
+            card.addEventListener('click', () => card.classList.toggle('is-selected'));
+        });
+    </script>
+</body>
+
+</html>

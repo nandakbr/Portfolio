@@ -1,0 +1,564 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Desktop stage is scaled-to-fit (see fitDesktopStage() in index.ejs) and should
+   never need page scroll of its own; clip any residual sub-pixel overflow. */
+html, body { overflow-x: clip; }
+
+/* ===========================================================
+   Consolidated from inline <style type="text/tailwindcss">
+   blocks across all 6 views. Values verified programmatically
+   against the original source (see migration notes).
+   =========================================================== */
+
+/* ===========================================================
+   Design tokens
+   =========================================================== */
+
+:root { --ease-apple: cubic-bezier(0.22, 1, 0.36, 1); --ease-apple-soft: cubic-bezier(0.16, 1, 0.3, 1); --ease-apple-snap: cubic-bezier(0.34, 1.56, 0.64, 1); --duration-reveal: 1100ms; }
+
+/* ===========================================================
+   Viewport modes — orientation-aware, not just width-based.
+   - mobile:          width < 768px, OR (width < 1024px AND portrait)
+   - tablet-portrait: width >= 768px AND portrait (reuses the desktop
+                      window-chrome system, full-width/un-scaled — see
+                      Figma "Tablet — 01..07" frames)
+   - desktop:         width >= 768px AND landscape (the existing scaled
+                      1440x1000 window-system stage)
+   Three mutually exclusive buckets, toggled purely in CSS so rotating
+   a tablet reflows instantly with no JS width-check / reload needed.
+   =========================================================== */
+.mode-tablet-portrait-only, .mode-desktop-only { display: none !important; }
+
+@media (min-width: 768px) and (orientation: landscape) {
+    .mode-mobile-only, .mode-tablet-portrait-only { display: none !important; }
+    .mode-desktop-only { display: block !important; }
+}
+
+@media (min-width: 768px) and (orientation: portrait) {
+    .mode-mobile-only, .mode-desktop-only { display: none !important; }
+    .mode-tablet-portrait-only { display: block !important; }
+    /* The old mobile/desktop wrapper <section> carries min-h-screen itself —
+       with both its children (pageSnapContainer, desktopStageWrap) hidden it
+       would still force a full empty viewport of height above the tablet
+       content. Collapse the wrapper entirely in this mode. */
+    .mode-mobile-desktop-wrap { display: none !important; }
+    /* The desktop canvas staggers folder windows off-center (left:46%,
+       54%...) for visual variety at 1440px wide. At tablet-portrait width
+       (768-1024px) those offsets push a wide window (max-w-3xl) past the
+       viewport edge — titlebar/close button end up unreachable off-screen.
+       Force dead-center here; there's no room for artistic stagger. */
+    .folder-window {
+        left: 50% !important;
+    }
+}
+
+/* ===========================================================
+   Base typography & layout
+   =========================================================== */
+
+body, h1, h2, h3, .nav-link { font-family: 'Inter', sans-serif; }
+
+section { @apply relative z-10; }
+
+/* ===========================================================
+   Scroll-reveal system
+   =========================================================== */
+
+.reveal-init { @apply opacity-0 translate-y-16 scale-[0.97]; filter: blur(10px); transition: opacity var(--duration-reveal) var(--ease-apple), transform var(--duration-reveal) var(--ease-apple), filter calc(var(--duration-reveal) * 0.9) var(--ease-apple-soft); will-change: transform, opacity, filter; }
+
+.reveal-active { @apply opacity-100 translate-y-0 scale-100; filter: blur(0); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } .reveal-init { opacity: 1 !important; transform: none !important; filter: none !important; } .bento-tilt, .bento-card, .bento-image-container { transform: none !important; } }
+
+/* ===========================================================
+   Parallax layer system
+   =========================================================== */
+
+/* ===========================================================
+   Icon defaults
+   =========================================================== */
+
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+/* ===========================================================
+   Hero
+   =========================================================== */
+
+.hero-img-container { border-radius: 4rem; overflow: hidden; mask-image: linear-gradient(to top, transparent 0%, black 40%); -webkit-mask-image: linear-gradient(to top, transparent 0%, black 40%); box-shadow: 0 34px 80px rgba(0, 0, 0, 0.35); }
+
+.tilt-left { transform: rotate(0deg); }
+
+.hero-background { position: absolute; inset: -2%; z-index: -1; overflow: hidden; background: radial-gradient(circle at 50% 50%, #F2F0E8 0%, #CDCEC4 100%); -webkit-mask-image: linear-gradient(to bottom, black 78%, transparent 100%); mask-image: linear-gradient(to bottom, black 78%, transparent 100%); }
+
+.dark .hero-background { background: radial-gradient(circle at 50% 50%, #111 0%, #000 100%); }
+
+.hero-background::before { content: "";position: absolute; inset: -12%; background: radial-gradient(circle at 30% 25%, rgba(0, 0, 0, 0.05), transparent 55%); filter: blur(60px); animation: heroGlow 14s var(--ease-apple-soft) infinite alternate; pointer-events: none; z-index: 1; }
+
+.dark .hero-background::before { background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.18), transparent 55%); }
+
+/* ===========================================================
+   Scroll affordance — a capped-height container with a subtle
+   blur+shadow strip pinned to its bottom edge, signalling "more
+   content below, scroll me" without making the WHOLE page scroll.
+   Used by mobile accordion grids (Packaging/Social) that can run
+   to 7-19 items.
+   =========================================================== */
+.scroll-fade-container { position: relative; }
+
+.scroll-fade-container .scroll-fade-content { max-height: 320px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+.scroll-fade-container::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 48px;
+    background: linear-gradient(to bottom, rgba(250, 249, 244, 0) 0%, rgba(250, 249, 244, 0.75) 55%, rgba(250, 249, 244, 0.95) 100%);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    box-shadow: 0 -8px 16px -8px rgba(32, 33, 31, 0.1);
+    pointer-events: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+@keyframes heroGlow { 0% { transform: translate3d(-3%, -2%, 0) scale(1); opacity: 0.4; } 100% { transform: translate3d(3%, 2%, 0) scale(1.08); opacity: 0.8; } }
+
+.hero-background::after { content: ""; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity: 0.05; mix-blend-mode: overlay; pointer-events: none; z-index: 2; }
+
+/* ===========================================================
+   "Tap to zoom" affordance — Packaging/Social thumbnails open a
+   lightbox (openImageExpand), unlike visually-identical UI/UX
+   project tiles which navigate to a page (openIframeModal). A
+   magnifier badge on the thumbnail itself communicates "there's
+   a bigger version" before the user has to discover it by
+   clicking — targeted by the onclick attribute, not shared class
+   names, so it never leaks onto the UI/UX tiles.
+   =========================================================== */
+button[onclick^="openImageExpand"] > span:first-child { position: relative; }
+
+button[onclick^="openImageExpand"] > span:first-child::after {
+    content: "";
+    position: absolute;
+    right: 6px; bottom: 6px;
+    width: 22px; height: 22px;
+    border-radius: 9999px;
+    background-color: rgba(32, 33, 31, 0.55);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3Cline x1='11' y1='8' x2='11' y2='14'/%3E%3Cline x1='8' y1='11' x2='14' y2='11'/%3E%3C/svg%3E");
+    background-size: 13px 13px;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(1px);
+    pointer-events: none;
+}
+
+.bg-text { @apply absolute -left-20 text-[20vw] font-bold opacity-[0.02] select-none pointer-events-none tracking-tighter whitespace-nowrap leading-none font-display z-0; }
+
+/* ===========================================================
+   Greeting chat bubble
+   =========================================================== */
+
+.chat-bubble { @apply inline-flex items-center justify-center rounded-full text-sm md:text-base font-medium shadow-xl transition-all duration-300 relative whitespace-nowrap; padding: 0.85rem 1.4rem; background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5); color: #20211F; }
+
+.dark .chat-bubble { background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: 0 18px 44px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.18); color: #20211F; }
+
+.greeting-bubble { animation: floatBubble 10s var(--ease-apple-soft) infinite; will-change: transform; }
+
+/* Mobile: bubble sits above-center, tail points down into the portrait */
+.greeting-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    background: inherit;
+    backdrop-filter: inherit;
+    -webkit-backdrop-filter: inherit;
+    border: inherit;
+    border-top: none;
+    border-right: none;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    border-radius: 0 0 0 4px;
+}
+
+/* Desktop: bubble sits beside the portrait, tail points left into it */
+@media (min-width: 768px) {
+    .greeting-bubble::after {
+        bottom: auto;
+        left: -6px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-top: inherit;
+        border-right: inherit;
+        border-bottom: none;
+        clip-path: polygon(0 0, 100% 100%, 0 100%);
+        border-radius: 4px 0 0 0;
+    }
+}
+
+@keyframes floatBubble { 0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); } 50% { transform: translate3d(0, -10px, 0) rotate(1.2deg) scale(1.02); } }
+
+/* ===========================================================
+   Hero headline / scroll cue
+   =========================================================== */
+
+#scramble-word { display: inline-block; min-width: 4.6ch; text-align: center; }
+
+/* ===========================================================
+   Footer CTA
+   =========================================================== */
+
+.footer-cta-bg { background: linear-gradient(135deg, #F2F0E8 0%, #FAF9F4 50%, #F2F0E8 100%); position: relative; overflow: hidden; }
+
+.footer-cta-bg::before { content: ''; position: absolute; top: -50%; left: -20%; width: 150%; height: 150%; background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%); filter: blur(60px); pointer-events: none; }
+
+.footer-cta-bg::after { content: ''; position: absolute; top: 20%; right: -10%; width: 80%; height: 60%; background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05) 0%, transparent 80%); transform: rotate(-15deg); filter: blur(40px); pointer-events: none; }
+
+/* ===========================================================
+   Bento cards
+   =========================================================== */
+
+.bento-card { @apply relative overflow-hidden border-none; background-color: #E6E6DE; transition: transform 900ms var(--ease-apple), box-shadow 900ms var(--ease-apple), background-color 500ms var(--ease-apple-soft); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset; }
+
+.dark .bento-card { background-color: #E8E7DF; }
+
+.bento-image-container { @apply relative w-full overflow-hidden flex items-center justify-center p-8 lg:p-12; transition: transform 1000ms var(--ease-apple); }
+
+.bento-card:hover { transform: translateY(-6px); box-shadow: 0 30px 70px rgba(0, 0, 0, 0.18); }
+
+.dark .bento-card:hover { box-shadow: 0 30px 70px rgba(0, 0, 0, 0.42); }
+
+.bento-card:hover .bento-image-container { @apply scale-[1.04]; }
+
+.bento-card-container { perspective: 2200px; }
+
+.bento-tilt { transition: transform 900ms var(--ease-apple-soft); transform-style: preserve-3d; will-change: transform; }
+
+.bento-card-container:hover .bento-tilt { transform: translateY(-5px) rotateX(1.4deg) rotateY(-1.4deg); }
+
+/* ===========================================================
+   Work gallery slide animation & mobile carousel
+   =========================================================== */
+
+@keyframes slideSelected { 0%, 100% { transform: translateX(-3%); } 50% { transform: translateX(3%); } }
+
+@keyframes slideWork { 0%, 100% { transform: translateX(3%); } 50% { transform: translateX(-3%); } }
+
+.animate-selected { animation: slideSelected 28s var(--ease-apple-soft) infinite; will-change: transform; }
+
+.animate-work { animation: slideWork 28s var(--ease-apple-soft) infinite; will-change: transform; }
+
+/* Selected Works mobile snap carousel */ .work-dots { display: none; }
+
+@media (max-width: 767px) { .work-grid { display: flex; flex-direction: row; gap: 1rem; overflow-x: auto; overflow-y: visible; scroll-snap-type: x mandatory; scroll-behavior: smooth; scroll-padding-left: 2rem; padding: 1rem 2rem 1.5rem; margin-inline: -2rem; scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; } .work-grid::-webkit-scrollbar { display: none; } .work-grid > .work-card { flex: 0 0 calc(100vw - 6rem); height: 480px !important; aspect-ratio: auto !important; scroll-snap-align: start; scroll-snap-stop: always; transform: scale(0.94); transition: transform 700ms var(--ease-apple-soft); will-change: transform; } .work-grid > .work-card.work-card-active { transform: scale(1); } .work-dots { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; } .work-dot { width: 0.4rem; height: 0.4rem; border-radius: 9999px; background: currentColor; opacity: 0.2; border: none; padding: 0; cursor: pointer; transition: width 420ms var(--ease-apple-soft), opacity 420ms var(--ease-apple-soft), background-color 420ms var(--ease-apple-soft); } .work-dot.work-dot-active { width: 1.5rem; opacity: 0.9; } }
+
+/* ===========================================================
+   Skill scatter cards
+   =========================================================== */
+
+/* Skill card scatter hover */ .skill-card { position: relative; }
+
+.skill-icon-base { position: relative; z-index: 10; display: inline-flex; align-items: center; justify-content: center; width: 3.25rem; height: 3.25rem; border-radius: 1.15rem; background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.4)); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1); color: #20211F; transition: opacity 360ms var(--ease-apple), transform 420ms var(--ease-apple), filter 360ms var(--ease-apple); will-change: opacity, transform, filter; }
+
+.dark .skill-icon-base { background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)); border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5); color: #20211F; }
+
+.skill-icon-base .material-symbols-outlined { font-size: 1.6rem; font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+
+.skill-card:hover .skill-icon-base { opacity: 0; transform: scale(0.4); filter: blur(8px); }
+
+.skill-scatter { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+
+.skill-squircle { position: absolute; width: 3rem; height: 3rem; border-radius: 1.1rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.4)); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1); color: #20211F; opacity: 0; transform: scale(0.4) translateY(14px) rotate(0deg); transition: opacity 700ms var(--ease-apple-soft), transform 800ms var(--ease-apple-snap); will-change: transform, opacity; }
+
+.dark .skill-squircle { background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)); border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5); color: #20211F; }
+
+.skill-squircle .material-symbols-outlined { font-size: 1.5rem; font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+
+.skill-card:hover .skill-squircle { opacity: 1; transform: scale(1) translateY(0) rotate(var(--rot, 0deg)); animation: squircleFloat 4.6s var(--ease-apple-soft) infinite; }
+
+.skill-card:hover .skill-squircle:nth-child(1) { transition-delay: 80ms; animation-delay: 1.1s; }
+
+.skill-card:hover .skill-squircle:nth-child(2) { transition-delay: 170ms; animation-delay: 1.4s; }
+
+.skill-card:hover .skill-squircle:nth-child(3) { transition-delay: 260ms; animation-delay: 1.7s; }
+
+.skill-card:hover .skill-squircle:nth-child(4) { transition-delay: 340ms; animation-delay: 2s; }
+
+@keyframes squircleFloat { 0%, 100% { transform: scale(1) translateY(0) rotate(var(--rot, 0deg)); } 50% { transform: scale(1.05) translateY(-5px) rotate(calc(var(--rot, 0deg) + 3deg)); } }
+
+/* ===========================================================
+   Magnetic button
+   =========================================================== */
+
+.magnetic-btn:hover span { @apply translate-x-2; }
+
+/* ===========================================================
+   Eraser-cutout decoration
+   =========================================================== */
+
+.eraser-cutout::before, .eraser-cutout::after { content: ""; position: absolute; background-color: transparent; pointer-events: none; width: 3rem; height: 3rem; }
+
+.eraser-cutout::before { top: 0; left: -3rem; border-top-right-radius: 3rem; box-shadow: 1.5rem -1.5rem 0 1.5rem #F2F0E8; }
+
+.eraser-cutout::after { bottom: -3rem; right: 0; border-top-right-radius: 3rem; box-shadow: 1.5rem -1.5rem 0 1.5rem #F2F0E8; }
+
+.dark .eraser-cutout::before, .dark .eraser-cutout::after { box-shadow: 1.5rem -1.5rem 0 1.5rem #F2F0E8; }
+
+/* ===========================================================
+   Pills / nav rows
+   =========================================================== */
+
+.pill { @apply bg-ink-primary text-surface-window px-6 py-2 rounded-full text-sm font-medium; transition: transform 700ms var(--ease-apple-soft), box-shadow 700ms var(--ease-apple-soft); }
+
+.pill:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14); }
+
+.work-row { @apply flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b border-border-subtle; transition: transform 650ms var(--ease-apple-soft), background-color 650ms var(--ease-apple-soft); }
+
+.work-row:hover { transform: translateX(8px); }
+
+.work-row-active { @apply bg-ink-primary text-surface-window px-8 rounded-2xl shadow-xl; }
+
+/* ===========================================================
+   Dock: snap-bounce transition for dock icons
+   =========================================================== */
+.dock-snap { transition: transform 200ms var(--ease-apple-snap); }
+
+.dock-icon-active { background: linear-gradient(180deg, #76C3FF, #244BFF); color: white; box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), 0 6px 14px rgba(59,130,246,0.4); }
+
+.dock-icon-inactive { background: linear-gradient(180deg, #FAF9F4, #E6E6DE); color: #20211F; box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.12); }
+
+.dark .dock-icon-inactive { background: linear-gradient(180deg, #E8E7DF, #ECEAE2); color: white; box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 4px 10px rgba(0,0,0,0.3); }
+
+.dock-icon-inactive span.absolute { display: none; }
+
+/* Carousel track: horizontal slides on desktop (md+), normal vertical stack on mobile */
+.carousel-track { display: block; width: 100%; transition: transform 700ms; }
+@media (min-width: 768px) {
+    .carousel-track { display: flex; height: 100%; width: 300%; }
+    .carousel-track > div { width: 100vw; height: 100%; flex-shrink: 0; overflow-y: auto; }
+}
+
+/* Poster stack: cards start neatly stacked, fan out on scroll into view */
+.poster-card {
+    transform: translate(0, 0) rotate(0deg) scale(0.92);
+    opacity: 0;
+    transition: transform 900ms var(--ease-apple-snap), opacity 700ms var(--ease-apple-soft);
+    will-change: transform, opacity;
+}
+
+.poster-card:nth-child(1) { z-index: 40; }
+.poster-card:nth-child(2) { z-index: 30; }
+.poster-card:nth-child(3) { z-index: 20; }
+.poster-card:nth-child(4) { z-index: 10; }
+
+.poster-card.poster-card-fanned {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1);
+    opacity: 1;
+}
+
+.poster-card:hover { z-index: 50 !important; }
+
+/* ===========================================================
+   Philosophy cards
+   =========================================================== */
+
+.philosophy-card { @apply relative overflow-hidden rounded-[2.5rem] p-10 cursor-default; background-color: #E6E6DE; transition: transform 850ms var(--ease-apple), box-shadow 850ms var(--ease-apple), background-color 500ms var(--ease-apple-soft); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset; }
+
+.dark .philosophy-card { background-color: #E8E7DF; }
+
+.philosophy-card:hover { transform: translateY(-8px); box-shadow: 0 26px 60px rgba(0, 0, 0, 0.14); }
+
+.dark .philosophy-card:hover { box-shadow: 0 26px 60px rgba(0, 0, 0, 0.4); }
+
+.philosophy-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.3) 48%, transparent 70%); transform: translateX(-120%); transition: transform 1100ms var(--ease-apple-soft); pointer-events: none; }
+
+.philosophy-card:hover::after { transform: translateX(120%); }
+
+.philosophy-number { @apply text-[6rem] font-black leading-none opacity-[0.04] absolute -top-4 -left-2 select-none pointer-events-none; }
+
+/* ===========================================================
+   Case-study carousel shell
+   =========================================================== */
+
+@layer base { body { @apply font-body bg-background-light text-ink-primary min-h-screen; } h1, h2, h3, h4, h5, h6, .display-font, nav a { @apply font-display; } }
+
+.carousel-thumb-btn.active { @apply ring-2 ring-ink-primary scale-95; }
+
+
+/* ===========================================================
+   Folder windows: lavish open/close animation (scale+blur+fade)
+   =========================================================== */
+.folder-window.is-open {
+    opacity: 1 !important;
+    filter: blur(0) !important;
+}
+
+/* Active vs. idle titlebar (Figma DS 05 "Window / Visual states"): the
+   frontmost window gets the warmer surface/titlebar tint, everything
+   stacked behind it fades back to the plain workspace background so
+   focus reads from chrome weight, not from a colored accent frame. */
+.folder-window.is-active-window .folder-window-titlebar,
+.folder-window.is-active-window .iframe-window-titlebar,
+.folder-window.is-active-window .image-expand-window-titlebar {
+    background-color: #E8E7DF;
+}
+
+/* ===========================================================
+   Global micro-interaction primitives
+   =========================================================== */
+
+/* Press feedback: any clickable surface compresses slightly on click,
+   giving tactile confirmation the click registered. */
+.press-feedback {
+    transition: transform 150ms var(--ease-apple-soft, ease-out);
+}
+.press-feedback:active {
+    transform: scale(0.96);
+}
+
+/* Keyboard focus: visible ring for a11y, invisible for mouse users
+   (focus-visible, not focus, so clicking doesn't show a ring). */
+.focus-ring:focus-visible {
+    outline: 2px solid #244BFF;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ===========================================================
+   Folder/case-study/image windows on mobile & tablet (<1024px):
+   same floating-card positioning as desktop (not fullscreen),
+   just not draggable (dragging a small window with touch
+   doesn't make sense — disabled in JS via a viewport check).
+   =========================================================== */
+@media (max-width: 767px) {
+    /* The hero section must not clip (position: sticky needs it); clip the
+       -2% bleed of .hero-background at the root instead. */
+    html, body { overflow-x: clip; }
+    .folder-window .folder-window-titlebar,
+    .folder-window .iframe-window-titlebar,
+    .folder-window .image-expand-window-titlebar {
+        cursor: default;
+    }
+    /* ---- Mobile opening sequence ----
+       One element per beat, reading order, 70ms apart. Motion = small rise + unblur
+       (same vocabulary as the desktop reveal, shorter). The photo scales from 0.96
+       instead of rising, so it reads as "developing" rather than "sliding in". */
+    .m-enter {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(6px);
+        animation: mEnter 640ms var(--ease-apple) forwards;
+        animation-delay: calc(120ms + var(--i, 0) * 70ms);
+        will-change: transform, opacity, filter;
+    }
+    .m-enter-photo {
+        transform: scale(0.96);
+        animation-name: mEnterPhoto;
+        animation-duration: 900ms;
+    }
+    @keyframes mEnter {
+        to { opacity: 1; transform: none; filter: blur(0); }
+    }
+    @keyframes mEnterPhoto {
+        to { opacity: 1; transform: none; filter: blur(0); }
+    }
+
+    /* ---- Running head ---- label swaps with a 160ms fade (down-out, up-in). */
+    .running-label span { display: inline-block; transition: opacity 160ms var(--ease-apple-soft), transform 160ms var(--ease-apple-soft); }
+    .running-label.is-swapping span { opacity: 0; transform: translateY(3px); }
+
+    /* ---- Index rows ----
+       Press: the row title shifts 4px right (acknowledges the touch before the browser
+       commits the toggle). Open: the "+" has already rotated to "x" via Tailwind. */
+    .index-summary { transition: padding-left 160ms var(--ease-apple-soft); }
+    .index-summary:active { padding-left: 4px; }
+    .index-entry[open] .index-summary { padding-left: 4px; }
+    .index-body { overflow: hidden; }
+    /* Body: height is now GSAP-driven (see setupAccordionMotion in
+       index.ejs) for a true expand/collapse instead of an instant snap —
+       the body itself no longer carries its own opacity animation so it
+       doesn't fight GSAP's height+opacity tween on the same element. */
+    /* Chrome bar: pops in slightly ahead of the rows below it, scaling down
+       from the top edge — reads as a window "snapping open" at the fold,
+       the OS-chrome signature carried over from the desktop windows. */
+    .index-entry[open] .index-chrome-bar { animation: indexChromeOpen 200ms var(--ease-apple-snap) both; transform-origin: top; }
+    .index-entry[open] .index-project:nth-child(1) { animation: indexReveal 260ms var(--ease-apple-soft) 40ms both; }
+    .index-entry[open] .index-project:nth-child(2) { animation: indexReveal 260ms var(--ease-apple-soft) 80ms both; }
+    .index-entry[open] .index-project:nth-child(3) { animation: indexReveal 260ms var(--ease-apple-soft) 120ms both; }
+    @keyframes indexReveal {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: none; }
+    }
+    @keyframes indexChromeOpen {
+        from { opacity: 0; transform: scaleY(0.4); }
+        to { opacity: 1; transform: scaleY(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .m-enter, .m-enter-photo { animation: none; opacity: 1; transform: none; filter: none; }
+        .index-entry[open] .index-body, .index-entry[open] .index-project, .index-entry[open] .index-chrome-bar { animation: none; }
+        .index-summary { transition: none; }
+    }
+    /* image-expand-window (Packaging/Social lightbox): stays a compact
+       window-chrome at mobile too — NOT fullscreen. Fullscreen left the
+       image looking lost in a mostly-empty viewport since these are
+       portrait/square photos, not documents that benefit from full real
+       estate. It gets the same 70vh cap as other folder windows below;
+       img sizing is handled inline (w-full max-h-[70vh] object-contain). */
+    /* Cap window height so long content (e.g. 3 stacked project cards) never
+       forces the window to fill the whole viewport — scroll inside instead.
+       Excludes #iframe-window (Resume/case-study), which already manages its
+       own height (h-[80vh]) and holds an iframe, not stacked content. */
+    .folder-window:not(#iframe-window) {
+        max-height: 70vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .folder-window:not(#iframe-window) > div:last-child {
+        overflow-y: auto;
+    }
+    /* Resume modal: compact too, not a near-fullscreen 80vh sheet */
+    #iframe-window {
+        height: 65vh !important;
+        top: 15% !important;
+    }
+}
+
+/* ===========================================================
+   Micro-interactions — "feel expensive" pass. Universal fallbacks
+   using bare element selectors (button, a), which have LOWER
+   specificity than Tailwind's class-based active:scale-* utilities
+   used elsewhere — so anywhere a more specific press-scale is
+   already defined, it wins outright regardless of source order.
+   =========================================================== */
+
+/* Tactile press: any clickable surface compresses slightly on press.
+   Scoped with :not() to skip elements managing their own transition
+   (page-tab's color/background swap, folder-window's open/close) so
+   this never fights their transition-property via specificity. */
+button:not(.page-tab):not(.folder-window-titlebar *), a, [role="button"] {
+    transition: transform 150ms var(--ease-apple-soft), box-shadow 150ms var(--ease-apple-soft);
+}
+button:not(.page-tab):active, a:active, [role="button"]:active {
+    transform: scale(0.97);
+}
+.page-tab {
+    transition: background-color 200ms var(--ease-apple-soft), color 200ms var(--ease-apple-soft), box-shadow 200ms var(--ease-apple-soft), transform 150ms var(--ease-apple-soft);
+}
+.page-tab:active {
+    transform: scale(0.95);
+}
+
+/* Cursor-tilt: project thumbnails in the UI/UX, Packaging, Social grids
+   tilt subtly toward the pointer (perspective/rotateX/rotateY set via
+   JS — see setupCursorTilt() in index.ejs). Needs a 3D context on the
+   parent and will-change for a smooth GPU-composited tilt. */
+.tilt-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 400ms var(--ease-apple-soft);
+}
+.tilt-card img {
+    transform: translateZ(10px);
+}

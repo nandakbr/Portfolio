@@ -1,0 +1,17 @@
+<!--
+    PTOS Action Menu (kebab popover) — 1:1 from Figma
+    "DESIGN SYSTEM - Foundations > Overlay-Components > Component: Action Menu".
+    Items: Lihat Detail, Edit Tarif, [divider], Hapus (destructive, red).
+    Real open/close wired in ptosm-ui-lib.ejs's <script> via [data-ptos-action-menu-wrap].
+-->
+<div class="ptos-action-menu-wrap" data-ptos-action-menu-wrap>
+    <button class="ptos-table-action-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="More actions" data-ptos-action-menu-trigger>
+        <i data-lucide="more-horizontal" style="width:16px;height:16px"></i>
+    </button>
+    <div class="ptos-action-menu hidden" role="menu">
+        <button type="button" class="ptos-action-menu-item" role="menuitem">Lihat Detail</button>
+        <button type="button" class="ptos-action-menu-item" role="menuitem">Edit Tarif</button>
+        <div class="ptos-action-menu-divider"></div>
+        <button type="button" class="ptos-action-menu-item ptos-action-menu-item-danger" role="menuitem">Hapus</button>
+    </div>
+</div>
