@@ -27,6 +27,23 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="/css/output.css" />
+    <style>
+        /* Case-study window loader: the iframe window is empty white until the page answers (live TTFB ~0.9s + assets). */
+        .ifl { position: absolute; left: 0; right: 0; bottom: 0; top: 34px; z-index: 5; background: #FAF9F4; overflow: hidden; transition: opacity 250ms cubic-bezier(.16,1,.3,1); }
+        .ifl[hidden] { display: none; }
+        .ifl.is-out { opacity: 0; pointer-events: none; }
+        .ifl-bar { position: absolute; left: 0; top: 0; right: 0; height: 3px; z-index: 2; }
+        .ifl-bar i { display: block; height: 100%; background: #244BFF; transform-origin: left; transform: scaleX(.06); transition: transform 450ms cubic-bezier(.16,1,.3,1); }
+        .ifl-body { padding: 32px 48px; display: grid; gap: 14px; justify-items: start; opacity: 0; animation: iflIn 250ms ease 120ms forwards; }
+        .ifl-s { display: block; border-radius: 6px; background: linear-gradient(90deg, #E6E6DE 25%, #EEECE4 50%, #E6E6DE 75%); background-size: 200% 100%; animation: iflShim 1.4s linear infinite; }
+        .ifl-msg { position: absolute; left: 0; right: 0; bottom: 20px; margin: 0; text-align: center; font-size: 12px; color: #77796F; }
+        .ifl-msg button { font: inherit; font-size: 12px; font-weight: 500; color: #FAF9F4; background: #20211F; border: 0; border-radius: 999px; padding: 6px 14px; margin-left: 8px; cursor: pointer; }
+        .ifl-msg button:focus-visible { outline: 2px solid #244BFF; outline-offset: 2px; }
+        @keyframes iflShim { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+        @keyframes iflIn { to { opacity: 1; } }
+        @media (max-width: 767px) { .ifl-body { padding: 20px 16px; } }
+        @media (prefers-reduced-motion: reduce) { .ifl-s { animation: none; } .ifl-bar i, .ifl { transition: none; } .ifl-body { animation-duration: 1ms; } }
+    </style>
 </head>
 
 <body
@@ -911,6 +928,19 @@
                 <div id="iframe-window-urlbar" class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate"></div>
             </div>
             <iframe id="modal-iframe" src="" class="w-full h-full border-0 flex-1"></iframe>
+            <div id="iframe-loader" class="ifl" role="status" aria-live="polite" hidden>
+                <div class="ifl-bar" aria-hidden="true"><i></i></div>
+                <div class="ifl-body" aria-hidden="true">
+                    <span class="ifl-s" style="width:100px;height:10px"></span>
+                    <span class="ifl-s" style="width:min(340px,70%);height:38px;margin-bottom:6px"></span>
+                    <span class="ifl-s" style="width:min(600px,100%);height:12px"></span>
+                    <span class="ifl-s" style="width:min(500px,84%);height:12px;margin-bottom:10px"></span>
+                    <span class="ifl-s" style="width:100%;height:280px;border-radius:10px"></span>
+                    <span class="ifl-s" style="width:min(560px,92%);height:12px"></span>
+                    <span class="ifl-s" style="width:min(420px,70%);height:12px"></span>
+                </div>
+                <p class="ifl-msg" id="iframe-loader-msg" hidden>Taking longer than usual. <button type="button" id="iframe-loader-retry">Retry</button></p>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -1240,6 +1270,7 @@
         function openIframeModal(url) {
             // Mobile: every window is fullscreen — the page itself is the window.
             if (window.innerWidth < 768) { window.location.href = url; return; }
+            iflStart();
             modalIframe.src = url;
             iframeUrlbar.textContent = caseStudyLabels[url] || url;
             iframeModal.classList.remove('hidden');
@@ -1261,11 +1292,46 @@
             setTimeout(() => {
                 iframeModal.classList.add('hidden');
                 modalIframe.src = '';
+                iflClear(); iframeLoader.hidden = true;
                 document.body.classList.remove('overflow-hidden');
             }, 320);
         }
 
         closeModalBtn.addEventListener('click', closeIframeModal);
+
+        // Case-study loader: show the skeleton the moment the window opens, finish on the iframe's load.
+        // No byte-level progress exists for an iframe, so the bar creeps toward 90% and only completes on real load.
+        const iframeLoader = document.getElementById('iframe-loader');
+        const iframeLoaderBar = iframeLoader.querySelector('.ifl-bar i');
+        const iframeLoaderMsg = document.getElementById('iframe-loader-msg');
+        let iflTimers = [], iflPct = 0;
+        function iflClear() { iflTimers.forEach((t) => { clearInterval(t); clearTimeout(t); }); iflTimers = []; }
+        function iflPaint(p) { iflPct = p; iframeLoaderBar.style.transform = 'scaleX(' + (p / 100) + ')'; }
+        function iflStart() {
+            iflClear();
+            iframeLoader.hidden = false;
+            iframeLoader.classList.remove('is-out');
+            iframeLoaderMsg.hidden = true;
+            iflPaint(6);
+            iflTimers.push(setInterval(() => iflPaint(iflPct + (90 - iflPct) * 0.1), 300));
+            iflTimers.push(setTimeout(() => { iframeLoaderMsg.hidden = false; }, 10000));
+            iflTimers.push(setTimeout(iflStop, 20000));   // never trap the window behind the loader
+        }
+        function iflStop() {
+            iflClear();
+            iflPaint(100);
+            iflTimers.push(setTimeout(() => {
+                iframeLoader.classList.add('is-out');
+                iflTimers.push(setTimeout(() => { iframeLoader.hidden = true; }, 260));
+            }, 140));
+        }
+        modalIframe.addEventListener('load', () => { if (modalIframe.getAttribute('src')) iflStop(); });
+        document.getElementById('iframe-loader-retry').addEventListener('click', () => {
+            const u = modalIframe.getAttribute('src');
+            if (!u) return;
+            iflStart();
+            try { modalIframe.contentWindow.location.replace(u); } catch (e) { modalIframe.src = u; }
+        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !iframeModal.classList.contains('hidden')) {

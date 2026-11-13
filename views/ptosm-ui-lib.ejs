@@ -5,13 +5,121 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="robots" content="noindex" />
+    <script>if (window.self === window.top) document.documentElement.classList.add('is-loading');</script>
     <title>PTOS-M UI Library | Nanda Akbar</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="/css/output.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
+    <link rel="stylesheet" href="/css/output.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="/css/output.css" /></noscript>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin />
+    <style>
+        /* ---- Page loader (standalone / mobile). Overlay is opaque paper from the first paint so nothing flashes
+           unstyled; the skeleton + bar fade in after 120ms, so a fast load never shows them at all. ---- */
+        .ptl { display: none; }
+        html.is-loading { overflow: hidden; }
+        html.is-loading .ptl { display: block; position: fixed; inset: 0; z-index: 9999; background: #F2F0E8; overflow: hidden; transition: opacity 300ms cubic-bezier(.16,1,.3,1); }
+        .ptl.ptl--out { opacity: 0; pointer-events: none; }
+        .ptl-bar { position: absolute; left: 0; top: 0; right: 0; height: 3px; z-index: 2; opacity: 0; animation: ptlIn 250ms ease 120ms forwards; }
+        .ptl-bar i { display: block; height: 100%; background: #244BFF; transform-origin: left; transform: scaleX(.08); transition: transform 450ms cubic-bezier(.16,1,.3,1); }
+        .ptl-skel { opacity: 0; animation: ptlIn 250ms ease 120ms forwards; }
+        .ptl-wrap { max-width: 80rem; margin: 0 auto; padding: 40px 24px 0; }
+        @media (min-width: 768px) { .ptl-wrap { padding-inline: 48px; } }
+        .ptl-s { display: block; border-radius: 6px; background: linear-gradient(90deg, #E6E6DE 25%, #EEECE4 50%, #E6E6DE 75%); background-size: 200% 100%; animation: ptlShim 1.4s linear infinite; }
+        .ptl-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .ptl-rule { border-top: 1px solid rgba(0,0,0,.1); margin: 12px 0 40px; }
+        .ptl-cols { display: flex; gap: 32px; margin-top: 56px; }
+        .ptl-side { width: 160px; flex-shrink: 0; display: none; }
+        @media (min-width: 1024px) { .ptl-side { display: block; } }
+        .ptl-side .ptl-s { height: 12px; margin: 0 0 18px; }
+        .ptl-main { flex: 1; min-width: 0; }
+        .ptl-win { border: 1px solid rgba(0,0,0,.1); border-radius: 8px; overflow: hidden; background: #FAF9F4; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1); margin-top: 20px; }
+        .ptl-win-bar { height: 34px; background: #F2F0E8; display: flex; align-items: center; padding: 0 14px; gap: 6px; }
+        .ptl-win-bar i { width: 8px; height: 8px; border-radius: 50%; border: .8px solid #77796F; background: #FAF9F4; }
+        .ptl-win-body { padding: 24px 16px; display: grid; gap: 16px; background: #F9FAFC; }
+        .ptl-win-body .ptl-s { background-color: #E9ECF1; background-image: linear-gradient(90deg, #E9ECF1 25%, #F3F5F8 50%, #E9ECF1 75%); background-size: 200% 100%; }
+        .ptl-msg { position: absolute; left: 0; right: 0; bottom: 24px; text-align: center; font-size: 12px; color: #77796F; margin: 0; padding: 0 24px; }
+        .ptl-msg button { font: inherit; font-size: 12px; font-weight: 500; color: #FAF9F4; background: #20211F; border: 0; border-radius: 999px; padding: 6px 14px; margin-left: 8px; cursor: pointer; }
+        .ptl-msg button:focus-visible { outline: 2px solid #244BFF; outline-offset: 2px; }
+        @keyframes ptlShim { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+        @keyframes ptlIn { to { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) {
+            .ptl-s, .ptl-win-body .ptl-s { animation: none; }
+            .ptl-bar i, html.is-loading .ptl { transition: none; }
+            .ptl-bar, .ptl-skel { animation-duration: 1ms; }
+        }
+    </style>
+    
+</head>
+
+<body>
+    <script>if (window.self !== window.top) document.documentElement.classList.add('is-embedded');</script>
+    <div class="ptl" id="ptl" role="status" aria-live="polite" aria-label="Loading PTOS-M UI Library">
+        <div class="ptl-bar" aria-hidden="true"><i></i></div>
+        <div class="ptl-skel" aria-hidden="true">
+            <div class="ptl-wrap">
+                <div class="ptl-row"><span class="ptl-s" style="width:56px;height:16px"></span><span class="ptl-s" style="width:190px;height:10px"></span></div>
+                <div class="ptl-rule"></div>
+                <span class="ptl-s" style="width:110px;height:10px;margin-bottom:14px"></span>
+                <span class="ptl-s" style="width:min(380px,80%);height:42px;margin-bottom:18px"></span>
+                <span class="ptl-s" style="width:min(620px,100%);height:12px;margin-bottom:8px"></span>
+                <span class="ptl-s" style="width:min(520px,86%);height:12px"></span>
+                <div class="ptl-cols">
+                    <div class="ptl-side">
+                        <span class="ptl-s" style="width:70%"></span><span class="ptl-s" style="width:55%"></span><span class="ptl-s" style="width:80%"></span><span class="ptl-s" style="width:62%"></span><span class="ptl-s" style="width:74%"></span><span class="ptl-s" style="width:58%"></span>
+                    </div>
+                    <div class="ptl-main">
+                        <span class="ptl-s" style="width:90px;height:10px;margin-bottom:10px"></span>
+                        <span class="ptl-s" style="width:min(220px,60%);height:22px"></span>
+                        <div class="ptl-win">
+                            <div class="ptl-win-bar"><i></i><i></i><i></i></div>
+                            <div class="ptl-win-body">
+                                <span class="ptl-s" style="height:120px;border-radius:12px"></span>
+                                <span class="ptl-s" style="height:12px;width:40%"></span>
+                                <span class="ptl-s" style="height:56px;border-radius:12px"></span>
+                                <span class="ptl-s" style="height:56px;border-radius:12px"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="ptl-msg" id="ptl-msg" hidden>Slow connection, still loading&hellip; <button type="button" onclick="location.reload()">Reload</button></p>
+    </div>
+    <script>
+        /* Stage-based progress: each step is a REAL event (not a fake timer). Between steps the bar only creeps
+           forward and never passes the next milestone, so it cannot claim "done" before the page is. */
+        (function () {
+            var root = document.documentElement, ov = document.getElementById('ptl');
+            if (!ov || !root.classList.contains('is-loading')) return;
+            var bar = ov.querySelector('.ptl-bar i'), msg = document.getElementById('ptl-msg');
+            var t0 = performance.now(), cur = 8, done = false;
+            var st = { dcl: false, icons: false, fonts: false, load: false };
+            function progress() { return 8 + (st.dcl ? 27 : 0) + (st.icons ? 30 : 0) + (st.fonts ? 17 : 0) + (st.load ? 18 : 0); }
+            function paint(p) { cur = Math.max(cur, p); bar.style.transform = 'scaleX(' + (cur / 100) + ')'; }
+            function finish() {
+                if (done) return; done = true; paint(100);
+                var el = performance.now() - t0;
+                var wait = el < 120 ? 0 : Math.max(0, 420 - el);   // if the skeleton had started to show, keep it visible long enough not to flicker
+                setTimeout(function () {
+                    ov.classList.add('ptl--out');
+                    setTimeout(function () { root.classList.remove('is-loading'); ov.hidden = true; }, 320);
+                }, wait + (el < 120 ? 0 : 140));
+            }
+            function upd() { paint(progress()); if (st.load && st.icons && st.fonts) finish(); }
+            document.addEventListener('DOMContentLoaded', function () { st.dcl = true; upd(); });
+            window.addEventListener('load', function () {
+                st.load = true; upd();
+                var fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+                Promise.race([fonts, new Promise(function (r) { setTimeout(r, 1500); })]).then(function () { st.fonts = true; upd(); });
+            });
+            window.__ptl = { icons: function () { st.icons = true; upd(); } };
+            setInterval(function () { if (!done) paint(Math.min(cur + (Math.min(progress() + 12, 96) - cur) * 0.12, 96)); }, 350);
+            setTimeout(function () { if (!done && msg) msg.hidden = false; }, 8000);   // slow: say so + offer a way out
+            setTimeout(finish, 15000);                                                 // never trap the user behind the overlay
+        })();
+    </script>
     <style>
         /* PTOS-M UI Library — scoped tokens so nothing leaks into the rest
            of the portfolio's own design language. Values 1:1 from the
@@ -783,10 +891,7 @@
         @media (prefers-reduced-motion: reduce) { .ptos-pf-back { transition: none; } }
 
     </style>
-</head>
 
-<body>
-    <script>if (window.self !== window.top) document.documentElement.classList.add('is-embedded');</script>
     <main class="ptos-ui max-w-7xl mx-auto px-6 md:px-12 pt-10 pb-32">
         <header class="ptos-pf-top">
             <div class="ptos-pf-top-row">
@@ -1787,9 +1892,10 @@
         </div>
     </main>
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/lucide@1.72.0/dist/umd/lucide.min.js" integrity="sha384-LJKEYnLhvei+XTxKjLahwKnS/kWFWfkb3n+v8n7YKWAAS3oamYHQyT4Bwch3XplL" crossorigin="anonymous"></script>
     <script>
         if (window.lucide) { lucide.createIcons(); }
+        if (window.__ptl) window.__ptl.icons();   // icons are drawn (or the CDN failed - the page still works, just without glyphs)
 
         // Sidebar: collapse toggle
         document.querySelectorAll('[data-sb-toggle]').forEach(function (btn) {
