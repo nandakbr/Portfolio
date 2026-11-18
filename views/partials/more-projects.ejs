@@ -23,7 +23,7 @@ const rows = Math.ceil(others.length / 2);
 
         /* the deck. Every card is absolutely placed in the same box; --i is its position in the deck (0 = front). */
         .mp-stage { container-type: inline-size; }
-        .mp-stack { --w: 144px; position: relative; list-style: none; margin: 0; padding: 0; height: calc(var(--w) + 28px); transition: height 480ms cubic-bezier(.16, 1, .3, 1); }
+        .mp-stack { --w: 144px; --gap: 24px; position: relative; width: calc(var(--w) + var(--span) * 12px); list-style: none; margin: 0; padding: 0; height: calc(var(--w) + 28px); transition: height 480ms cubic-bezier(.16, 1, .3, 1); }
         .mp-item { position: absolute; left: 0; top: 0; width: var(--w); z-index: calc(10 - var(--i)); transform-origin: 0 var(--w);
             /* closed: stacked toward the upper right, each card a touch smaller and tilted */
             transform: translate(calc(var(--i) * 12px), calc(var(--i) * -7px)) rotate(calc(var(--i) * 1.4deg)) scale(calc(1 - var(--i) * .035));
@@ -36,20 +36,21 @@ const rows = Math.ceil(others.length / 2);
         .mp-card:focus-visible { outline: 2px solid #244BFF; outline-offset: 6px; border-radius: 12px; }
         .mp-card:active .mp-thumb { transform: scale(.96); }
 
-        /* hint: sits in the empty space beside the closed deck, gone once it is open */
-        .mp-hint { position: absolute; right: 0; top: calc(var(--w) / 2 - 6px); margin: 0; pointer-events: none; transition: opacity 160ms ease; }
+        /* hint: right under the closed deck, gone once it is open (the file names take its place) */
+        .mp-hint { font-size: .5625rem; letter-spacing: .08em; color: #77796F; }
+        .mp-hint { position: absolute; left: 0; top: calc(var(--w) + 10px); margin: 0; white-space: nowrap; pointer-events: none; transition: opacity 160ms ease; }
         .mp-hint .t { display: none; }
         @media (hover: none) { .mp-hint .k { display: none; } .mp-hint .t { display: inline; } }
 
         /* open (desktop): a row spread edge to edge. Same rules for hover-capable pointers (:hover) and for .is-open (keyboard / touch). */
         .mp-stack.is-open .mp-item {
-            transform: translate(calc((100cqw - var(--w)) * var(--i) / var(--span)), 0);
+            transform: translate(calc(var(--i) * min(var(--w) + var(--gap), (100cqw - var(--w)) / var(--span))), 0);
             transition: transform 560ms cubic-bezier(.34, 1.56, .64, 1) calc(var(--i) * 40ms); }
         .mp-stack.is-open .mp-name { opacity: 1; translate: 0 0; transition-delay: calc(var(--i) * 40ms + 220ms); }
         .mp-stack.is-open .mp-hint { opacity: 0; }
         @media (hover: hover) {
             .mp-stack:hover .mp-item {
-                transform: translate(calc((100cqw - var(--w)) * var(--i) / var(--span)), 0);
+                transform: translate(calc(var(--i) * min(var(--w) + var(--gap), (100cqw - var(--w)) / var(--span))), 0);
                 transition: transform 560ms cubic-bezier(.34, 1.56, .64, 1) calc(var(--i) * 40ms); }
             .mp-stack:hover .mp-name { opacity: 1; translate: 0 0; transition-delay: calc(var(--i) * 40ms + 220ms); }
             .mp-stack:hover .mp-hint { opacity: 0; }
@@ -57,10 +58,19 @@ const rows = Math.ceil(others.length / 2);
             .mp-stack:hover .mp-card:hover .mp-name { color: #20211F; }
         }
 
+        /* collapse (touch / phones only): explicit way to fold the open deck back up */
+        .mp-collapse { display: none; align-items: center; gap: 6px; min-height: 44px; margin: 4px 0 0 -8px; padding: 0 8px; border: 0; background: none; cursor: pointer; font: inherit; font-size: .625rem; line-height: 1; text-transform: uppercase; letter-spacing: .1em; color: #5F6158; -webkit-tap-highlight-color: transparent; }
+        .mp-collapse svg { width: 12px; height: 12px; flex-shrink: 0; transition: transform 200ms ease; }
+        .mp-collapse:focus-visible { outline: 2px solid #244BFF; outline-offset: 2px; border-radius: 6px; }
+        .mp-collapse:active svg { transform: translateY(-2px); }
+        @media (hover: none), (max-width: 767px) { .mp-stage.is-open .mp-collapse { display: inline-flex; animation: mpFade 260ms ease 200ms backwards; } }
+        @keyframes mpFade { from { opacity: 0; } to { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) { .mp-collapse { animation: none !important; } }
+
         /* phones: 2 columns. The deck grows into a 2 x N grid when opened (tap). */
         @media (max-width: 767px) {
             .mp { margin-top: 40px; }
-            .mp-stack { --w: min(160px, calc((100cqw - 16px) / 2)); }
+            .mp-stack { --w: min(160px, calc((100cqw - 16px) / 2)); width: auto; }
             .mp-stack.is-open { height: calc(var(--rows) * (var(--w) + 28px) + (var(--rows) - 1) * 16px); }
             .mp-stack.is-open .mp-item { transform: translate(calc((100cqw - var(--w)) * var(--c)), calc(var(--r) * (var(--w) + 44px))); }
         }
@@ -86,6 +96,7 @@ const rows = Math.ceil(others.length / 2);
             <% }); %>
             <li class="mp-hint" aria-hidden="true"><span class="k">Hover to browse</span><span class="t">Tap to browse</span></li>
         </ul>
+        <button type="button" class="mp-collapse" data-mp-collapse aria-label="Collapse projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>Collapse</button>
     </div>
     <script>
         /* Open/close behaviour + navigation.
@@ -97,11 +108,14 @@ const rows = Math.ceil(others.length / 2);
             var touch = window.matchMedia('(hover: none)');
             document.querySelectorAll('[data-mp-stack]').forEach(function (stack) {
                 if (stack.dataset.mpBound) return; stack.dataset.mpBound = '1';
-                var open = function () { stack.classList.add('is-open'); };
-                var close = function () { stack.classList.remove('is-open'); };
+                var stage = stack.parentElement;
+                var open = function () { stack.classList.add('is-open'); stage.classList.add('is-open'); };
+                var close = function () { stack.classList.remove('is-open'); stage.classList.remove('is-open'); };
                 stack.addEventListener('focusin', function (e) { if (e.target.matches && e.target.matches(':focus-visible')) open(); });
                 stack.addEventListener('focusout', function (e) { if (!e.relatedTarget || !stack.contains(e.relatedTarget)) close(); });
-                document.addEventListener('pointerdown', function (e) { if (!stack.contains(e.target)) close(); });
+                document.addEventListener('pointerdown', function (e) { if (!stack.contains(e.target) && !(e.target.closest && e.target.closest('[data-mp-collapse]'))) close(); });
+                var cb = stage.querySelector('[data-mp-collapse]');
+                if (cb) cb.addEventListener('click', function () { close(); var a = stack.querySelector('a'); if (a && a.blur) a.blur(); });
                 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
                 stack.querySelectorAll('[data-mp-href]').forEach(function (a) {
                     a.addEventListener('click', function (e) {
