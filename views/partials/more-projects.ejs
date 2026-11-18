@@ -1,0 +1,118 @@
+<%
+/* "More from UI/UX": the other case studies as a stack of cards. Closed = a tidy deck, open = the cards fan out into a row
+   (2 columns on phones) with their file names. Open on hover / keyboard focus; on touch the first tap opens, the second tap goes.
+   Single source for the list: add/remove/reorder here and every case study updates.
+   Locals: current = this page's own route (hidden from the deck), scope = unique suffix for the heading id. */
+const projects = [
+    { href: '/unreleased-tos', label: 'Unreleased TOS',  ext: '.webp', img: '/assets/Ops%20Plan%20Detail%201.webp' },
+    { href: '/ptosm',          label: 'PTOSM Redesign',  ext: '.webp', img: '/assets/mockup_ptosm.webp' },
+    { href: '/ptos-sso',       label: 'PTOS-SSO',        ext: '.webp', img: '/assets/mockup_terminal.webp' },
+    { href: '/ptosm-ui-lib',   label: 'UI Library',      ext: '.svg',  img: '/assets/ds-thumb.svg' },
+    { href: '/bea-cukai',      label: 'Bea Cukai',       ext: '.webp', img: '/assets/mockup_beacukai.webp' },
+];
+const others = projects.filter(function (p) { return p.href !== current; });
+const span = Math.max(others.length - 1, 1);
+const rows = Math.ceil(others.length / 2);
+%>
+<section class="mp" aria-labelledby="mp-title-<%= scope || 'x' %>">
+    <style>
+        .mp { margin-top: 64px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,.12); }
+        .mp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 36px; }
+        .mp-title { margin: 0; font-size: .6875rem; line-height: 1.2; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: #244BFF; }
+        .mp-count, .mp-hint { font-size: .6875rem; line-height: 1.2; text-transform: uppercase; letter-spacing: .1em; color: #5F6158; font-variant-numeric: tabular-nums; }
+
+        /* the deck. Every card is absolutely placed in the same box; --i is its position in the deck (0 = front). */
+        .mp-stage { container-type: inline-size; }
+        .mp-stack { --w: 144px; position: relative; list-style: none; margin: 0; padding: 0; height: calc(var(--w) + 28px); transition: height 480ms cubic-bezier(.16, 1, .3, 1); }
+        .mp-item { position: absolute; left: 0; top: 0; width: var(--w); z-index: calc(10 - var(--i)); transform-origin: 0 var(--w);
+            /* closed: stacked toward the upper right, each card a touch smaller and tilted */
+            transform: translate(calc(var(--i) * 12px), calc(var(--i) * -7px)) rotate(calc(var(--i) * 1.4deg)) scale(calc(1 - var(--i) * .035));
+            transition: transform 320ms cubic-bezier(.4, 0, .2, 1) calc((var(--span) - var(--i)) * 25ms); }
+        .mp-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; text-align: left; text-decoration: none; color: inherit; -webkit-tap-highlight-color: transparent; }
+        .mp-thumb { display: block; width: 100%; aspect-ratio: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1); background: #E6E6DE; transition: transform 260ms cubic-bezier(.16,1,.3,1), box-shadow 260ms cubic-bezier(.16,1,.3,1); }
+        .mp-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .mp-name { font-size: 12px; line-height: 16px; color: #5F6158; opacity: 0; translate: 0 4px; transition: opacity 140ms ease, translate 140ms ease, color 160ms ease; }
+        .mp-name i { font-style: normal; color: #77796F; }
+        .mp-card:focus-visible { outline: 2px solid #244BFF; outline-offset: 6px; border-radius: 12px; }
+        .mp-card:active .mp-thumb { transform: scale(.96); }
+
+        /* hint: sits in the empty space beside the closed deck, gone once it is open */
+        .mp-hint { position: absolute; right: 0; top: calc(var(--w) / 2 - 6px); margin: 0; pointer-events: none; transition: opacity 160ms ease; }
+        .mp-hint .t { display: none; }
+        @media (hover: none) { .mp-hint .k { display: none; } .mp-hint .t { display: inline; } }
+
+        /* open (desktop): a row spread edge to edge. Same rules for hover-capable pointers (:hover) and for .is-open (keyboard / touch). */
+        .mp-stack.is-open .mp-item {
+            transform: translate(calc((100cqw - var(--w)) * var(--i) / var(--span)), 0);
+            transition: transform 560ms cubic-bezier(.34, 1.56, .64, 1) calc(var(--i) * 40ms); }
+        .mp-stack.is-open .mp-name { opacity: 1; translate: 0 0; transition-delay: calc(var(--i) * 40ms + 220ms); }
+        .mp-stack.is-open .mp-hint { opacity: 0; }
+        @media (hover: hover) {
+            .mp-stack:hover .mp-item {
+                transform: translate(calc((100cqw - var(--w)) * var(--i) / var(--span)), 0);
+                transition: transform 560ms cubic-bezier(.34, 1.56, .64, 1) calc(var(--i) * 40ms); }
+            .mp-stack:hover .mp-name { opacity: 1; translate: 0 0; transition-delay: calc(var(--i) * 40ms + 220ms); }
+            .mp-stack:hover .mp-hint { opacity: 0; }
+            .mp-stack:hover .mp-card:hover .mp-thumb { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,.12), 0 4px 6px -4px rgba(0,0,0,.1); }
+            .mp-stack:hover .mp-card:hover .mp-name { color: #20211F; }
+        }
+
+        /* phones: 2 columns. The deck grows into a 2 x N grid when opened (tap). */
+        @media (max-width: 767px) {
+            .mp { margin-top: 40px; }
+            .mp-stack { --w: min(160px, calc((100cqw - 16px) / 2)); }
+            .mp-stack.is-open { height: calc(var(--rows) * (var(--w) + 28px) + (var(--rows) - 1) * 16px); }
+            .mp-stack.is-open .mp-item { transform: translate(calc((100cqw - var(--w)) * var(--c)), calc(var(--r) * (var(--w) + 44px))); }
+        }
+        @media (max-width: 767px) and (hover: hover) {
+            .mp-stack:hover { height: calc(var(--rows) * (var(--w) + 28px) + (var(--rows) - 1) * 16px); }
+            .mp-stack:hover .mp-item { transform: translate(calc((100cqw - var(--w)) * var(--c)), calc(var(--r) * (var(--w) + 44px))); }
+        }
+        @media (prefers-reduced-motion: reduce) { .mp-stack, .mp-item, .mp-thumb, .mp-name, .mp-hint { transition: none !important; } }
+    </style>
+    <div class="mp-head">
+        <h2 class="mp-title" id="mp-title-<%= scope || 'x' %>">More from UI/UX</h2>
+        <span class="mp-count"><%= String(others.length).padStart(2, '0') %> projects</span>
+    </div>
+    <div class="mp-stage">
+        <ul class="mp-stack" style="--span: <%= span %>; --rows: <%= rows %>;" data-mp-stack>
+            <% others.forEach(function (p, i) { %>
+            <li class="mp-item" style="--i: <%= i %>; --c: <%= i % 2 %>; --r: <%= Math.floor(i / 2) %>;">
+                <a class="mp-card" href="<%= p.href %>" data-mp-href="<%= p.href %>" aria-label="<%= p.label %><%= p.ext %>">
+                    <span class="mp-thumb"><img src="<%= p.img %>" alt="" loading="lazy" decoding="async"></span>
+                    <span class="mp-name"><%= p.label %><i><%= p.ext %></i></span>
+                </a>
+            </li>
+            <% }); %>
+            <li class="mp-hint" aria-hidden="true"><span class="k">Hover to browse</span><span class="t">Tap to browse</span></li>
+        </ul>
+    </div>
+    <script>
+        /* Open/close behaviour + navigation.
+           - Hover-capable pointers: CSS :hover does the opening. Keyboard focus opens it too (.is-open).
+           - Touch: the first tap on the deck only opens it; once open, a tap goes to the project. Tap outside / Esc closes.
+           - Inside the index's iframe window: hand the click to the parent so it reopens the window the normal way
+             (urlbar label + skeleton loader). Outside an iframe (direct visit / mobile full page): the plain link just works. */
+        (function () {
+            var touch = window.matchMedia('(hover: none)');
+            document.querySelectorAll('[data-mp-stack]').forEach(function (stack) {
+                if (stack.dataset.mpBound) return; stack.dataset.mpBound = '1';
+                var open = function () { stack.classList.add('is-open'); };
+                var close = function () { stack.classList.remove('is-open'); };
+                stack.addEventListener('focusin', function (e) { if (e.target.matches && e.target.matches(':focus-visible')) open(); });
+                stack.addEventListener('focusout', function (e) { if (!e.relatedTarget || !stack.contains(e.relatedTarget)) close(); });
+                document.addEventListener('pointerdown', function (e) { if (!stack.contains(e.target)) close(); });
+                document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+                stack.querySelectorAll('[data-mp-href]').forEach(function (a) {
+                    a.addEventListener('click', function (e) {
+                        if (touch.matches && !stack.classList.contains('is-open')) { e.preventDefault(); open(); return; }
+                        if (window.self === window.top) return;
+                        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                        e.preventDefault();
+                        window.parent.postMessage({ type: 'open-case-study', url: a.getAttribute('data-mp-href') }, window.location.origin);
+                    });
+                });
+            });
+        })();
+    </script>
+</section>

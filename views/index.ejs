@@ -28,6 +28,7 @@
         rel="stylesheet" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="/css/output.css" />
     <style>
+        #image-expand-label:empty { visibility: hidden; }
         /* Case-study window loader: the iframe window is empty white until the page answers (live TTFB ~0.9s + assets). */
         .ifl { position: absolute; left: 0; right: 0; bottom: 0; top: 34px; z-index: 5; background: #FAF9F4; overflow: hidden; transition: opacity 250ms cubic-bezier(.16,1,.3,1); }
         .ifl[hidden] { display: none; }
@@ -44,10 +45,342 @@
         @media (max-width: 767px) { .ifl-body { padding: 20px 16px; } }
         @media (prefers-reduced-motion: reduce) { .ifl-s { animation: none; } .ifl-bar i, .ifl { transition: none; } .ifl-body { animation-duration: 1ms; } }
     </style>
+    <script>
+        /* Boot / login screen gate. Decides BEFORE first paint, so returning visitors never see a flash.
+           Shows only when: top window, motion allowed, and last shown > 6h ago (or ?boot forces it).
+           Storage blocked / any error => no boot (a replay on every page is worse than missing it once). */
+        (function () {
+            try {
+                var d = document.documentElement;
+                if (window.self !== window.top) return;
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                var KEY = 'nb:boot-at', COOLDOWN = 6 * 60 * 60 * 1000, now = Date.now();
+                var force = /[?&]boot(&|=|$)/.test(location.search);
+                var last = parseInt(window.localStorage.getItem(KEY), 10);
+                if (!force && last && now - last >= 0 && now - last < COOLDOWN) return;
+                window.localStorage.setItem(KEY, String(now));
+                d.classList.add('nb-on');
+                // only if the body script never came alive; an idle login screen must wait for the visitor
+                setTimeout(function () { if (!d.getAttribute('data-nb-ready')) d.classList.remove('nb-on'); }, 8000);
+            } catch (e) { /* no boot */ }
+        })();
+    </script>
+    <style>
+        /* ---- Log-on screen, editorial. Grammar lifted from the mobile cover: running head (name left, tracked label right),
+           hairline rules, blue "00 - ..." index line, giant semibold title, desktop window chrome. Stage 1 = boot (name + real
+           progress). Stage 2 = log-on: username is shown, the password types itself, a cursor clicks the round button. ---- */
+        .nb { display: none; }
+        html.nb-on { overflow: hidden; background: #F2F0E8; }
+        html.nb-on .nb { display: block; position: fixed; inset: 0; height: 100vh; height: 100dvh; z-index: 10000; overflow: hidden; color: #20211F; font-family: 'Inter', sans-serif;
+            background: #F2F0E8; transition: opacity 520ms cubic-bezier(.16,1,.3,1) 200ms; }
+        html.nb-leaving .nb { opacity: 0; pointer-events: none; }
+        html.nb-on:not(.nb-leaving) .reveal-item { transition: none !important; }
+        .nb-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+        /* boot */
+        .nb-boot { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; transition: opacity 320ms cubic-bezier(.16,1,.3,1); }
+        .nb[data-stage="login"] .nb-boot { opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 320ms cubic-bezier(.16,1,.3,1), visibility 0s 320ms; }
+        .nb-boot-name { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.025em; line-height: 24px; animation: nbIn 700ms cubic-bezier(.16,1,.3,1) backwards; }
+        .nb-track { width: 160px; height: 2px; border-radius: 2px; background: rgba(32,33,31,.12); overflow: hidden; animation: nbIn 700ms cubic-bezier(.16,1,.3,1) 120ms backwards; }
+        .nb-track i { display: block; height: 100%; background: #20211F; transform-origin: left; transform: scaleX(.06); transition: transform 450ms cubic-bezier(.16,1,.3,1); }
+        @keyframes nbIn { from { opacity: 0; transform: translateY(10px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+
+        /* log-on layout: head / meta / main / foot */
+        .nb-login { position: absolute; inset: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: clamp(20px, 4vh, 40px) clamp(22px, 6vw, 96px) clamp(20px, 4vh, 40px); visibility: hidden; }
+        .nb[data-stage="login"] .nb-login { visibility: visible; }
+        .nb-head, .nb-foot { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+        .nb-head { padding-bottom: 14px; }
+        .nb-foot { padding-top: 14px; }
+        .nb-brand { font-size: 16px; font-weight: 700; letter-spacing: -0.025em; line-height: 24px; }
+        .nb-lbl { font-size: .6875rem; line-height: 1.2; text-transform: uppercase; letter-spacing: .15em; color: #5F6158; font-variant-numeric: tabular-nums; }
+        .nb-rule { position: absolute; left: 0; right: 0; height: 1px; background: rgba(0,0,0,.12); transform: scaleX(0); transform-origin: left; transition: transform 1100ms cubic-bezier(.16,1,.3,1); }
+        .nb-head .nb-rule { bottom: 0; } .nb-foot .nb-rule { top: 0; transition-delay: 200ms; }
+        .nb[data-stage="login"] .nb-rule { transform: scaleX(1); }
+        .nb-main { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(22px, 6vh, 64px); min-height: 0; padding: clamp(14px, 3vh, 36px) 0 clamp(24px, 5vh, 52px); text-align: center; }
+        .nb-lead { min-width: 0; }
+        .nb-title { margin: 0; font-size: clamp(56px, min(10vw, 17vh), 128px); font-weight: 600; letter-spacing: -0.045em; line-height: .9; font-variant-numeric: tabular-nums; }
+        .nb-title small { margin-left: .14em; font-size: .22em; font-weight: 500; letter-spacing: 0; color: #5F6158; vertical-align: .9em; }
+        .nb-line { display: block; overflow: hidden; padding: .1em 0 .06em; margin: -.1em 0 -.06em; }
+        .nb-line > span { display: block; transform: translateY(112%); transition: transform 1300ms cubic-bezier(.16,1,.3,1) var(--d, 0ms); }
+        .nb[data-stage="login"] .nb-line > span { transform: none; }
+        .nb-role { margin: clamp(10px, 2vh, 20px) 0 0; font-size: clamp(16px, 1.4vw, 20px); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: #5F6158; }
+        .nb-fade { opacity: 0; transition: opacity 800ms ease var(--d, 0ms); }
+        .nb[data-stage="login"] .nb-fade { opacity: 1; }
+
+        /* the sign-in form: no window, just avatar / name / password row, centred like a system log-on */
+        .nb-form { width: min(340px, 100%); display: grid; justify-items: center; gap: 0; }
+        .nb-rise { opacity: 0; transform: translateY(14px); filter: blur(6px); transition: opacity 1000ms cubic-bezier(.16,1,.3,1) var(--d, 0ms), transform 1100ms cubic-bezier(.16,1,.3,1) var(--d, 0ms), filter 1000ms cubic-bezier(.16,1,.3,1) var(--d, 0ms); }
+        .nb[data-stage="login"] .nb-rise { opacity: 1; transform: none; filter: blur(0); }
+        .nb-avatar { width: clamp(72px, 13vh, 112px); height: clamp(72px, 13vh, 112px); flex-shrink: 0; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: #E6E6DE; border: 1px solid rgba(0,0,0,.1); display: block; }
+        .nb-user { margin: 14px 0 clamp(18px, 3.4vh, 28px); font: 500 15px/22px 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: -.01em; }
+        .nb-field { flex: 1; min-width: 0; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,.14); }
+        .nb-label { display: block; margin-bottom: 6px; font-size: .6875rem; line-height: 1.2; text-transform: uppercase; letter-spacing: .15em; color: #5F6158; }
+        .nb-val { display: block; min-height: 22px; font: 500 15px/22px 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: -.01em; }
+        .nb-pw { position: relative; width: 100%; height: 56px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 4px 0 22px; text-align: left; border: 1px solid rgba(0,0,0,.14); border-radius: 999px; background: rgba(250,249,244,.7); }
+        .nb-ph { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); font-size: 15px; line-height: 22px; color: #77796F; letter-spacing: -.01em; pointer-events: none; transition: opacity 160ms ease; }
+        .nb-pw.has-val .nb-ph { opacity: 0; }
+        .nb-pw.nb-rise { transition: opacity 1000ms cubic-bezier(.16,1,.3,1) var(--d, 0ms), transform 1100ms cubic-bezier(.16,1,.3,1) var(--d, 0ms), filter 1000ms cubic-bezier(.16,1,.3,1) var(--d, 0ms), border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease; }
+        .nb-pw.is-active { border-color: #20211F; background: #FAF9F4; box-shadow: 0 0 0 3px rgba(36,75,255,.16); }
+        .nb-dots { display: flex; align-items: center; gap: 7px; min-height: 22px; flex: 1; min-width: 0; }
+        .nb-dot { width: 8px; height: 8px; border-radius: 50%; background: #20211F; flex-shrink: 0; opacity: 0; transform: scale(.2); transition: transform 240ms cubic-bezier(.34,1.56,.64,1), opacity 120ms ease; }
+        .nb-dot.on { opacity: 1; transform: none; }
+        .nb-caret { width: 1.5px; height: 18px; margin-left: 1px; background: #244BFF; opacity: 0; }
+        .nb-pw.is-typing .nb-caret { opacity: 1; animation: nbBlink 1s step-end infinite; }
+        @keyframes nbBlink { 50% { opacity: 0; } }
+
+        /* the round log-on button: arrow -> press + ripple -> spinner -> tick */
+        .nb-go { position: relative; width: 48px; height: 48px; flex-shrink: 0; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #20211F; color: #FAF9F4; cursor: pointer;
+            transition: transform 140ms cubic-bezier(.16,1,.3,1), background-color 260ms ease; -webkit-tap-highlight-color: transparent; }
+        .nb-go svg { grid-area: 1 / 1; width: 20px; height: 20px; }
+        .nb-go .nb-arrow { transition: transform 380ms cubic-bezier(.16,1,.3,1), opacity 200ms ease; }
+        .nb-go .nb-spin { opacity: 0; transition: opacity 160ms ease; animation: nbSpin .8s linear infinite; }
+        .nb-go .nb-tick { opacity: 0; stroke-dasharray: 26; stroke-dashoffset: 26; transition: stroke-dashoffset 360ms cubic-bezier(.16,1,.3,1), opacity 120ms ease; }
+        .nb-go:not(.is-in) { opacity: 0; pointer-events: none; }
+        .nb-go.is-in { animation: nbPop 700ms cubic-bezier(.34,1.56,.64,1) backwards; }
+        @keyframes nbPop { from { opacity: 0; transform: scale(.5); } to { opacity: 1; transform: none; } }
+        .nb-go.is-press { transform: scale(.86); }
+        .nb-go.is-busy .nb-arrow, .nb-go.is-done .nb-arrow { transform: translateX(140%); opacity: 0; }
+        .nb-go.is-busy .nb-spin { opacity: 1; }
+        .nb-go.is-done { background: #244BFF; }
+        .nb-go.is-done .nb-spin { opacity: 0; }
+        .nb-go.is-done .nb-tick { opacity: 1; stroke-dashoffset: 0; }
+        .nb-go:focus-visible { outline: 2px solid #244BFF; outline-offset: 3px; }
+        @media (hover: hover) { .nb-go:hover:not(.is-busy):not(.is-done) .nb-arrow { transform: translateX(3px); } }
+        .nb-ring { position: absolute; inset: -1px; border: 2px solid #244BFF; border-radius: 50%; pointer-events: none; }
+        @keyframes nbSpin { to { transform: rotate(360deg); } }
+
+        /* the cursor that does the clicking (same arrow as the hero's "click.") */
+        .nb-ptr { position: absolute; left: 0; top: 0; width: 22px; height: 22px; z-index: 3; pointer-events: none; opacity: 0; color: #20211F; transform: translate3d(-80px, -80px, 0);
+            transition: transform 650ms cubic-bezier(.33,0,.15,1), opacity 220ms ease; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.25)); }
+        .nb-fx { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 1.5px solid #244BFF; border-radius: 50%; pointer-events: none; z-index: 2; }
+        .nb-ptr.is-on { opacity: 1; }
+        .nb-ptr svg { display: block; width: 100%; height: 100%; transition: transform 120ms ease; }
+        .nb-ptr.is-press svg { transform: scale(.82); }
+        @media (hover: none) and (pointer: coarse) { .nb-ptr { display: none; } }
+
+        /* footer status */
+        .st { display: none; }
+        .nb[data-status="idle"] .st-idle, .nb[data-status="busy"] .st-busy, .nb[data-status="done"] .st-done { display: inline; }
+        .st-idle .t { display: none; }
+        @media (hover: none) and (pointer: coarse) { .st-idle .k { display: none; } .st-idle .t { display: inline; } }
+
+        /* leaving: clock slides out upward, form lifts, small text fades; overlay opacity follows */
+        html.nb-leaving .nb[data-stage] .nb-line > span { transform: translateY(-112%); transition: transform 640ms cubic-bezier(.7,0,.3,1); }
+        html.nb-leaving .nb[data-stage] .nb-rise { opacity: 0; transform: translateY(-12px); filter: blur(0); transition: opacity 380ms ease, transform 560ms cubic-bezier(.7,0,.3,1); }
+        html.nb-leaving .nb[data-stage] .nb-fade { opacity: 0; transition: opacity 280ms ease; }
+        html.nb-leaving .nb[data-stage] .nb-rule { transform: scaleX(0); transform-origin: right; transition: transform 520ms cubic-bezier(.7,0,.3,1); }
+
+        @media (max-height: 640px) { .nb-pw { height: 52px; } .nb-main { gap: 16px; } .nb-title { font-size: clamp(44px, 14vh, 80px); } .nb-user { margin: 8px 0 14px; } .nb-avatar { width: 56px; height: 56px; } }
+        /* short and wide (phone landscape): clock beside the form instead of above it */
+        @media (max-height: 520px) and (min-width: 600px) { .nb-main { flex-direction: row; gap: clamp(32px, 8vw, 96px); text-align: left; } .nb-lead { text-align: left; } .nb-form { width: 300px; } .nb-title { font-size: clamp(44px, 20vh, 80px); } .nb-go { width: 44px; height: 44px; } }
+        @media (prefers-reduced-motion: reduce) { .nb *, .nb { transition-duration: 1ms !important; animation-duration: 1ms !important; } }
+    </style>
 </head>
 
 <body
     class="bg-background-light text-[#20211F] transition-colors duration-300">
+    <div id="nb" class="nb" data-stage="boot" data-status="idle" role="dialog" aria-modal="true" aria-label="Log on to Nanda Akbar's portfolio">
+        <div class="nb-boot">
+            <p class="nb-boot-name">Nanda Akbar</p>
+            <div class="nb-track" aria-hidden="true"><i id="nb-bar"></i></div>
+            <span class="nb-sr" role="status">Loading</span>
+        </div>
+        <div class="nb-login">
+            <header class="nb-head">
+                <span class="nb-brand nb-fade">Nanda Akbar</span>
+                <span class="nb-lbl nb-fade" style="--d:80ms">Portfolio / Log on</span>
+                <i class="nb-rule"></i>
+            </header>
+            <div class="nb-main">
+                <div class="nb-lead">
+                    <p class="nb-title"><span class="nb-line"><span style="--d:150ms"><span id="nb-time"></span><small id="nb-ap"></small></span></span></p>
+                    <p class="nb-role nb-fade" id="nb-date" style="--d:500ms"></p>
+                </div>
+                <div class="nb-form" id="nb-form">
+                    <img id="nb-avatar" class="nb-avatar nb-rise" style="--d:850ms" data-src="/assets/Profile.webp" alt="" width="96" height="96" decoding="async">
+                    <p class="nb-user nb-rise" style="--d:1050ms">nandakbr</p>
+                    <div class="nb-pw nb-rise" id="nb-pw" style="--d:1450ms">
+                        <span class="nb-ph" aria-hidden="true">Password</span><div class="nb-dots" id="nb-dots" aria-hidden="true"><span class="nb-caret"></span></div>
+                        <button type="button" id="nb-go" class="nb-go" aria-label="Log on as nandakbr">
+                            <svg class="nb-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                            <svg class="nb-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9" /></svg>
+                            <svg class="nb-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <footer class="nb-foot">
+                <i class="nb-rule"></i>
+                <span class="nb-lbl nb-fade" style="--d:600ms"><span class="st st-idle"><span class="k">Press any key to skip</span><span class="t">Tap to skip</span></span><span class="st st-busy">Signing in&hellip;</span><span class="st st-done">Welcome</span></span>
+                <span class="nb-lbl nb-fade" style="--d:640ms">&copy; 2026 Nanda Akbar</span>
+            </footer>
+        </div>
+        <i class="nb-ptr" id="nb-ptr" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 2L4 18L8.5 14.5L11 20L14 18.5L11.5 13L17 13L4 2Z" fill="currentColor" stroke="white" stroke-width="1" stroke-linejoin="round"></path></svg></i>
+        <p class="nb-sr" id="nb-live" role="status" aria-live="polite"></p>
+    </div>
+    <script>
+        (function () {
+            var d = document.documentElement, ov = document.getElementById('nb');
+            if (!ov || !d.classList.contains('nb-on')) return;
+            d.setAttribute('data-nb-ready', '1');
+            var $ = function (id) { return document.getElementById(id); };
+            var bar = $('nb-bar'), img = $('nb-avatar'), dots = $('nb-dots'), pw = $('nb-pw'), go = $('nb-go'), ptr = $('nb-ptr'), live = $('nb-live');
+            var caret = dots.querySelector('.nb-caret');
+            var t0 = performance.now(), MIN = 700, MAX = 6500;
+            var GAPS = [150, 110, 160, 120, 150, 105, 160, 120];    /* 8 keystrokes, uneven like a real person typing (~1.1s) */
+            var PTR_MS = 650;                                       /* keep equal to .nb-ptr transform duration */
+            var stage = 'boot', cur = 6, clock = null, inerted = [], timers = [], fast = false;
+            var st = { dcl: false, fonts: false, load: false, avatar: false };
+
+            /* ---- boot: real progress. Every step is an actual event; the creep never passes the next milestone ---- */
+            function progress() { return 6 + (st.dcl ? 20 : 0) + (st.fonts ? 24 : 0) + (st.load ? 30 : 0) + (st.avatar ? 20 : 0); }
+            function paint(p) { cur = Math.max(cur, p); bar.style.transform = 'scaleX(' + (cur / 100) + ')'; }
+            function check() {
+                paint(progress());
+                if (stage !== 'boot') return;
+                var all = st.dcl && st.fonts && st.load && st.avatar, el = performance.now() - t0;
+                if (all && el >= MIN) toLogin();
+                else if (all) setTimeout(function () { if (stage === 'boot') toLogin(); }, MIN - el);
+            }
+            var creep = setInterval(function () { if (stage === 'boot') paint(Math.min(cur + (Math.min(progress() + 10, 96) - cur) * 0.12, 96)); }, 300);
+            setTimeout(function () { if (stage === 'boot') toLogin(); }, MAX);   // never hold the visitor on a stalled asset
+
+            img.addEventListener('load', function () { st.avatar = true; check(); });
+            img.addEventListener('error', function () { st.avatar = true; img.style.visibility = 'hidden'; check(); });
+            img.src = img.getAttribute('data-src');
+            function inertOthers() {
+                Array.prototype.forEach.call(document.body.children, function (el) {
+                    if (el === ov || /^(SCRIPT|STYLE|NOSCRIPT)$/.test(el.tagName)) return;
+                    if (!el.inert) { el.inert = true; inerted.push(el); }
+                });
+            }
+            function onDcl() { st.dcl = true; inertOthers(); check(); }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', onDcl); else onDcl();
+            function onLoad() {
+                st.load = true; check();
+                var f = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+                Promise.race([f, new Promise(function (r) { setTimeout(r, 1500); })]).then(function () { st.fonts = true; check(); });
+            }
+            if (document.readyState === 'complete') onLoad(); else window.addEventListener('load', onLoad);
+
+            /* ---- dateline: real local date + time, 12/24h follows the visitor's locale ---- */
+            var hour12 = false;
+            try { hour12 = !!new Intl.DateTimeFormat(undefined, { hour: 'numeric' }).resolvedOptions().hour12; } catch (e) {}
+            function tick() {
+                var n = new Date(), h = n.getHours(), m = ('0' + n.getMinutes()).slice(-2), ap = '';
+                if (hour12) { ap = h >= 12 ? ' PM' : ' AM'; h = h % 12 || 12; } else { h = ('0' + h).slice(-2); }
+                $('nb-time').textContent = h + ':' + m; $('nb-ap').textContent = ap.trim();
+                try { $('nb-date').textContent = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(n); } catch (e) {}
+            }
+
+            /* ---- the scripted log-on ---- */
+            function at(ms, fn) { timers.push(setTimeout(function () { if (stage === 'login') fn(); }, ms)); }
+            function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+            function setStatus(v, msg) { ov.setAttribute('data-status', v); if (msg) live.textContent = msg; }
+            function addDot() {
+                var dot = document.createElement('span'); dot.className = 'nb-dot'; dots.insertBefore(dot, caret); pw.classList.add('has-val');
+                requestAnimationFrame(function () { requestAnimationFrame(function () { dot.classList.add('on'); }); });
+            }
+            function fillDots() { var n = dots.querySelectorAll('.nb-dot').length; for (var i = n; i < GAPS.length; i++) addDot(); }
+            function stopCaret() { pw.classList.remove('is-typing', 'is-active'); }
+            function fieldPoint() { var b = pw.getBoundingClientRect(); return { x: b.left + b.width * 0.62, y: b.top + b.height / 2 - 2 }; }   /* empty part of the field, right of where the dots will land */
+            function buttonPoint() { var b = go.getBoundingClientRect(); return { x: b.left + b.width / 2 + 7, y: b.top + b.height / 2 + 8 }; }
+            function put(p) { ptr.style.transform = 'translate3d(' + p.x + 'px,' + p.y + 'px,0)'; }
+            function ptrTo(p, instant) {
+                if (!ptr.classList.contains('is-on')) {                 /* first appearance: start off to the lower right, then glide in */
+                    ptr.style.transition = 'none'; put(instant ? p : { x: p.x + 110, y: p.y + 170 }); void ptr.offsetWidth; ptr.style.transition = '';
+                    ptr.classList.add('is-on');
+                    if (!instant) put(p);
+                } else if (instant) { ptr.style.transition = 'none'; put(p); void ptr.offsetWidth; ptr.style.transition = ''; }
+                else put(p);
+            }
+            function burst(p) {
+                var fx = document.createElement('span'); fx.className = 'nb-fx'; fx.style.left = (p.x + 4) + 'px'; fx.style.top = (p.y + 2) + 'px'; ov.appendChild(fx);
+                var rm = function () { if (fx.parentNode) fx.parentNode.removeChild(fx); };
+                if (fx.animate) { var a = fx.animate([{ transform: 'scale(.3)', opacity: .8 }, { transform: 'scale(1.5)', opacity: 0 }], { duration: 650, easing: 'cubic-bezier(.16,1,.3,1)' }); a.onfinish = rm; } else rm();
+            }
+            function press() { go.classList.add('is-press'); ptr.classList.add('is-press'); }
+            function ripple() {
+                var ring = document.createElement('span'); ring.className = 'nb-ring'; go.appendChild(ring);
+                if (ring.animate) {
+                    var a = ring.animate([{ transform: 'scale(1)', opacity: .6 }, { transform: 'scale(1.8)', opacity: 0 }], { duration: 650, easing: 'cubic-bezier(.16,1,.3,1)' });
+                    a.onfinish = function () { if (ring.parentNode) ring.parentNode.removeChild(ring); };
+                } else if (ring.parentNode) ring.parentNode.removeChild(ring);
+            }
+            function release() { go.classList.remove('is-press'); ptr.classList.remove('is-press'); ripple(); go.classList.add('is-busy'); setStatus('busy', 'Signing in as nandakbr'); }
+            function done() { go.classList.remove('is-busy'); go.classList.add('is-done'); ptr.classList.remove('is-on'); setStatus('done', 'Welcome'); }
+
+            function showButton() { go.classList.add('is-in'); }
+            function activateField() { ptr.classList.remove('is-press'); pw.classList.add('is-active', 'is-typing'); }
+            function autoplay() {
+                var t = 1950;
+                at(t, showButton);                                      /* 1. clock, 2. avatar + name, 3. password field, 4. button: entrance finishes here */
+                t += 300;  at(t, function () { ptrTo(fieldPoint(), false); });
+                t += PTR_MS;  at(t, function () { ptr.classList.add('is-press'); burst(fieldPoint()); });
+                t += 130;  at(t, activateField);                        /* click on the textbox -> it becomes active, caret blinks */
+                t += 320;
+                GAPS.forEach(function (g) { at(t, addDot); t += g; });
+                t += 280;  at(t, function () { stopCaret(); ptrTo(buttonPoint(), false); });
+                t += PTR_MS;  at(t, press);
+                t += 130;  at(t, release);
+                t += 650;  at(t, done);
+                t += 450;  at(t, enter);
+            }
+            /* any key / click: do the rest of the log-on quickly (same click effect, ~0.7s) instead of cutting it off */
+            function fastLogin() {
+                if (stage !== 'login' || fast) return;
+                fast = true; clearTimers(); showButton(); fillDots(); stopCaret(); ptrTo(buttonPoint(), true);
+                at(40, press); at(170, release); at(560, done); at(820, enter);
+            }
+
+            function toLogin() {
+                if (stage !== 'boot') return;
+                stage = 'login'; clearInterval(creep); paint(100);
+                tick(); clock = setInterval(tick, 5000);
+                setTimeout(function () {
+                    if (stage !== 'login') return;
+                    ov.setAttribute('data-stage', 'login');
+                    try { go.focus({ preventScroll: true }); } catch (e) { go.focus(); }
+                    autoplay();
+                }, 160);
+            }
+
+            /* ---- entering: reset hero reveals while the overlay is still opaque, then replay them as it fades ---- */
+            function enter() {
+                if (stage === 'leaving' || stage === 'done') return;
+                var wasBoot = stage === 'boot';
+                stage = 'leaving'; clearInterval(creep); clearInterval(clock); clearTimers();
+                var vis = Array.prototype.filter.call(document.querySelectorAll('.reveal-item'), function (el) {
+                    var r = el.getBoundingClientRect();
+                    return r.width > 0 && r.height > 0 && r.top < window.innerHeight * 0.92 && r.bottom > 0;
+                });
+                vis.forEach(function (el) { el.classList.remove('reveal-active'); });
+                void document.body.offsetHeight;
+                inerted.forEach(function (el) { el.inert = false; }); inerted = [];
+                d.classList.add('nb-leaving');
+                vis.forEach(function (el, i) {
+                    var dl = parseInt(el.getAttribute('data-delay'), 10);
+                    setTimeout(function () { el.classList.add('reveal-active'); el.setAttribute('data-revealed', 'true'); }, 300 + (isNaN(dl) ? i * 120 : dl));
+                });
+                setTimeout(function () { d.classList.remove('nb-on', 'nb-leaving'); stage = 'done'; ov.setAttribute('hidden', ''); }, wasBoot ? 760 : 900);
+                document.removeEventListener('keydown', onKey, true);
+                ov.removeEventListener('click', onClick);
+            }
+
+            var IGNORE = { Tab: 1, Shift: 1, Control: 1, Alt: 1, Meta: 1, CapsLock: 1, NumLock: 1, ScrollLock: 1, Fn: 1, OS: 1 };
+            function onKey(e) {
+                if (e.key === 'Escape') { e.preventDefault(); enter(); return; }
+                if (IGNORE[e.key] || e.ctrlKey || e.metaKey || e.altKey) return;
+                e.preventDefault();
+                if (stage === 'boot') toLogin(); else if (stage === 'login') fastLogin();
+            }
+            function onClick() { if (stage === 'boot') toLogin(); else if (stage === 'login') fastLogin(); }
+            document.addEventListener('keydown', onKey, true);
+            ov.addEventListener('click', onClick);
+            window.__nb = { enter: enter };
+        })();
+    </script>
+
     <header class="mode-desktop-only fixed top-0 left-0 right-0 z-50 pointer-events-none">
         <div class="max-w-[1440px] mx-auto px-[54px] pt-[30px] flex items-center justify-between pointer-events-auto">
             <a class="text-base font-bold tracking-tight hover:opacity-70 active:opacity-50 transition-opacity focus-ring cursor-pointer" href="/">Nanda Akbar <span class="font-normal opacity-50">— UI/UX Designer</span></a>
@@ -96,7 +429,7 @@
                             <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
-                            <span class="flex-1 text-center text-[0.6rem] opacity-50">nanda_akbar.jpg</span>
+                            <div class="flex-1 bg-surface-window rounded px-2 py-0.5 text-[0.6rem] opacity-50 text-center truncate">nanda_akbar.jpg</div>
                         </div>
                         <div class="aspect-[4/5] bg-[#244BFF]">
                             <img alt="Portrait of Nanda Akbar" class="w-full h-full object-cover object-[50%_25%]"
@@ -329,7 +662,7 @@
                             <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             <span class="w-1.5 h-1.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
-                            <span class="flex-1 text-center text-[0.6rem] opacity-50">new_message.txt</span>
+                            <div class="flex-1 bg-surface-window rounded px-2 py-0.5 text-[0.6rem] opacity-50 text-center truncate">new_message.txt</div>
                         </div>
                         <ul class="text-sm flex flex-col p-4 gap-1">
                             <li><a class="inline-block py-2 underline underline-offset-4 decoration-[#244BFF]/40 active:opacity-60 focus-ring" href="mailto:nandaakbar70@gmail.com?subject=Let%E2%80%99s%20Collaborate%21&body=Hi%20there%2C%0A%0AI%27d%20love%20to%20discuss%20a%20potential%20project%20with%20you.%20Here%20are%20the%20details%3A%0A-%20Project%20type%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20your%20reply%21">nandaakbar70@gmail.com</a></li>
@@ -403,7 +736,7 @@
                                 <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                                 <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             </div>
-                            <span class="flex-1 text-center text-xs opacity-50 truncate">a little about me.txt</span>
+                            <div class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate">a little about me.txt</div>
                         </div>
 
                         <!-- Content: eyebrow + headline + divider + context -->
@@ -559,7 +892,7 @@
                                 <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                                 <span class="w-2 h-2 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             </div>
-                            <span class="flex-1 text-center text-xs opacity-50 truncate">a little about me.txt</span>
+                            <div class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate">a little about me.txt</div>
                         </div>
                         <div class="p-6 flex flex-col gap-4">
                             <p class="text-[0.6rem] font-black uppercase tracking-[0.2em] opacity-40">HELLO, I'M NANDA.</p>
@@ -634,15 +967,15 @@
     <div id="folderWindowLayer" class="contents hidden">
 
                 <!-- UI/UX Design window -->
-                <div data-folder-window="uiux" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-2xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-                    style="top: 12%; left: 50%; --tw-translate-x: -50%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+                <div data-folder-window="uiux" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-2xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0"
+                    style="top: 12%; left: 50%; --tw-translate-x: -50%; transform: translateX(-50%);">
                     <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
                         <div class="flex items-center gap-1.5 shrink-0">
                             <button type="button" onclick="closeFolderWindow('uiux')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close"><span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span></button>
                             <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                         </div>
-                        <span class="flex-1 text-center text-xs opacity-50 truncate">UI/UX Design</span>
+                        <div class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate">UI/UX Design</div>
                     </div>
                     <!-- Mobile: vertical list, navigates fullscreen (page = window) -->
                     <ul class="md:hidden divide-y divide-black/5 py-1">
@@ -698,15 +1031,15 @@
                 </div>
 
                 <!-- Packaging window -->
-                <div data-folder-window="packaging" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-3xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-                    style="top: 16%; left: 54%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+                <div data-folder-window="packaging" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-3xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0"
+                    style="top: 16%; left: 54%; transform: translateX(-50%);">
                     <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
                         <div class="flex items-center gap-1.5 shrink-0">
                             <button type="button" onclick="closeFolderWindow('packaging')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close"><span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span></button>
                             <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                         </div>
-                        <span class="flex-1 text-center text-xs opacity-50 truncate">Packaging</span>
+                        <div class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate">Packaging</div>
                     </div>
                     <div class="scroll-fade-container">
 <div class="scroll-fade-content p-4 sm:p-6 md:p-8 grid grid-cols-3 gap-3 md:gap-6 max-h-[485px] overflow-y-auto">
@@ -743,15 +1076,15 @@
                 </div>
 
                 <!-- Social Media window: flat grid, no brand grouping (uniform with Packaging) -->
-                <div data-folder-window="social" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-3xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-                    style="top: 20%; left: 46%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+                <div data-folder-window="social" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-3xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0"
+                    style="top: 20%; left: 46%; transform: translateX(-50%);">
                     <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
                         <div class="flex items-center gap-1.5 shrink-0">
                             <button type="button" onclick="closeFolderWindow('social')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close"><span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] border-[0.8px] border-[#E0443E] group-active/close:scale-[0.8] transition-transform"></span></button>
                             <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                         </div>
-                        <span class="flex-1 text-center text-xs opacity-50 truncate">Social Media</span>
+                        <div class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate">Social Media</div>
                     </div>
                     <div class="scroll-fade-container">
 <div class="scroll-fade-content p-4 sm:p-6 md:p-8 grid grid-cols-3 gap-3 md:gap-6 max-h-[485px] overflow-y-auto">
@@ -837,8 +1170,8 @@
 
             </div>
     <!-- Contact window: footer CTA turned into a draggable window-chrome -->
-    <div data-folder-window="contact" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-[690px] rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 z-40 transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-        style="top: 22%; left: 50%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+    <div data-folder-window="contact" class="folder-window pointer-events-none fixed w-[calc(100%-2rem)] sm:w-full max-w-[690px] rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 z-40"
+        style="top: 22%; left: 50%; transform: translateX(-50%);">
         <div class="folder-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
             <div class="flex items-center gap-1.5 shrink-0">
                 <button type="button" onclick="closeFolderWindow('contact')" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close">
@@ -847,7 +1180,7 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                 <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
             </div>
-            <span class="flex-1 text-center text-xs opacity-50 truncate">new_message.txt</span>
+            <div class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate">new_message.txt</div>
         </div>
         <div class="p-10 flex flex-col gap-6">
             <p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#244BFF]">Contact</p>
@@ -881,8 +1214,8 @@
     <!-- Image Expand Window: draggable window-chrome (same grammar as folder windows),
          holds a single expanded packaging image. -->
     <div id="image-expand-modal" class="contents hidden">
-        <div id="image-expand-window" class="folder-window pointer-events-auto fixed w-[calc(100%-2rem)] sm:w-full max-w-4xl md:max-w-[calc(100%-4rem)] lg:max-w-4xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 flex flex-col transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-            style="top: 10%; left: 50%; transform: translateX(-50%) scale(0.9); filter: blur(6px);">
+        <div id="image-expand-window" class="folder-window pointer-events-auto fixed w-[calc(100%-2rem)] sm:w-full max-w-4xl md:max-w-[calc(100%-4rem)] lg:max-w-4xl rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 flex flex-col"
+            style="top: 10%; left: 50%; transform: translateX(-50%);">
             <div class="image-expand-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
                 <div class="flex items-center gap-1.5 shrink-0">
                     <button type="button" id="image-expand-close" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close">
@@ -891,7 +1224,7 @@
                     <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                     <span class="w-2.5 h-2.5 rounded-full bg-surface-window border-[0.8px] border-ink-secondary"></span>
                 </div>
-                <span id="image-expand-label" class="flex-1 text-center text-xs opacity-50 truncate"></span>
+                <div id="image-expand-label" class="flex-1 bg-surface-window rounded px-3 py-1 text-xs opacity-50 text-center truncate"></div>
             </div>
             <div class="p-6 bg-card-light flex flex-col gap-4">
                 <div class="relative group/nav">
@@ -915,8 +1248,8 @@
 
     <!-- Case Study Window: draggable window-chrome (same grammar as folder windows), holds the case-study iframe -->
     <div id="iframe-modal" class="contents hidden">
-        <div id="iframe-window" class="folder-window pointer-events-auto fixed w-[calc(100%-2rem)] sm:w-full max-w-4xl md:max-w-[calc(100%-4rem)] lg:max-w-4xl h-[80vh] rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 flex flex-col transition-all duration-[420ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-            style="top: 8%; left: 50%; transform: translateX(-50%) scale(0.9); filter: blur(6px); max-width: min(72rem, calc(100% - 4rem));">
+        <div id="iframe-window" class="folder-window pointer-events-auto fixed w-[calc(100%-2rem)] sm:w-full max-w-4xl md:max-w-[calc(100%-4rem)] lg:max-w-4xl h-[80vh] rounded-lg overflow-hidden shadow-2xl border border-black/10 bg-surface-window opacity-0 flex flex-col"
+            style="top: 8%; left: 50%; transform: translateX(-50%); max-width: min(72rem, calc(100% - 4rem));">
             <div class="iframe-window-titlebar flex items-center gap-3.5 px-3.5 h-[34px] bg-background-light cursor-grab shrink-0">
                 <div class="flex items-center gap-1.5 shrink-0">
                     <button type="button" id="iframe-modal-close" class="w-10 h-10 -m-4 md:w-6 md:h-6 md:-m-2 flex items-center justify-center group/close focus-ring cursor-pointer" aria-label="Close">
@@ -960,6 +1293,40 @@
         let openFolderCount = 0;
         let topZIndex = 55; // starts above the fixed header (z-50) and page widgets (z-10/z-30)
 
+        // Opening motion: the window pops out of whatever was just clicked (folder icon / project tile / thumbnail)
+        // and closing shrinks back toward that same spot. Timing lives in CSS (.folder-window / .folder-window.is-open).
+        const lastPtr = { x: 0, y: 0, t: -1e9 };
+        document.addEventListener('pointerdown', (e) => { lastPtr.x = e.clientX; lastPtr.y = e.clientY; lastPtr.t = performance.now(); }, true);
+        function popSource(el) {
+            if (el && el.getBoundingClientRect) {
+                const r = el.getBoundingClientRect();
+                if (r.width || r.height) return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+            }
+            return performance.now() - lastPtr.t < 1500 ? { x: lastPtr.x, y: lastPtr.y } : null;
+        }
+        function popOpen(win, srcEl) {
+            if (win.classList.contains('is-open')) return;   // already open (e.g. switching project inside the case-study window): no re-pop
+            const src = popSource(srcEl);
+            if (src) {
+                // Measure the box at scale 1. `scale` is applied BEFORE `transform` (the translateX(-50%) used for centring),
+                // so the origin has to be expressed in the un-translated layout box: displayed point + the transform's translation.
+                win.style.transition = 'none'; win.style.scale = '1';
+                const r = win.getBoundingClientRect();
+                const k = win.offsetWidth ? (r.width / win.offsetWidth) || 1 : 1;   // ancestor scale (desktop stage); 1 when un-scaled
+                const m = new DOMMatrix(getComputedStyle(win).transform);
+                const cl = (v, max) => Math.max(-80, Math.min(max + 80, v));   // a far-away trigger must not fling the window in from across the screen
+                const ox = cl((src.x - r.left) / k, win.offsetWidth) + m.m41;
+                const oy = cl((src.y - r.top) / k, win.offsetHeight) + m.m42;
+                win.style.transformOrigin = ox + 'px ' + oy + 'px';
+                win.style.scale = ''; void win.offsetWidth; win.style.transition = '';
+            } else {
+                win.style.transformOrigin = '';
+            }
+            win.querySelectorAll('.tilt-card').forEach((el, i) => el.style.setProperty('--i', Math.min(i, 9)));   // stagger index for the grid items
+            void win.offsetWidth;   // commit the closed state first: the layer was just switched from display:none
+            win.classList.add('is-open');
+        }
+
         function bringToFront(win) {
             topZIndex += 1;
             win.style.zIndex = String(topZIndex);
@@ -975,7 +1342,7 @@
             win.classList.add('is-active-window');
         }
 
-        function openFolderWindow(key) {
+        function openFolderWindow(key, originEl) {
             const win = folderWindows.find((w) => w.dataset.folderWindow === key);
             if (!win) return;
 
@@ -990,12 +1357,7 @@
             folderLayer.classList.remove('hidden');
             win.style.pointerEvents = 'auto';
 
-            // Only reset scale if the window hasn't been dragged into a custom
-            // left/top position yet (dragged windows keep transform: none).
-            if (win.dataset.dragged !== 'true') {
-                win.style.transform = win.style.transform.replace('scale(0.9)', 'scale(1)');
-            }
-            requestAnimationFrame(() => win.classList.add('is-open'));
+            popOpen(win, originEl);
             bringToFront(win);
             if (wasClosed) openFolderCount += 1;
             document.body.style.overflow = 'hidden';
@@ -1006,9 +1368,6 @@
             if (win && win.classList.contains('is-open')) {
                 win.classList.remove('is-open');
                 win.style.pointerEvents = 'none';
-                if (win.dataset.dragged !== 'true') {
-                    win.style.transform = win.style.transform.replace('scale(1)', 'scale(0.9)');
-                }
                 openFolderCount = Math.max(0, openFolderCount - 1);
             }
             if (openFolderCount === 0) {
@@ -1033,7 +1392,7 @@
                         { scale: 1, rotate: 0, duration: 0.55, ease: 'elastic.out(1, 0.5)' }
                     );
                 }
-                openFolderWindow(trigger.dataset.folderTrigger);
+                openFolderWindow(trigger.dataset.folderTrigger, trigger);
             });
         });
 
@@ -1223,7 +1582,9 @@
             currentImageSeriesIndex = currentImageSeries.indexOf(src);
 
             imageExpandImg.src = src;
-            imageExpandLabel.textContent = imageExpandLabels[src] || '';
+            { const name = imageExpandLabels[src] || '';
+              const ext = (decodeURIComponent(src).match(/\.([a-z0-9]+)$/i) || [])[1];
+              imageExpandLabel.textContent = name ? name + (ext ? '.' + ext.toLowerCase() : '') : ''; }
             const hasMultiple = currentImageSeries.length > 1;
             imageExpandPrevBtn.classList.toggle('hidden', !hasMultiple);
             imageExpandNextBtn.classList.toggle('hidden', !hasMultiple);
@@ -1235,10 +1596,7 @@
 
             imageExpandModal.classList.remove('hidden');
             imageExpandWindow.style.pointerEvents = 'auto';
-            if (imageExpandWindow.dataset.dragged !== 'true') {
-                imageExpandWindow.style.transform = imageExpandWindow.style.transform.replace('scale(0.9)', 'scale(1)');
-            }
-            requestAnimationFrame(() => imageExpandWindow.classList.add('is-open'));
+            popOpen(imageExpandWindow);
             bringToFront(imageExpandWindow);
             document.body.classList.add('overflow-hidden');
         }
@@ -1246,9 +1604,6 @@
         function closeImageExpand() {
             imageExpandWindow.classList.remove('is-open');
             imageExpandWindow.style.pointerEvents = 'none';
-            if (imageExpandWindow.dataset.dragged !== 'true') {
-                imageExpandWindow.style.transform = imageExpandWindow.style.transform.replace('scale(1)', 'scale(0.9)');
-            }
             setTimeout(() => {
                 imageExpandModal.classList.add('hidden');
                 imageExpandImg.src = '';
@@ -1275,20 +1630,23 @@
             iframeUrlbar.textContent = caseStudyLabels[url] || url;
             iframeModal.classList.remove('hidden');
             iframeWindow.style.pointerEvents = 'auto';
-            if (iframeWindow.dataset.dragged !== 'true') {
-                iframeWindow.style.transform = iframeWindow.style.transform.replace('scale(0.9)', 'scale(1)');
-            }
-            requestAnimationFrame(() => iframeWindow.classList.add('is-open'));
+            popOpen(iframeWindow);
             bringToFront(iframeWindow);
             document.body.classList.add('overflow-hidden');
         }
 
+        // "More from UI/UX" cards inside a case study ask us to open a sibling project in this same window
+        window.addEventListener('message', (e) => {
+            if (e.origin !== window.location.origin || !e.data || e.data.type !== 'open-case-study') return;
+            if (e.source !== modalIframe.contentWindow) return;
+            const url = e.data.url;
+            if (typeof url !== 'string' || !(url in caseStudyLabels) || url === '/about') return;
+            openIframeModal(url);
+        });
+
         function closeIframeModal() {
             iframeWindow.classList.remove('is-open');
             iframeWindow.style.pointerEvents = 'none';
-            if (iframeWindow.dataset.dragged !== 'true') {
-                iframeWindow.style.transform = iframeWindow.style.transform.replace('scale(1)', 'scale(0.9)');
-            }
             setTimeout(() => {
                 iframeModal.classList.add('hidden');
                 modalIframe.src = '';

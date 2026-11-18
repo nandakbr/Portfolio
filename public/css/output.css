@@ -2979,10 +2979,9 @@ section {
   right: 0;
   bottom: 0;
   height: 48px;
-  background: linear-gradient(to bottom, rgba(250, 249, 244, 0) 0%, rgba(250, 249, 244, 0.75) 55%, rgba(250, 249, 244, 0.95) 100%);
+  background: linear-gradient(to bottom, rgba(232, 231, 223, 0) 0%, rgba(232, 231, 223, 0.75) 55%, rgba(232, 231, 223, 0.95) 100%);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  box-shadow: 0 -8px 16px -8px rgba(32, 33, 31, 0.1);
   pointer-events: none;
   border-radius: 0 0 0.5rem 0.5rem;
 }
@@ -3768,6 +3767,31 @@ button[onclick^="openImageExpand"] > span:first-child::after {
   opacity: 1 !important;
   filter: blur(0) !important;
 }
+
+/* Window open/close. Open: pop out of the clicked item on a damped spring (about 12% overshoot), settle. Close: shorter
+   and ease-in so it never lingers. Uses the individual `scale` property so it composes with the inline translateX(-50%)
+   used for centring and with dragged windows (transform: none). Reduced motion is handled by the global rule. */
+.folder-window {
+  scale: 0.5;
+  filter: blur(6px);
+  transition: opacity 160ms ease-in, filter 200ms ease-in, scale 220ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.folder-window.is-open {
+  scale: 1;
+  transition: opacity 220ms ease-out, filter 320ms ease-out, scale 620ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 220ms ease-out, filter 320ms ease-out, scale 640ms linear(0, 0.103 4%, 0.333 8%, 0.591 12%, 0.817 16%, 0.982 20%, 1.081 24%, 1.122 28%, 1.123 32%, 1.1 36%, 1.068 40%, 1.037 44%, 1.012 48%, 0.995 52%, 0.986 56%, 0.984 60%, 0.986 64%, 0.989 68%, 0.993 72%, 0.997 76%, 1 80%, 1.001 84%, 1.002 88%, 1.002 92%, 1.002 96%, 1);
+}
+
+@keyframes winItemIn {
+  from { opacity: 0; translate: 0 10px; scale: 0.94; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
+}
+
+.folder-window.is-open .tilt-card {
+  animation: winItemIn 420ms cubic-bezier(0.16, 1, 0.3, 1) calc(140ms + var(--i, 0) * 40ms) backwards;
+}
+
 
 /* Active vs. idle titlebar (Figma DS 05 "Window / Visual states"): the
    frontmost window gets the warmer surface/titlebar tint, everything
